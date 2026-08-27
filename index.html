@@ -20,53 +20,20 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
       min-height: 100vh;
+      background: #060810;
       color: #E2E8F0;
       font-family: 'Montserrat', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       overflow-x: hidden;
-      position: relative;
-      padding: 85px 14px 30px;
-      transition: background 1.5s ease;
+      -webkit-overflow-scrolling: touch;
     }
 
-    /* Фоновые градиенты неба */
-    body.time-night { background: radial-gradient(ellipse at bottom, #0d1322 0%, #060810 100%); }
-    body.time-morning { background: radial-gradient(ellipse at bottom, #2d1b36 0%, #0d1527 100%); }
-    body.time-day { background: radial-gradient(ellipse at bottom, #163252 0%, #091728 100%); }
-    body.time-evening { background: radial-gradient(ellipse at bottom, #301728 0%, #0c1020 100%); }
-
-    .nebula {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.35;
-      pointer-events: none;
-      z-index: 0;
-      animation: drift 22s infinite alternate ease-in-out;
-      transform: translateZ(0);
-      will-change: transform;
-    }
-
-    .nebula-1 { width: 440px; height: 440px; top: -80px; left: -80px; }
-    .nebula-2 { width: 520px; height: 520px; bottom: -120px; right: -80px; animation-duration: 28s; }
-
-    body.time-night .nebula-1 { background: radial-gradient(circle, #3b1d60 0%, transparent 70%); }
-    body.time-night .nebula-2 { background: radial-gradient(circle, #1a365d 0%, transparent 70%); }
-    body.time-morning .nebula-1 { background: radial-gradient(circle, #702e52 0%, transparent 70%); opacity: 0.45; }
-    body.time-morning .nebula-2 { background: radial-gradient(circle, #d97706 0%, transparent 70%); opacity: 0.3; }
-    body.time-day .nebula-1 { background: radial-gradient(circle, #1e40af 0%, transparent 70%); opacity: 0.45; }
-    body.time-day .nebula-2 { background: radial-gradient(circle, #d97706 0%, transparent 70%); opacity: 0.35; }
-    body.time-evening .nebula-1 { background: radial-gradient(circle, #831843 0%, transparent 70%); opacity: 0.45; }
-    body.time-evening .nebula-2 { background: radial-gradient(circle, #b45309 0%, transparent 70%); opacity: 0.35; }
-
-    @keyframes drift {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(35px, 25px) scale(1.12); }
-    }
+    /* Фоновые градиенты по времени суток */
+    body.time-night { background: radial-gradient(ellipse at top, #0f172a 0%, #060810 100%); }
+    body.time-morning { background: radial-gradient(ellipse at top, #2d1b36 0%, #0d1527 100%); }
+    body.time-day { background: radial-gradient(ellipse at top, #163252 0%, #091728 100%); }
+    body.time-evening { background: radial-gradient(ellipse at top, #301728 0%, #0c1020 100%); }
 
     #stars-canvas {
       position: fixed;
@@ -74,7 +41,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: 10;
+      z-index: 1;
       pointer-events: none;
       transform: translateZ(0);
     }
@@ -82,10 +49,10 @@
     /* Верхняя панель */
     .top-nav {
       position: fixed;
-      top: 12px;
-      left: 12px;
-      right: 12px;
-      max-width: 500px;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      max-width: 480px;
       margin: 0 auto;
       z-index: 100;
       display: flex;
@@ -100,26 +67,25 @@
     }
 
     .menu-toggle-btn {
-      background: rgba(15, 23, 42, 0.88);
+      background: #0F172A;
       border: 1px solid rgba(212, 175, 55, 0.4);
       color: #F59E0B;
       border-radius: 12px;
-      padding: 9px 14px;
+      padding: 8px 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 7px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     }
 
     .menu-toggle-btn:active { transform: scale(0.96); }
 
     .status-badge {
-      background: rgba(15, 23, 42, 0.84);
-      border: 1px solid rgba(212, 175, 55, 0.3);
+      background: #0F172A;
+      border: 1px solid rgba(212, 175, 55, 0.35);
       padding: 7px 14px;
       border-radius: 20px;
       font-size: 0.75rem;
@@ -127,10 +93,10 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      backdrop-filter: blur(8px);
       font-weight: 500;
       cursor: pointer;
       user-select: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     }
 
     .status-dot {
@@ -147,18 +113,17 @@
       50% { transform: scale(1.25); opacity: 1; }
     }
 
-    /* Погода Дедовска */
     .dedovsk-bar {
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 14px;
+      background: #0B1120;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 12px;
       padding: 5px 12px;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: #CBD5E1;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
 
     .dedovsk-bar b { color: #F59E0B; }
@@ -170,12 +135,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.75);
       z-index: 110;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.25s ease;
     }
 
     .sidebar-overlay.active { opacity: 1; pointer-events: auto; }
@@ -186,23 +150,22 @@
       left: -300px;
       width: 275px;
       height: 100%;
-      background: rgba(15, 23, 42, 0.98);
-      border-right: 1px solid rgba(212, 175, 55, 0.3);
-      backdrop-filter: blur(16px);
+      background: #0B1120;
+      border-right: 1px solid rgba(212, 175, 55, 0.35);
       z-index: 120;
       padding: 65px 16px 20px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      transition: left 0.32s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 10px 0 30px rgba(0,0,0,0.7);
+      transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 10px 0 30px rgba(0,0,0,0.8);
     }
 
     .sidebar.active { left: 0; }
 
     .nav-btn {
-      background: rgba(2, 6, 23, 0.6);
-      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: #060810;
+      border: 1px solid rgba(148, 163, 184, 0.2);
       border-radius: 12px;
       padding: 13px 14px;
       color: #CBD5E1;
@@ -212,7 +175,7 @@
       display: flex;
       align-items: center;
       gap: 11px;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
     }
 
     .nav-btn.active, .nav-btn:active {
@@ -221,26 +184,26 @@
       color: #FFF;
     }
 
-    /* Карточки */
+    /* Основной контейнер страницы */
     .container {
       position: relative;
       z-index: 2;
       width: 100%;
       max-width: 480px;
       margin: 0 auto;
+      padding: 85px 12px 35px;
     }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
+    /* Плотная карточка без размытия */
     .card {
-      background: rgba(15, 23, 42, 0.86);
+      background: #0B1120;
       border: 1px solid rgba(212, 175, 55, 0.35);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-radius: 24px;
-      padding: 28px 20px;
-      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(212, 175, 55, 0.12);
+      border-radius: 20px;
+      padding: 24px 18px;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.1);
       text-align: center;
       position: relative;
     }
@@ -255,7 +218,6 @@
       font-size: 0.85rem;
       cursor: pointer;
       margin-bottom: 14px;
-      transition: color 0.2s;
     }
 
     .back-btn:active { color: #F59E0B; }
@@ -265,7 +227,7 @@
       letter-spacing: 2px;
       color: #F59E0B;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       font-weight: 600;
     }
 
@@ -274,26 +236,25 @@
       color: #F8FAFC;
       font-size: 1.25rem;
       letter-spacing: 1px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       line-height: 1.4;
     }
 
     .subtitle {
       color: #94A3B8;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       line-height: 1.5;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     /* Сфера на главной */
     .touch-orb-card {
-      background: rgba(2, 6, 23, 0.55);
-      border: 1px dashed rgba(245, 158, 11, 0.35);
-      border-radius: 18px;
-      padding: 20px 14px;
-      margin-bottom: 18px;
+      background: #060810;
+      border: 1px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 16px;
+      padding: 18px 12px;
+      margin-bottom: 16px;
       cursor: pointer;
-      transition: all 0.3s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -303,18 +264,12 @@
     .touch-orb-card:active {
       transform: scale(0.98);
       border-color: #F59E0B;
-      background: rgba(245, 158, 11, 0.08);
+      background: rgba(245, 158, 11, 0.06);
     }
 
     .touch-orb-icon {
       font-size: 2.2rem;
-      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
-      animation: floatOrb 4s infinite ease-in-out;
-    }
-
-    @keyframes floatOrb {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
+      filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
     }
 
     .touch-orb-text {
@@ -323,35 +278,47 @@
       color: #FEF3C7;
       min-height: 24px;
       line-height: 1.4;
-      transition: opacity 0.25s ease;
+      transition: opacity 0.2s ease;
+    }
+
+    /* Интерактивная зона для звёздного шлейфа */
+    .star-drawing-zone {
+      margin: 14px 0;
+      padding: 24px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(148, 163, 184, 0.2);
+      background: rgba(6, 8, 16, 0.6);
+      text-align: center;
+      color: #94A3B8;
+      font-size: 0.8rem;
+      user-select: none;
     }
 
     .hub-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-top: 14px;
     }
 
     .hub-item {
-      background: rgba(2, 6, 23, 0.65);
+      background: #060810;
       border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 16px;
-      padding: 18px 12px;
+      border-radius: 14px;
+      padding: 16px 10px;
       text-align: center;
       cursor: pointer;
       position: relative;
-      transition: all 0.25s ease;
     }
 
     .hub-item:active {
       border-color: #F59E0B;
-      background: rgba(245, 158, 11, 0.12);
-      transform: scale(0.97);
+      background: rgba(245, 158, 11, 0.1);
+      transform: scale(0.98);
     }
 
-    .hub-icon { font-size: 1.7rem; margin-bottom: 6px; }
-    .hub-title { font-size: 0.85rem; font-weight: 600; color: #F1F5F9; }
+    .hub-icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .hub-title { font-size: 0.82rem; font-weight: 600; color: #F1F5F9; }
 
     .gold-badge {
       position: absolute;
@@ -361,42 +328,40 @@
       color: #060810;
       font-size: 0.65rem;
       font-weight: 700;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 10px;
       box-shadow: 0 0 10px #F59E0B;
-      animation: pulseGlow 1.5s infinite alternate ease-in-out;
       display: none;
     }
 
-    /* Аптечка */
+    /* Аптечка настроения */
     .support-box {
-      background: rgba(2, 6, 23, 0.75);
+      background: #060810;
       border: 1px solid rgba(245, 158, 11, 0.45);
-      border-radius: 20px;
-      padding: 32px 20px;
-      margin: 22px 0;
-      min-height: 160px;
+      border-radius: 18px;
+      padding: 30px 18px;
+      margin: 18px 0;
+      min-height: 150px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.15rem;
-      line-height: 1.8;
+      font-size: 1.1rem;
+      line-height: 1.75;
       color: #FEF3C7;
       text-align: center;
       overflow-wrap: anywhere;
       word-break: break-word;
-      box-shadow: inset 0 0 25px rgba(245, 158, 11, 0.1), 0 8px 25px rgba(0, 0, 0, 0.5);
-      transition: opacity 0.35s ease;
+      transition: opacity 0.25s ease;
     }
 
-    /* Оракул */
+    /* Оракул чувств */
     .crystal-box {
-      background: rgba(2, 6, 23, 0.6);
+      background: #060810;
       border: 1px solid rgba(212, 175, 55, 0.3);
-      border-radius: 20px;
-      padding: 30px 16px;
-      margin: 18px 0;
+      border-radius: 18px;
+      padding: 26px 14px;
+      margin: 16px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -404,37 +369,36 @@
     }
 
     .crystal-orb {
-      width: 110px;
-      height: 110px;
+      width: 105px;
+      height: 105px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, #FDE68A 0%, #D97706 55%, #451A03 100%);
-      box-shadow: 0 0 35px rgba(245, 158, 11, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
       cursor: pointer;
       user-select: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
-      transition: all 0.3s ease;
+      font-size: 2.4rem;
     }
 
     .crystal-orb.charging {
-      animation: crystalCharge 1.2s infinite alternate ease-in-out;
+      animation: crystalCharge 1s infinite alternate ease-in-out;
     }
 
     @keyframes crystalCharge {
-      0% { transform: scale(0.95); box-shadow: 0 0 25px rgba(245, 158, 11, 0.5); }
-      100% { transform: scale(1.08); box-shadow: 0 0 70px rgba(245, 158, 11, 0.9), 0 0 100px rgba(251, 191, 36, 0.6); }
+      0% { transform: scale(0.96); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
+      100% { transform: scale(1.06); box-shadow: 0 0 50px rgba(245, 158, 11, 0.8); }
     }
 
     /* Ловец звёзд */
     .star-catcher-box {
       position: relative;
       width: 100%;
-      height: 290px;
-      background: rgba(2, 6, 23, 0.85);
+      height: 280px;
+      background: #060810;
       border: 1px solid rgba(212, 175, 55, 0.35);
-      border-radius: 18px;
+      border-radius: 16px;
       margin: 16px 0;
       overflow: hidden;
       touch-action: none;
@@ -442,15 +406,15 @@
 
     .game-star {
       position: absolute;
-      font-size: 1.85rem;
+      font-size: 1.8rem;
       cursor: pointer;
       user-select: none;
-      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.9));
+      filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.9));
       transition: transform 0.15s ease-out, opacity 0.15s ease-out;
     }
 
     .game-star.caught {
-      transform: scale(1.6) rotate(20deg);
+      transform: scale(1.5) rotate(20deg);
       opacity: 0;
     }
 
@@ -458,56 +422,55 @@
       position: absolute;
       color: #F59E0B;
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: 1rem;
       pointer-events: none;
-      animation: floatUpScore 0.7s ease-out forwards;
+      animation: floatUpScore 0.6s ease-out forwards;
     }
 
     @keyframes floatUpScore {
       0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-30px); opacity: 0; }
+      100% { transform: translateY(-25px); opacity: 0; }
     }
 
     .game-stats {
       display: flex;
       justify-content: space-between;
       font-family: 'Cinzel', serif;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: #F59E0B;
       margin-bottom: 8px;
     }
 
     /* Купоны */
     .coupon-card {
-      background: rgba(2, 6, 23, 0.65);
+      background: #060810;
       border: 1px solid rgba(212, 175, 55, 0.3);
-      border-radius: 16px;
-      padding: 16px 18px;
-      margin-bottom: 12px;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
       text-align: left;
-      transition: all 0.3s ease;
     }
 
     .coupon-card.used {
       border-color: rgba(148, 163, 184, 0.2);
-      background: rgba(2, 6, 23, 0.4);
+      background: #080c18;
     }
 
-    .coupon-info h3 { font-size: 0.9rem; color: #F8FAFC; margin-bottom: 3px; }
-    .coupon-info p { font-size: 0.78rem; color: #94A3B8; }
-    .coupon-timer { font-size: 0.75rem; color: #F59E0B; margin-top: 4px; font-weight: 600; }
+    .coupon-info h3 { font-size: 0.88rem; color: #F8FAFC; margin-bottom: 3px; }
+    .coupon-info p { font-size: 0.76rem; color: #94A3B8; }
+    .coupon-timer { font-size: 0.74rem; color: #F59E0B; margin-top: 4px; font-weight: 600; }
 
     .coupon-btn {
       background: #D97706;
       color: white;
       border: none;
-      border-radius: 10px;
-      padding: 9px 14px;
-      font-size: 0.75rem;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.72rem;
       font-weight: 600;
       text-transform: uppercase;
       cursor: pointer;
@@ -520,20 +483,19 @@
     .letters-tabs {
       display: flex;
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .letters-tab-btn {
       flex: 1;
-      background: rgba(2, 6, 23, 0.7);
+      background: #060810;
       border: 1px solid rgba(148, 163, 184, 0.25);
       color: #94A3B8;
-      border-radius: 12px;
-      padding: 10px;
-      font-size: 0.82rem;
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
     }
 
     .letters-tab-btn.active {
@@ -544,52 +506,49 @@
 
     .letter-input-box {
       width: 100%;
-      background: rgba(2, 6, 23, 0.7);
+      background: #060810;
       border: 1px solid rgba(148, 163, 184, 0.3);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 14px;
+      padding: 14px;
       color: #F8FAFC;
       font-family: 'Playfair Display', Georgia, serif;
       font-size: 0.95rem;
       line-height: 1.6;
       resize: vertical;
-      min-height: 120px;
+      min-height: 110px;
       outline: none;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .letter-input-box:focus {
       border-color: #F59E0B;
-      box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
     }
 
     .letter-list-item {
-      background: rgba(2, 6, 23, 0.65);
+      background: #060810;
       border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 16px;
-      padding: 15px 18px;
-      margin-bottom: 10px;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 8px;
       text-align: left;
       cursor: pointer;
-      transition: all 0.25s ease;
     }
 
     .letter-list-item:active {
       border-color: #F59E0B;
-      transform: scale(0.98);
     }
 
     .letter-item-header {
       display: flex;
       justify-content: space-between;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: #F59E0B;
       margin-bottom: 4px;
       font-weight: 600;
     }
 
     .letter-item-preview {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: #CBD5E1;
       white-space: nowrap;
       overflow: hidden;
@@ -597,30 +556,25 @@
       max-width: 100%;
     }
 
-    /* Универсальный свиток чтения с ночным режимом */
+    /* Свитки чтения (Плотные, без прозрачности) */
     .scroll-view-card {
       background: #FAF7F2;
       color: #2D3748;
-      border-radius: 22px;
-      padding: 30px 22px;
+      border-radius: 20px;
+      padding: 26px 18px;
       text-align: left;
-      box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+      box-shadow: 0 14px 35px rgba(0,0,0,0.8);
       border: 1px solid #E2E8F0;
       display: none;
-      opacity: 0;
-      transform: scale(0.97);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       overflow-wrap: anywhere;
       word-break: break-word;
       max-width: 100%;
     }
 
-    /* Тёмная тема для свитков */
     .scroll-view-card.dark-mode {
       background: #0B1120;
       color: #E2E8F0;
       border: 1px solid rgba(245, 158, 11, 0.45);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 35px rgba(245, 158, 11, 0.2);
     }
 
     .scroll-view-header {
@@ -628,8 +582,8 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px dashed #CBD5E1;
-      padding-bottom: 10px;
-      margin-bottom: 16px;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
     }
 
     .scroll-view-card.dark-mode .scroll-view-header {
@@ -638,7 +592,7 @@
 
     .scroll-view-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: #92400E;
     }
 
@@ -648,8 +602,8 @@
 
     .scroll-view-body {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.02rem;
-      line-height: 1.85;
+      font-size: 1rem;
+      line-height: 1.8;
       white-space: pre-line;
       color: #334155;
       overflow-wrap: anywhere;
@@ -662,25 +616,22 @@
     }
 
     .scroll-view-footer {
-      margin-top: 18px;
-      font-size: 0.78rem;
+      margin-top: 16px;
+      font-size: 0.76rem;
       color: #94A3B8;
       text-align: right;
       font-style: italic;
     }
 
     .theme-toggle-btn {
-      background: rgba(2, 6, 23, 0.5);
+      background: #060810;
       border: 1px solid rgba(245, 158, 11, 0.4);
       color: #FDE68A;
-      padding: 5px 10px;
-      border-radius: 12px;
+      padding: 4px 8px;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
     }
 
     /* Стихи */
@@ -688,20 +639,17 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .fav-filter-btn {
-      background: rgba(2, 6, 23, 0.7);
+      background: #060810;
       border: 1px solid rgba(148, 163, 184, 0.25);
       color: #94A3B8;
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 0.8rem;
+      border-radius: 16px;
+      padding: 5px 12px;
+      font-size: 0.78rem;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .fav-filter-btn.active {
@@ -711,11 +659,11 @@
     }
 
     .poem-list-item {
-      background: rgba(2, 6, 23, 0.65);
+      background: #060810;
       border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 16px;
-      padding: 16px 18px;
-      margin-bottom: 10px;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 8px;
       text-align: left;
       cursor: pointer;
       display: flex;
@@ -723,25 +671,22 @@
       align-items: center;
     }
 
-    .poem-item-title { font-family: 'Cinzel', serif; font-size: 0.95rem; color: #F8FAFC; font-weight: 600; }
-    .poem-item-date { font-size: 0.75rem; color: #94A3B8; margin-top: 3px; }
-    .heart-btn { background: none; border: none; font-size: 1.15rem; cursor: pointer; padding: 4px; }
+    .poem-item-title { font-family: 'Cinzel', serif; font-size: 0.92rem; color: #F8FAFC; font-weight: 600; }
+    .poem-item-date { font-size: 0.74rem; color: #94A3B8; margin-top: 2px; }
+    .heart-btn { background: none; border: none; font-size: 1.1rem; cursor: pointer; padding: 4px; }
 
     /* Письма шифра */
     .letter-wrapper {
       display: none;
-      opacity: 0;
-      transform: scale(0.97);
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .letter-card {
       background: #FAF7F2;
       color: #2D3748;
-      border-radius: 22px;
-      padding: 30px 22px;
+      border-radius: 20px;
+      padding: 26px 18px;
       text-align: left;
-      box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+      box-shadow: 0 14px 35px rgba(0,0,0,0.8);
       border: 1px solid #E2E8F0;
       overflow-wrap: anywhere;
       word-break: break-word;
@@ -756,19 +701,19 @@
     .secret-theme {
       background: #0B1120;
       color: #E2E8F0;
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 35px rgba(245, 158, 11, 0.25);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.9);
     }
 
     .letter-header {
       font-family: 'Cinzel', serif;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: #92400E;
       text-align: center;
-      margin-bottom: 20px;
-      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+      letter-spacing: 1.2px;
       border-bottom: 1px dashed #CBD5E1;
-      padding-bottom: 12px;
+      padding-bottom: 10px;
     }
 
     .letter-card.dark-mode .letter-header, .secret-theme .letter-header {
@@ -790,13 +735,13 @@
     .letter-card.dark-mode .letter-body, .secret-theme .letter-body { color: #CBD5E1; }
 
     .letter-signature {
-      margin-top: 24px;
+      margin-top: 20px;
       text-align: right;
       font-family: 'Playfair Display', Georgia, serif;
       font-style: italic;
       color: #78350F;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
 
     .letter-card.dark-mode .letter-signature { color: #F59E0B; }
@@ -804,43 +749,35 @@
     .secret-trigger {
       cursor: pointer;
       display: inline-block;
-      transition: all 0.3s ease;
-      animation: pulseGlow 2s infinite ease-in-out;
       user-select: none;
-      padding: 2px 6px;
+      padding: 2px 4px;
     }
 
-    @keyframes pulseGlow {
-      0%, 100% { filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
-      50% { filter: drop-shadow(0 0 8px rgba(245, 158, 11, 1)); }
-    }
-
-    .options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
 
     .option-btn {
-      background: rgba(2, 6, 23, 0.65);
+      background: #060810;
       border: 1px solid rgba(148, 163, 184, 0.25);
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 0.88rem;
+      border-radius: 12px;
+      padding: 13px 14px;
+      font-size: 0.86rem;
       color: #F1F5F9;
       cursor: pointer;
-      transition: all 0.2s ease;
       font-family: 'Montserrat', sans-serif;
     }
 
-    .option-btn:active { border-color: #F59E0B; background: rgba(245, 158, 11, 0.12); }
+    .option-btn:active { border-color: #F59E0B; background: rgba(245, 158, 11, 0.1); }
 
-    .input-group { margin-bottom: 18px; }
+    .input-group { margin-bottom: 16px; }
 
     input[type="text"] {
       width: 100%;
-      background: rgba(2, 6, 23, 0.7);
+      background: #060810;
       border: 1px solid rgba(148, 163, 184, 0.3);
-      border-radius: 14px;
-      padding: 14px 18px;
-      font-size: 1.3rem;
-      letter-spacing: 5px;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 1.25rem;
+      letter-spacing: 4px;
       text-align: center;
       color: #F1F5F9;
       outline: none;
@@ -849,7 +786,6 @@
 
     input[type="text"]:focus {
       border-color: #F59E0B;
-      box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
     }
 
     .submit-btn {
@@ -857,44 +793,43 @@
       background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
       color: #FFF;
       border: none;
-      border-radius: 14px;
-      padding: 14px 20px;
-      font-size: 0.88rem;
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-size: 0.85rem;
       font-weight: 600;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 4px 18px rgba(217, 119, 6, 0.35);
-      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
     }
 
     .submit-btn:active { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); }
 
-    .error-msg { color: #F87171; font-size: 0.82rem; margin-top: 10px; min-height: 18px; opacity: 0; transition: opacity 0.3s ease; }
+    .error-msg { color: #F87171; font-size: 0.8rem; margin-top: 8px; min-height: 16px; opacity: 0; }
     .error-msg.visible { opacity: 1; }
 
-    .shake { animation: shake 0.4s ease-in-out; }
+    .shake { animation: shake 0.35s ease-in-out; }
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-7px); }
-      40%, 80% { transform: translateX(7px); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
     }
 
     /* Админка */
     .admin-tab-bar {
       display: flex;
       gap: 6px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .admin-tab-btn {
       flex: 1;
-      background: rgba(2, 6, 23, 0.7);
+      background: #060810;
       border: 1px solid rgba(16, 185, 129, 0.3);
       color: #A7F3D0;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 8px 4px;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 600;
       cursor: pointer;
     }
@@ -909,20 +844,17 @@
       background: rgba(239, 68, 68, 0.15);
       border: 1px solid #EF4444;
       color: #FCA5A5;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 0.8rem;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
       width: 100%;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body class="time-night">
-
-  <div class="nebula nebula-1"></div>
-  <div class="nebula nebula-2"></div>
 
   <canvas id="stars-canvas"></canvas>
 
@@ -985,6 +917,11 @@
         <div class="touch-orb-card" onclick="touchConstellation()">
           <div class="touch-orb-icon">✨</div>
           <div class="touch-orb-text" id="touch-text">Прикоснись к созвездию...</div>
+        </div>
+
+        <!-- Зона свободного рисования звёздами -->
+        <div class="star-drawing-zone">
+          ✨ Проведи пальцем здесь или по экрану, чтобы зажечь звёздный шлейф ✨
         </div>
 
         <div class="hub-grid">
@@ -1137,7 +1074,7 @@
         <textarea class="letter-input-box" id="liza-letter-text" placeholder="Дорогое Созвездие, хочу рассказать тебе..."></textarea>
         <button class="submit-btn" onclick="sendLetterToConstellation()">Отправить Созвездию ✨</button>
 
-        <div style="margin-top: 24px;">
+        <div style="margin-top: 20px;">
           <div class="letters-tabs">
             <button class="letters-tab-btn active" id="tab-btn-replies" onclick="switchLettersFeed('replies')">✨ Ответы Созвездия</button>
             <button class="letters-tab-btn" id="tab-btn-outbox" onclick="switchLettersFeed('outbox')">💌 Мои письма</button>
@@ -1182,7 +1119,7 @@
           <button class="theme-toggle-btn" onclick="toggleGlobalScrollTheme()">🌙 Тёмная</button>
         </div>
         <div class="scroll-view-title" style="text-align:center;">Послание Оракула</div>
-        <div class="scroll-view-body" id="crystal-scroll-text" style="text-align:center; padding: 15px 0;"></div>
+        <div class="scroll-view-body" id="crystal-scroll-text" style="text-align:center; padding: 14px 0;"></div>
         <div class="scroll-view-footer">Созвездие шепчет истину ✨</div>
       </div>
     </div>
@@ -1216,7 +1153,7 @@
           </button>
         </div>
 
-        <div id="poems-list-container" style="margin-top: 14px;"></div>
+        <div id="poems-list-container"></div>
       </div>
 
       <div class="scroll-view-card" id="poem-scroll-view">
@@ -1240,18 +1177,17 @@
         <div class="protocol-tag" style="color:#10B981;">Командный центр</div>
         <h1 style="color:#10B981;">Панель Созвездия</h1>
 
-        <!-- Подвкладки админки -->
         <div class="admin-tab-bar">
           <button class="admin-tab-btn active" id="atab-btn-dash" onclick="switchAdminTab('dash')">⚡ Дашборд</button>
           <button class="admin-tab-btn" id="atab-btn-inbox" onclick="switchAdminTab('inbox')">💌 Письма Лизы</button>
           <button class="admin-tab-btn" id="atab-btn-reply" onclick="switchAdminTab('reply')">✍️ Ответить</button>
         </div>
 
-        <!-- 1. Дашборд управления -->
+        <!-- 1. Дашборд -->
         <div id="admin-sec-dash">
-          <div style="background:rgba(2,6,23,0.7); border:1px solid rgba(16,185,129,0.3); border-radius:14px; padding:14px; margin-bottom:14px; text-align:left; font-size:0.85rem;">
+          <div style="background:#060810; border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:12px; margin-bottom:12px; text-align:left; font-size:0.85rem;">
             <div>💌 Входящих от Лизы: <b id="adm-count-inbox">0</b></div>
-            <div style="margin:4px 0;">✨ Опубликовано ответов: <b id="adm-count-replies">0</b></div>
+            <div style="margin-top:4px;">✨ Опубликовано ответов: <b id="adm-count-replies">0</b></div>
           </div>
 
           <button class="admin-action-btn" style="border-color:#F59E0B; color:#FDE68A; background:rgba(245,158,11,0.15);" onclick="adminResetCoupons()">⚡ Сбросить кулдаун всех купонов</button>
@@ -1259,17 +1195,17 @@
         </div>
 
         <!-- 2. Входящие от Лизы -->
-        <div id="admin-sec-inbox" style="display:none; text-align:left; max-height:280px; overflow-y:auto;">
+        <div id="admin-sec-inbox" style="display:none; text-align:left; max-height:260px; overflow-y:auto;">
           <div id="admin-liza-inbox-list"></div>
         </div>
 
         <!-- 3. Форма ответа -->
         <div id="admin-sec-reply" style="display:none; text-align:left;">
           <textarea class="letter-input-box" id="admin-reply-text" placeholder="Текст твоего ответа для Лизы..."></textarea>
-          <button class="submit-btn" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); margin-bottom:18px;" onclick="postAdminReply()">Опубликовать ответ ✨</button>
+          <button class="submit-btn" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); margin-bottom:16px;" onclick="postAdminReply()">Опубликовать ответ ✨</button>
           
           <div class="protocol-tag" style="font-size:0.7rem; color:#10B981;">Твои опубликованные ответы:</div>
-          <div id="admin-my-replies-list" style="max-height:180px; overflow-y:auto;"></div>
+          <div id="admin-my-replies-list" style="max-height:160px; overflow-y:auto;"></div>
         </div>
       </div>
     </div>
@@ -1277,7 +1213,7 @@
   </div>
 
   <script>
-    // 1. ИНИЦИАЛИЗАЦИЯ FIREBASE
+    // 1. FIREBASE
     const firebaseConfig = {
       apiKey: "AIzaSyBIr0vRsNn_g3fR7sPu2032t_pz4W4Nl4o",
       authDomain: "liza-space.firebaseapp.com",
@@ -1291,7 +1227,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 2. КАНВАС И СВЕТЯЩИЙСЯ ЗВЁЗДНЫЙ СЛЕД
+    // 2. ЗВЁЗДНЫЙ ХОЛСТ И ШЛЕЙФ ПРИ КАСАНИИ
     const canvas = document.getElementById('stars-canvas');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -1452,7 +1388,7 @@
         const code = data.current_weather.weathercode;
         
         let condition = "ясно 🌙";
-        if (code >= 1 && code <= 3) condition = "переменная облачность ⛅";
+        if (code >= 1 && code <= 3) condition = "облачно ⛅";
         else if (code >= 45 && code <= 48) condition = "туман 🌫️";
         else if (code >= 51 && code <= 67) condition = "дождь 🌧️";
         else if (code >= 71) condition = "снег ❄️";
@@ -1478,7 +1414,7 @@
     setInterval(updateDedovskTime, 1000);
     updateDedovskTime();
 
-    // 4. ЕДИНЫЙ ГЛОБАЛЬНЫЙ НОЧНОЙ РЕЖИМ ДЛЯ ВСЕХ СВИТКОВ
+    // 4. ГЛОБАЛЬНЫЙ НОЧНОЙ РЕЖИМ
     let globalScrollTheme = localStorage.getItem('scroll_theme') || 'dark';
 
     function updateAllScrollThemes() {
@@ -1573,7 +1509,7 @@
       setTimeout(() => {
         el.innerText = phrase;
         el.style.opacity = '1';
-      }, 200);
+      }, 150);
     }
 
     // 7. ОРАКУЛ ЧУВСТВ
@@ -1592,7 +1528,7 @@
 
       const cx = window.innerWidth / 2;
       const cy = window.innerHeight / 2;
-      for (let i = 0; i < 25; i++) {
+      for (let i = 0; i < 20; i++) {
         sparkles.push({
           x: cx + (Math.random() - 0.5) * 100,
           y: cy + (Math.random() - 0.5) * 100,
@@ -1612,22 +1548,14 @@
         updateAllScrollThemes();
         mainCard.style.display = 'none';
         scrollView.style.display = 'block';
-        setTimeout(() => {
-          scrollView.style.opacity = '1';
-          scrollView.style.transform = 'scale(1)';
-        }, 50);
-      }, 1000);
+      }, 750);
     }
 
     function closeCrystalScroll() {
       const mainCard = document.getElementById('crystal-main-card');
       const scrollView = document.getElementById('crystal-scroll-view');
-      scrollView.style.opacity = '0';
-      scrollView.style.transform = 'scale(0.97)';
-      setTimeout(() => {
-        scrollView.style.display = 'none';
-        mainCard.style.display = 'block';
-      }, 350);
+      scrollView.style.display = 'none';
+      mainCard.style.display = 'block';
     }
 
     // 8. ЛОВЕЦ ЗВЁЗД
@@ -1690,20 +1618,20 @@
         scorePop.style.left = star.style.left;
         scorePop.style.top = star.style.top;
         box.appendChild(scorePop);
-        setTimeout(() => { if (box.contains(scorePop)) box.removeChild(scorePop); }, 700);
+        setTimeout(() => { if (box.contains(scorePop)) box.removeChild(scorePop); }, 600);
 
         const rect = star.getBoundingClientRect();
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 5; i++) {
           sparkles.push({
-            x: rect.left + rect.width / 2 + (Math.random() - 0.5) * 20,
-            y: rect.top + rect.height / 2 + (Math.random() - 0.5) * 20,
+            x: rect.left + rect.width / 2 + (Math.random() - 0.5) * 15,
+            y: rect.top + rect.height / 2 + (Math.random() - 0.5) * 15,
             size: Math.random() * 2.5 + 1.5,
             alpha: 1,
             color: '#F59E0B'
           });
         }
 
-        setTimeout(() => { if (box.contains(star)) box.removeChild(star); }, 150);
+        setTimeout(() => { if (box.contains(star)) box.removeChild(star); }, 120);
       };
     }
 
@@ -1711,7 +1639,7 @@
       clearInterval(gameInterval);
       clearInterval(spawnInterval);
       const box = document.getElementById('star-catcher-box');
-      box.innerHTML = `<div style="padding:45px 10px; font-family:'Playfair Display', serif; font-size:1.1rem; color:#FEF3C7; text-align:center;">Охота завершена! ✨<br>Ты поймала звёзд на <b>${gameScore}</b> очков.<br>Твой ранг: <b>Хранительница сердца</b> ❤️</div>`;
+      box.innerHTML = `<div style="padding:40px 10px; font-family:'Playfair Display', serif; font-size:1.1rem; color:#FEF3C7; text-align:center;">Охота завершена! ✨<br>Ты поймала звёзд на <b>${gameScore}</b> очков.<br>Твой ранг: <b>Хранительница сердца</b> ❤️</div>`;
       document.getElementById('game-start-btn').style.display = 'block';
       document.getElementById('game-start-btn').innerText = 'Сыграть ещё раз 💫';
     }
@@ -1734,7 +1662,7 @@
       const entries = Object.entries(data || {}).reverse();
 
       if (entries.length === 0) {
-        container.innerHTML = `<div style="padding:20px; color:#94A3B8; font-size:0.85rem;">Здесь пока нет писем.</div>`;
+        container.innerHTML = `<div style="padding:16px; color:#94A3B8; font-size:0.85rem;">Здесь пока нет писем.</div>`;
         return;
       }
 
@@ -1765,21 +1693,13 @@
       updateAllScrollThemes();
       mainCard.style.display = 'none';
       reader.style.display = 'block';
-      setTimeout(() => {
-        reader.style.opacity = '1';
-        reader.style.transform = 'scale(1)';
-      }, 50);
     }
 
     function closeLetterReader() {
       const mainCard = document.getElementById('letters-main-card');
       const reader = document.getElementById('letter-scroll-reader');
-      reader.style.opacity = '0';
-      reader.style.transform = 'scale(0.97)';
-      setTimeout(() => {
-        reader.style.display = 'none';
-        mainCard.style.display = 'block';
-      }, 350);
+      reader.style.display = 'none';
+      mainCard.style.display = 'block';
     }
 
     function sendLetterToConstellation() {
@@ -1839,10 +1759,10 @@
         inboxList.innerHTML = `<p style="color:#94A3B8; font-size:0.85rem;">Писем от Лизы пока нет.</p>`;
       } else {
         inboxList.innerHTML = inboxEntries.reverse().map(([key, m]) => `
-          <div style="background:rgba(2,6,23,0.8); border:1px solid #10B981; border-radius:12px; padding:12px; margin-bottom:10px; position:relative;">
+          <div style="background:#060810; border:1px solid #10B981; border-radius:12px; padding:12px; margin-bottom:8px; position:relative;">
             <button onclick="adminDeleteLizaLetter('${key}')" style="position:absolute; top:8px; right:8px; background:none; border:none; color:#EF4444; font-size:1.1rem; cursor:pointer;" title="Удалить">🗑️</button>
-            <div style="font-size:0.75rem; color:#10B981; margin-bottom:4px;">${m.date}</div>
-            <div style="font-size:0.88rem; color:#F8FAFC; white-space:pre-line; overflow-wrap:anywhere; word-break:break-word; padding-right:24px;">${m.text}</div>
+            <div style="font-size:0.74rem; color:#10B981; margin-bottom:4px;">${m.date}</div>
+            <div style="font-size:0.86rem; color:#F8FAFC; white-space:pre-line; overflow-wrap:anywhere; word-break:break-word; padding-right:24px;">${m.text}</div>
           </div>
         `).join('');
       }
@@ -1852,10 +1772,10 @@
         myRepliesList.innerHTML = `<p style="color:#94A3B8; font-size:0.82rem;">Ответов пока нет.</p>`;
       } else {
         myRepliesList.innerHTML = replyEntries.reverse().map(([key, r]) => `
-          <div style="background:rgba(2,6,23,0.8); border:1px solid rgba(212,175,55,0.3); border-radius:10px; padding:10px; margin-bottom:8px; position:relative;">
+          <div style="background:#060810; border:1px solid rgba(212,175,55,0.3); border-radius:10px; padding:10px; margin-bottom:8px; position:relative;">
             <button onclick="adminDeleteMyReply('${key}')" style="position:absolute; top:6px; right:6px; background:none; border:none; color:#EF4444; font-size:1rem; cursor:pointer;" title="Удалить">🗑️</button>
             <div style="font-size:0.72rem; color:#F59E0B; margin-bottom:2px;">${r.date}</div>
-            <div style="font-size:0.85rem; color:#E2E8F0; white-space:pre-line; overflow-wrap:anywhere; word-break:break-word; padding-right:20px;">${r.text}</div>
+            <div style="font-size:0.84rem; color:#E2E8F0; white-space:pre-line; overflow-wrap:anywhere; word-break:break-word; padding-right:20px;">${r.text}</div>
           </div>
         `).join('');
       }
@@ -1902,7 +1822,6 @@
       }
     }
 
-    // Тройной клик
     let adminClickCount = 0;
     let adminClickTimer = null;
 
@@ -2061,7 +1980,7 @@
       if (showOnlyFavorites) list = list.filter(p => favs.includes(p.id));
 
       if (list.length === 0) {
-        container.innerHTML = `<div style="padding: 24px 10px; color: #94A3B8; font-size: 0.88rem;">В избранном пока нет стихов ❤️</div>`;
+        container.innerHTML = `<div style="padding: 20px 10px; color: #94A3B8; font-size: 0.85rem;">В избранном пока нет стихов ❤️</div>`;
         return;
       }
 
@@ -2097,10 +2016,6 @@
 
       listCard.style.display = 'none';
       scrollView.style.display = 'block';
-      setTimeout(() => {
-        scrollView.style.opacity = '1';
-        scrollView.style.transform = 'scale(1)';
-      }, 50);
     }
 
     function updateScrollHeart(id) {
@@ -2116,13 +2031,8 @@
     function closePoemScroll() {
       const listCard = document.getElementById('poems-list-card');
       const scrollView = document.getElementById('poem-scroll-view');
-
-      scrollView.style.opacity = '0';
-      scrollView.style.transform = 'scale(0.97)';
-      setTimeout(() => {
-        scrollView.style.display = 'none';
-        listCard.style.display = 'block';
-      }, 350);
+      scrollView.style.display = 'none';
+      listCard.style.display = 'block';
       currentlyOpenPoemId = null;
     }
 
@@ -2249,15 +2159,8 @@
         const letterScreen = document.getElementById('letter-screen');
 
         updateAllScrollThemes();
-        lockScreen.style.opacity = '0';
-        setTimeout(() => {
-          lockScreen.style.display = 'none';
-          letterScreen.style.display = 'block';
-          setTimeout(() => {
-            letterScreen.style.opacity = '1';
-            letterScreen.style.transform = 'scale(1)';
-          }, 50);
-        }, 350);
+        lockScreen.style.display = 'none';
+        letterScreen.style.display = 'block';
       } else {
         showError("Координаты созвездия неверны");
       }
@@ -2266,35 +2169,15 @@
     function openSecretLetter() {
       const letterScreen = document.getElementById('letter-screen');
       const secretScreen = document.getElementById('secret-screen');
-
-      letterScreen.style.opacity = '0';
-      letterScreen.style.transform = 'scale(0.95)';
-
-      setTimeout(() => {
-        letterScreen.style.display = 'none';
-        secretScreen.style.display = 'block';
-        setTimeout(() => {
-          secretScreen.style.opacity = '1';
-          secretScreen.style.transform = 'scale(1)';
-        }, 50);
-      }, 350);
+      letterScreen.style.display = 'none';
+      secretScreen.style.display = 'block';
     }
 
     function backToMainLetter() {
       const letterScreen = document.getElementById('letter-screen');
       const secretScreen = document.getElementById('secret-screen');
-
-      secretScreen.style.opacity = '0';
-      secretScreen.style.transform = 'scale(0.95)';
-
-      setTimeout(() => {
-        secretScreen.style.display = 'none';
-        letterScreen.style.display = 'block';
-        setTimeout(() => {
-          letterScreen.style.opacity = '1';
-          letterScreen.style.transform = 'scale(1)';
-        }, 50);
-      }, 350);
+      secretScreen.style.display = 'none';
+      letterScreen.style.display = 'block';
     }
 
     function showError(msg) {
@@ -2303,7 +2186,7 @@
       err.innerText = msg;
       err.classList.add('visible');
       card.classList.add('shake');
-      setTimeout(() => card.classList.remove('shake'), 400);
+      setTimeout(() => card.classList.remove('shake'), 350);
     }
 
     document.getElementById('secret-code').addEventListener('keyup', function(e) {
@@ -2355,7 +2238,7 @@
       setTimeout(() => {
         box.innerText = quote;
         box.style.opacity = '1';
-      }, 200);
+      }, 150);
     }
 
     // 15. ВРЕМЯ СУТОК

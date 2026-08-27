@@ -36,6 +36,7 @@
       pointer-events: none;
       z-index: 0;
       animation: drift 20s infinite alternate ease-in-out;
+      transition: opacity 1s ease;
     }
 
     .nebula-1 {
@@ -82,32 +83,43 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      transition: opacity 0.5s ease;
     }
 
-    .menu-toggle-btn {
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(212, 175, 55, 0.4);
       color: #F59E0B;
       border-radius: 12px;
-      padding: 10px 16px;
+      padding: 10px 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.9rem;
+      gap: 6px;
+      font-size: 0.85rem;
       font-weight: 600;
       backdrop-filter: blur(10px);
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     }
 
-    .menu-toggle-btn:hover {
+    .icon-btn:hover {
       background: rgba(245, 158, 11, 0.15);
       border-color: #F59E0B;
     }
 
+    .icon-btn.active {
+      background: #F59E0B;
+      color: #060810;
+    }
+
     .status-badge {
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(15, 23, 42, 0.75);
       border: 1px solid rgba(148, 163, 184, 0.25);
       padding: 6px 12px;
       border-radius: 20px;
@@ -190,12 +202,13 @@
       color: #FFF;
     }
 
-    /* Контейнер */
+    /* Контейнер страниц */
     .container {
       position: relative;
       z-index: 2;
       width: 100%;
       max-width: 540px;
+      transition: opacity 0.5s ease;
     }
 
     .tab-content {
@@ -376,6 +389,94 @@
       cursor: not-allowed;
     }
 
+    /* Раздел стихов */
+    .poem-filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
+
+    .poem-filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chip-btn {
+      background: rgba(2, 6, 23, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      color: #94A3B8;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .chip-btn.active, .chip-btn:hover {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #F59E0B;
+      color: #F8FAFC;
+    }
+
+    .poem-card {
+      background: #FAF7F2;
+      color: #2D3748;
+      border-radius: 18px;
+      padding: 30px 24px 20px;
+      text-align: left;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      border: 1px solid #E2E8F0;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .poem-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed #CBD5E1;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+
+    .poem-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: #92400E;
+    }
+
+    .fav-heart-btn {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .fav-heart-btn:hover {
+      transform: scale(1.25);
+    }
+
+    .poem-body {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.85;
+      white-space: pre-line;
+      color: #334155;
+      text-align: center;
+    }
+
+    .poem-footer {
+      margin-top: 18px;
+      font-size: 0.75rem;
+      color: #94A3B8;
+      text-align: right;
+      font-style: italic;
+    }
+
     /* Таймлайн */
     .timeline {
       position: relative;
@@ -430,35 +531,73 @@
       line-height: 1.5;
     }
 
-    /* Свиток стихов */
-    .poem-card {
-      background: #FAF7F2;
-      color: #2D3748;
-      border-radius: 18px;
-      padding: 34px 26px;
-      text-align: left;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-      border: 1px solid #E2E8F0;
-      margin-bottom: 20px;
+    /* Капсула времени */
+    .capsule-box {
+      border: 1px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 16px;
+      padding: 30px 20px;
+      margin-top: 20px;
+      background: rgba(2, 6, 23, 0.5);
     }
 
-    .poem-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.15rem;
-      color: #92400E;
-      text-align: center;
-      margin-bottom: 18px;
-      border-bottom: 1px dashed #CBD5E1;
-      padding-bottom: 12px;
+    .capsule-lock {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
     }
 
-    .poem-body {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1rem;
-      line-height: 1.85;
-      white-space: pre-line;
-      color: #334155;
+    /* Ночник */
+    .nightlight-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(245, 158, 11, 0.08) 0%, rgba(6, 8, 16, 0.95) 75%);
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .nightlight-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .moon-orb {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #FDE68A 0%, #F59E0B 70%);
+      box-shadow: 0 0 60px rgba(245, 158, 11, 0.5), 0 0 100px rgba(245, 158, 11, 0.25);
+      animation: moonPulse 6s infinite alternate ease-in-out;
+      margin-bottom: 24px;
+    }
+
+    @keyframes moonPulse {
+      0% { transform: scale(0.96); filter: drop-shadow(0 0 20px rgba(245,158,11,0.4)); }
+      100% { transform: scale(1.04); filter: drop-shadow(0 0 40px rgba(245,158,11,0.7)); }
+    }
+
+    .exit-night-btn {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #CBD5E1;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-top: 30px;
+      transition: all 0.3s;
+    }
+
+    .exit-night-btn:hover {
+      background: rgba(245, 158, 11, 0.2);
+      color: #FFF;
     }
 
     /* Кнопки и инпуты шифра */
@@ -560,11 +699,19 @@
 
   <canvas id="stars-canvas"></canvas>
 
-  <!-- Верхний бар -->
+  <!-- Верхняя панель -->
   <div class="top-nav">
-    <button class="menu-toggle-btn" onclick="toggleSidebar()">
-      <span>☰</span> Меню Убежища
-    </button>
+    <div class="nav-actions">
+      <button class="icon-btn" onclick="toggleSidebar()">
+        <span>☰</span> Меню
+      </button>
+      <button class="icon-btn" id="ambient-btn" onclick="toggleAmbientSound()" title="Космический эмбиент">
+        <span>🎧</span> Звук
+      </button>
+      <button class="icon-btn" onclick="toggleNightLight()" title="Режим ночника">
+        <span>🌙</span> Ночник
+      </button>
+    </div>
     <div class="status-badge">
       <div class="status-dot"></div>
       <span>Созвездие активно</span>
@@ -586,22 +733,34 @@
     <button class="nav-btn" onclick="switchTab('tab-coupons')">
       <span>🎟️</span> Купоны и желания
     </button>
-    <button class="nav-btn" onclick="switchTab('tab-timeline')">
-      <span>⏳</span> Звёздная хроника
-    </button>
     <button class="nav-btn" onclick="switchTab('tab-poems')">
       <span>📜</span> Свиток стихов
     </button>
+    <button class="nav-btn" onclick="switchTab('tab-capsule')">
+      <span>⏳</span> Капсула времени
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-timeline')">
+      <span>📖</span> Звёздная хроника
+    </button>
   </div>
 
-  <div class="container">
+  <!-- Экран ночника -->
+  <div class="nightlight-overlay" id="nightlight-screen">
+    <div class="moon-orb"></div>
+    <div style="font-family: 'Playfair Display', serif; font-size: 1.25rem; color: #FEF3C7; max-width: 320px;">
+      «Ты в безопасности. Выдохни и сладко спи под моим созвездием.»
+    </div>
+    <button class="exit-night-btn" onclick="toggleNightLight()">✕ Выйти из ночника</button>
+  </div>
+
+  <div class="container" id="main-container">
     
     <!-- 1. ГЛАВНЫЙ ХАБ -->
     <div class="tab-content active" id="tab-home">
       <div class="card">
         <div class="protocol-tag">Личное пространство Лизы</div>
         <h1 id="greeting-title">Добро пожаловать в Убежище</h1>
-        <p class="subtitle">Здесь тихо, безопасно и тебя всегда очень сильно любят. Выбирай любой раздел:</p>
+        <p class="subtitle">Здесь тихо, тепло и тебя очень сильно любят. Выбирай любой раздел:</p>
 
         <div class="hub-grid">
           <div class="hub-item" onclick="switchTab('tab-support')">
@@ -612,13 +771,13 @@
             <div class="hub-icon">🎟️</div>
             <div class="hub-title">Купоны</div>
           </div>
-          <div class="hub-item" onclick="switchTab('tab-timeline')">
-            <div class="hub-icon">⏳</div>
-            <div class="hub-title">Хроника дат</div>
-          </div>
           <div class="hub-item" onclick="switchTab('tab-poems')">
             <div class="hub-icon">📜</div>
             <div class="hub-title">Стихи</div>
+          </div>
+          <div class="hub-item" onclick="switchTab('tab-capsule')">
+            <div class="hub-icon">⏳</div>
+            <div class="hub-title">Капсула времени</div>
           </div>
         </div>
 
@@ -716,7 +875,48 @@
       </div>
     </div>
 
-    <!-- 5. ЗВЁЗДНАЯ ХРОНИКА -->
+    <!-- 5. СТИХИ С КАТАЛОГОМ И ИЗБРАННЫМ -->
+    <div class="tab-content" id="tab-poems">
+      <div class="card" style="padding: 22px 20px 14px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <button class="back-btn" style="margin-bottom: 0;" onclick="switchTab('tab-home')">← Назад в хаб</button>
+          <button class="icon-btn" style="padding: 6px 12px; font-size: 0.75rem;" onclick="showRandomPoem()">🎲 Случайный стих</button>
+        </div>
+        
+        <div class="poem-filters">
+          <button class="chip-btn active" onclick="filterPoems('all', this)">Все</button>
+          <button class="chip-btn" onclick="filterPoems('love', this)">О любви и тепле</button>
+          <button class="chip-btn" onclick="filterPoems('support', this)">Когда тяжело</button>
+          <button class="chip-btn" onclick="filterPoems('stars', this)">Созвездие</button>
+          <button class="chip-btn" onclick="filterPoems('favorites', this)">Избранное ❤️</button>
+        </div>
+      </div>
+
+      <!-- Контейнер для отображения стихов -->
+      <div id="poems-list"></div>
+    </div>
+
+    <!-- 6. КАПСУЛА ВРЕМЕНИ -->
+    <div class="tab-content" id="tab-capsule">
+      <div class="card">
+        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
+        <div class="protocol-tag">Запечатанное послание</div>
+        <h1>Капсула времени</h1>
+        <p class="subtitle">Секретное письмо запечатано до дня нашей встречи:</p>
+
+        <div class="capsule-box">
+          <div class="capsule-lock">🔒</div>
+          <div style="font-family: 'Cinzel', serif; font-size: 1.1rem; color: #F59E0B; margin-bottom: 8px;">
+            Протокол ожидания активирован
+          </div>
+          <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">
+            Это послание откроется автоматически, когда наступит весна 2027 года и мы встретимся в Москве. Внутри спрятано кое-что особенное.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. ЗВЁЗДНАЯ ХРОНИКА -->
     <div class="tab-content" id="tab-timeline">
       <div class="card">
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
@@ -735,6 +935,7 @@
           <div class="timeline-item">
             <div class="timeline-dot"></div>
             <div class="timeline-date">29 АВГУСТА</div>
+            <div class="timeline-title">День рождения</div>
             <div class="timeline-desc">День рождения самой прекрасной девушки во всей вселенной ✨</div>
           </div>
 
@@ -748,29 +949,20 @@
       </div>
     </div>
 
-    <!-- 6. СТИХИ -->
-    <div class="tab-content" id="tab-poems">
-      <div class="card" style="padding: 20px 20px 10px; margin-bottom: 16px;">
-        <button class="back-btn" style="margin-bottom: 0;" onclick="switchTab('tab-home')">← Назад в хаб</button>
-      </div>
-      <div class="poem-card">
-        <div class="poem-title">Созвездие в твоих глазах</div>
-        <div class="poem-body">Сквозь километры тихих звёзд
-Твой свет струится в полумраке.
-С тобой исчез былой мороз,
-Оставив искренние знаки.
-
-Здесь нет тревоги и потерь,
-Укутает покой просторы.
-Ты только в силы свои верь,
-Мы вместе сдвинем эти горы.</div>
-      </div>
-    </div>
-
   </div>
 
   <script>
-    // 1. Канвас: звёзды, метеоры и пыльца от пальца/мыши
+    // НАСТРОЙКИ TELEGRAM (Вставь свои токен и Chat ID при желании)
+    const TG_BOT_TOKEN = "";
+    const TG_CHAT_ID = "";
+
+    function sendTelegramNotification(text) {
+      if (!TG_BOT_TOKEN || !TG_CHAT_ID) return;
+      const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}&text=${encodeURIComponent(text)}&parse_mode=HTML`;
+      fetch(url).catch(err => console.error("Ошибка TG:", err));
+    }
+
+    // 1. Канвас: Звёзды, Метеоры и Пыльца
     const canvas = document.getElementById('stars-canvas');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -831,7 +1023,6 @@
     function renderLoop() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Линии созвездий
       for (let i = 0; i < stars.length; i++) {
         for (let j = i + 1; j < stars.length; j++) {
           const dx = stars[i].x - stars[j].x;
@@ -849,7 +1040,6 @@
         }
       }
 
-      // Звёзды
       stars.forEach(star => {
         star.alpha += star.speed;
         const currentAlpha = Math.abs(Math.sin(star.alpha));
@@ -859,7 +1049,6 @@
         ctx.fill();
       });
 
-      // Метеоры
       for (let i = meteors.length - 1; i >= 0; i--) {
         const m = meteors[i];
         m.x += Math.cos(m.angle) * m.speed;
@@ -885,7 +1074,6 @@
         }
       }
 
-      // Звёздная пыльца
       for (let i = sparkles.length - 1; i >= 0; i--) {
         const sp = sparkles[i];
         sp.y += 0.4;
@@ -931,16 +1119,134 @@
       if (matchingNav) matchingNav.classList.add('active');
 
       const sidebar = document.getElementById('sidebar');
-      if (sidebar.classList.contains('active')) {
-        toggleSidebar();
-      }
+      if (sidebar.classList.contains('active')) toggleSidebar();
 
-      if (tabId === 'tab-cipher') {
-        initCipherGame();
+      if (tabId === 'tab-cipher') initCipherGame();
+      if (tabId === 'tab-poems') renderPoems();
+    }
+
+    // 3. База стихов
+    const poemsDatabase = [
+      {
+        id: "poem-1",
+        category: "stars",
+        title: "Созвездие в твоих глазах",
+        date: "Август 2026",
+        text: `Сквозь километры тихих звёзд
+Твой свет струится в полумраке.
+С тобой исчез былой мороз,
+Оставив искренние знаки.
+
+Здесь нет тревоги и потерь,
+Укутает покой просторы.
+Ты только в силы свои верь,
+Мы вместе сдвинем эти горы.`
+      },
+      {
+        id: "poem-2",
+        category: "love",
+        title: "Шёпот тишины",
+        date: "Для любимой кисоньки",
+        text: `Когда за окнами темно,
+И город медленно стихает,
+Моё тепло через окно
+К твоим ладоням прилетает.
+
+Ты улыбнись среди забот,
+Ведь в этом мире бесконечном
+Тебя однажды встретил тот,
+Кто будет рядом в чувстве вечном.`
+      },
+      {
+        id: "poem-3",
+        category: "support",
+        title: "Стойкость сияния",
+        date: "В минуты усталости",
+        text: `Пусть день порою давит грузом,
+И мир вокруг шумит упрямо,
+Ты остаёшься главным чудом,
+Идёшь уверенно и прямо.
+
+Выдохни грусть, забудь сомненья,
+Созвездие хранит твой дом.
+Я подарю тебе спасенье
+И усыплю спокойным сном.`
+      }
+    ];
+
+    let currentPoemCategory = 'all';
+
+    function getFavoritePoems() {
+      try {
+        return JSON.parse(localStorage.getItem('fav_poems')) || [];
+      } catch (e) {
+        return [];
       }
     }
 
-    // 3. 30 тёплых предложений без повторений
+    function toggleFavoritePoem(id) {
+      let favs = getFavoritePoems();
+      if (favs.includes(id)) {
+        favs = favs.filter(item => item !== id);
+      } else {
+        favs.push(id);
+      }
+      localStorage.setItem('fav_poems', JSON.stringify(favs));
+      renderPoems();
+    }
+
+    function filterPoems(category, chipElement) {
+      currentPoemCategory = category;
+      document.querySelectorAll('.chip-btn').forEach(btn => btn.classList.remove('active'));
+      if (chipElement) chipElement.classList.add('active');
+      renderPoems();
+    }
+
+    function renderPoems(customList = null) {
+      const container = document.getElementById('poems-list');
+      const favs = getFavoritePoems();
+      let list = customList || poemsDatabase;
+
+      if (!customList) {
+        if (currentPoemCategory === 'favorites') {
+          list = poemsDatabase.filter(p => favs.includes(p.id));
+        } else if (currentPoemCategory !== 'all') {
+          list = poemsDatabase.filter(p => p.category === currentPoemCategory);
+        }
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="card" style="padding: 30px;">
+            <p style="color: #94A3B8;">В этой категории пока нет стихов или избранное пусто ❤️</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(poem => {
+        const isFav = favs.includes(poem.id);
+        return `
+          <div class="poem-card">
+            <div class="poem-header">
+              <div class="poem-title">${poem.title}</div>
+              <button class="fav-heart-btn" onclick="toggleFavoritePoem('${poem.id}')" title="В избранное">
+                ${isFav ? '❤️' : '🤍'}
+              </button>
+            </div>
+            <div class="poem-body">${poem.text}</div>
+            <div class="poem-footer">${poem.date}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showRandomPoem() {
+      const rand = poemsDatabase[Math.floor(Math.random() * poemsDatabase.length)];
+      renderPoems([rand]);
+    }
+
+    // 4. 30 тёплых фраз для Аптечки
     const supportQuotes = [
       "Вдохни глубоко и медленно выдохни. Ты со всем справишься, а я рядом ❤️",
       "Ты не обязана быть идеальной для кого-то. Для меня ты уже самое дорогое чудо.",
@@ -988,10 +1294,12 @@
         box.innerText = quote;
         box.style.opacity = '1';
       }, 200);
+
+      sendTelegramNotification("💊 <b>Лиза открыла аптечку настроения</b> и запросила порцию тепла.");
     }
 
-    // 4. Купоны с кулдауном 24 часа и сохранением в LocalStorage
-    const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 часа
+    // 5. Купоны с кулдауном 24ч
+    const COOLDOWN_MS = 24 * 60 * 60 * 1000;
 
     function getCouponData() {
       try {
@@ -1012,6 +1320,14 @@
       data[couponId] = Date.now();
       setCouponData(data);
       updateCouponsUI();
+
+      const couponNames = {
+        'coupon-1': '🍕 Доставка вкусностей',
+        'coupon-2': '🎬 Вечер твоего фильма',
+        'coupon-3': '🫂 Безлимитные обнимашки'
+      };
+
+      sendTelegramNotification(`🎟️ <b>Активирован купон:</b> ${couponNames[couponId] || couponId}`);
     }
 
     function updateCouponsUI() {
@@ -1049,11 +1365,10 @@
     setInterval(updateCouponsUI, 1000);
     updateCouponsUI();
 
-    // 5. Время по МСК для приветствия
+    // 6. МСК время
     function setTimeGreeting() {
       const title = document.getElementById('greeting-title');
       const now = new Date();
-      // Вычисляем текущий час в Москве (Europe/Moscow)
       const mskHourStr = new Intl.DateTimeFormat('en-US', {
         timeZone: 'Europe/Moscow',
         hour: 'numeric',
@@ -1062,20 +1377,78 @@
       
       const hour = parseInt(mskHourStr, 10);
 
-      if (hour >= 5 && hour < 12) {
-        title.innerText = "Доброе утро, кисонька ✨";
-      } else if (hour >= 12 && hour < 18) {
-        title.innerText = "Прекрасного дня, Лиза 🌟";
-      } else if (hour >= 18 && hour < 23) {
-        title.innerText = "Уютного вечера, любимая 🌙";
-      } else {
-        title.innerText = "Доброй и спокойной ночи ✨";
-      }
+      if (hour >= 5 && hour < 12) title.innerText = "Доброе утро, кисонька ✨";
+      else if (hour >= 12 && hour < 18) title.innerText = "Прекрасного дня, Лиза 🌟";
+      else if (hour >= 18 && hour < 23) title.innerText = "Уютного вечера, любимая 🌙";
+      else title.innerText = "Доброй и спокойной ночи ✨";
     }
 
     setTimeGreeting();
 
-    // 6. Игра шифра
+    // 7. Ночник и Звуковой генератор (Web Audio API)
+    let audioCtx = null;
+    let isAmbientPlaying = false;
+    let osc1, osc2, gainNode;
+
+    function toggleAmbientSound() {
+      const btn = document.getElementById('ambient-btn');
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (isAmbientPlaying) {
+        if (gainNode) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.5);
+        isAmbientPlaying = false;
+        btn.classList.remove('active');
+      } else {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        
+        osc1 = audioCtx.createOscillator();
+        osc2 = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(108, audioCtx.currentTime); // Гармонический тон
+
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(216, audioCtx.currentTime);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(300, audioCtx.currentTime);
+
+        gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime + 3);
+
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc1.start();
+        osc2.start();
+        isAmbientPlaying = true;
+        btn.classList.add('active');
+      }
+    }
+
+    function toggleNightLight() {
+      const night = document.getElementById('nightlight-screen');
+      const container = document.getElementById('main-container');
+      const topNav = document.querySelector('.top-nav');
+
+      if (night.classList.contains('active')) {
+        night.classList.remove('active');
+        container.style.opacity = '1';
+        topNav.style.opacity = '1';
+      } else {
+        night.classList.add('active');
+        container.style.opacity = '0';
+        topNav.style.opacity = '0';
+      }
+    }
+
+    // 8. Игра шифра
     const questionBank = [
       {
         question: "Кто здесь самая главная умничка и победитель?",
@@ -1169,6 +1542,7 @@
       if (val === "290805") {
         document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('letter-container').classList.add('active');
+        sendTelegramNotification("🔓 <b>Лиза успешно расшифровала код созвездия!</b>");
       } else {
         showError("Неверный код");
       }

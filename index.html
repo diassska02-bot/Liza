@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Убежище Созвездия</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +12,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -24,41 +25,40 @@
       align-items: center;
       overflow-x: hidden;
       position: relative;
-      padding: 75px 16px 30px;
+      padding: 75px 14px 28px;
     }
 
     /* Фоновые туманности */
     .nebula {
       position: fixed;
       border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.35;
+      filter: blur(85px);
+      opacity: 0.32;
       pointer-events: none;
       z-index: 0;
-      animation: drift 20s infinite alternate ease-in-out;
-      transition: opacity 1s ease;
+      animation: drift 22s infinite alternate ease-in-out;
     }
 
     .nebula-1 {
-      width: 500px;
-      height: 500px;
+      width: 420px;
+      height: 420px;
       background: radial-gradient(circle, #3b1d60 0%, rgba(27, 39, 53, 0) 70%);
-      top: -100px;
-      left: -100px;
+      top: -80px;
+      left: -80px;
     }
 
     .nebula-2 {
-      width: 600px;
-      height: 600px;
+      width: 500px;
+      height: 500px;
       background: radial-gradient(circle, #1a365d 0%, rgba(6, 8, 16, 0) 70%);
-      bottom: -150px;
-      right: -100px;
-      animation-duration: 25s;
+      bottom: -120px;
+      right: -80px;
+      animation-duration: 26s;
     }
 
     @keyframes drift {
       0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(40px, 30px) scale(1.15); }
+      100% { transform: translate(35px, 25px) scale(1.12); }
     }
 
     #stars-canvas {
@@ -74,69 +74,65 @@
     /* Верхняя панель */
     .top-nav {
       position: fixed;
-      top: 16px;
-      left: 16px;
-      right: 16px;
-      max-width: 560px;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      max-width: 500px;
       margin: 0 auto;
       z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: opacity 0.5s ease;
     }
 
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .icon-btn {
-      background: rgba(15, 23, 42, 0.85);
+    .menu-toggle-btn {
+      background: rgba(15, 23, 42, 0.88);
       border: 1px solid rgba(212, 175, 55, 0.4);
       color: #F59E0B;
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 9px 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       font-size: 0.85rem;
       font-weight: 600;
       backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      transition: all 0.25s ease;
     }
 
-    .icon-btn:hover {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: #F59E0B;
-    }
-
-    .icon-btn.active {
-      background: #F59E0B;
-      color: #060810;
+    .menu-toggle-btn:active {
+      transform: scale(0.96);
     }
 
     .status-badge {
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      padding: 6px 12px;
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 7px 14px;
       border-radius: 20px;
       font-size: 0.75rem;
-      color: #94A3B8;
+      color: #F8FAFC;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       backdrop-filter: blur(8px);
+      font-weight: 500;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.15);
     }
 
     .status-dot {
       width: 8px;
       height: 8px;
-      background: #10B981;
+      background: #F59E0B;
       border-radius: 50%;
-      box-shadow: 0 0 8px #10B981;
+      box-shadow: 0 0 8px #F59E0B;
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.25); opacity: 1; filter: drop-shadow(0 0 4px #F59E0B); }
     }
 
     /* Сайдбар */
@@ -146,8 +142,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(5px);
       z-index: 110;
       opacity: 0;
       pointer-events: none;
@@ -162,18 +158,18 @@
     .sidebar {
       position: fixed;
       top: 0;
-      left: -320px;
-      width: 290px;
+      left: -300px;
+      width: 275px;
       height: 100%;
-      background: rgba(15, 23, 42, 0.96);
+      background: rgba(15, 23, 42, 0.98);
       border-right: 1px solid rgba(212, 175, 55, 0.3);
       backdrop-filter: blur(16px);
       z-index: 120;
-      padding: 70px 18px 20px;
+      padding: 65px 16px 20px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: left 0.32s cubic-bezier(0.16, 1, 0.3, 1);
       box-shadow: 10px 0 30px rgba(0,0,0,0.7);
     }
 
@@ -183,32 +179,31 @@
 
     .nav-btn {
       background: rgba(2, 6, 23, 0.6);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 10px;
-      padding: 12px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 12px;
+      padding: 13px 14px;
       color: #CBD5E1;
       font-size: 0.9rem;
       text-align: left;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 11px;
       transition: all 0.25s ease;
     }
 
-    .nav-btn:hover, .nav-btn.active {
+    .nav-btn.active, .nav-btn:active {
       background: rgba(245, 158, 11, 0.15);
       border-color: #F59E0B;
       color: #FFF;
     }
 
-    /* Контейнер страниц */
+    /* Контейнер карточек */
     .container {
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 540px;
-      transition: opacity 0.5s ease;
+      max-width: 480px;
     }
 
     .tab-content {
@@ -220,13 +215,13 @@
     }
 
     .card {
-      background: rgba(15, 23, 42, 0.82);
+      background: rgba(15, 23, 42, 0.84);
       border: 1px solid rgba(212, 175, 55, 0.35);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-radius: 20px;
-      padding: 32px 24px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 25px rgba(212, 175, 55, 0.15);
+      padding: 28px 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 20px rgba(212, 175, 55, 0.12);
       text-align: center;
       position: relative;
     }
@@ -240,16 +235,16 @@
       color: #94A3B8;
       font-size: 0.85rem;
       cursor: pointer;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       transition: color 0.2s;
     }
 
-    .back-btn:hover {
+    .back-btn:active {
       color: #F59E0B;
     }
 
     .protocol-tag {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       letter-spacing: 2px;
       color: #F59E0B;
       text-transform: uppercase;
@@ -260,50 +255,91 @@
     h1 {
       font-family: 'Cinzel', serif;
       color: #F8FAFC;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       letter-spacing: 1px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       line-height: 1.4;
     }
 
     .subtitle {
       color: #94A3B8;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       line-height: 1.5;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
-    /* Главный хаб */
+    /* Интерактивная сфера на главной */
+    .touch-orb-card {
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px dashed rgba(245, 158, 11, 0.35);
+      border-radius: 16px;
+      padding: 20px 14px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .touch-orb-card:active {
+      transform: scale(0.98);
+      border-color: #F59E0B;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .touch-orb-icon {
+      font-size: 2.2rem;
+      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
+      animation: floatOrb 4s infinite ease-in-out;
+    }
+
+    @keyframes floatOrb {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .touch-orb-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: #FEF3C7;
+      min-height: 24px;
+      line-height: 1.4;
+      transition: opacity 0.25s ease;
+    }
+
+    /* Сетка модулей Хаба */
     .hub-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 20px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
     .hub-item {
-      background: rgba(2, 6, 23, 0.6);
+      background: rgba(2, 6, 23, 0.65);
       border: 1px solid rgba(148, 163, 184, 0.2);
       border-radius: 14px;
-      padding: 18px 12px;
+      padding: 16px 10px;
       text-align: center;
       cursor: pointer;
       transition: all 0.25s ease;
     }
 
-    .hub-item:hover {
+    .hub-item:active {
       border-color: #F59E0B;
       background: rgba(245, 158, 11, 0.12);
-      transform: translateY(-3px);
+      transform: scale(0.97);
     }
 
     .hub-icon {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
+      font-size: 1.6rem;
+      margin-bottom: 6px;
     }
 
     .hub-title {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       color: #F1F5F9;
     }
@@ -313,15 +349,15 @@
       background: rgba(2, 6, 23, 0.7);
       border: 1px dashed rgba(245, 158, 11, 0.4);
       border-radius: 14px;
-      padding: 24px;
-      margin: 20px 0;
-      min-height: 120px;
+      padding: 22px 16px;
+      margin: 18px 0;
+      min-height: 110px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
-      line-height: 1.6;
+      font-size: 1rem;
+      line-height: 1.65;
       color: #FEF3C7;
       text-align: center;
       transition: opacity 0.3s ease;
@@ -332,12 +368,12 @@
       background: rgba(2, 6, 23, 0.65);
       border: 1px solid rgba(212, 175, 55, 0.3);
       border-radius: 14px;
-      padding: 16px 18px;
-      margin-bottom: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       text-align: left;
       transition: all 0.3s ease;
     }
@@ -348,18 +384,18 @@
     }
 
     .coupon-info h3 {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       color: #F8FAFC;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .coupon-info p {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: #94A3B8;
     }
 
     .coupon-timer {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: #F59E0B;
       margin-top: 4px;
       font-weight: 600;
@@ -371,16 +407,11 @@
       border: none;
       border-radius: 8px;
       padding: 8px 12px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       text-transform: uppercase;
       cursor: pointer;
       white-space: nowrap;
-      transition: background 0.2s;
-    }
-
-    .coupon-btn:hover {
-      background: #B45309;
     }
 
     .coupon-btn.disabled {
@@ -390,20 +421,14 @@
     }
 
     /* Раздел стихов */
-    .poem-filters {
+    .poem-filter-bar {
       display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 12px;
-      margin-bottom: 16px;
-      scrollbar-width: none;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
     }
 
-    .poem-filters::-webkit-scrollbar {
-      display: none;
-    }
-
-    .chip-btn {
+    .fav-filter-btn {
       background: rgba(2, 6, 23, 0.7);
       border: 1px solid rgba(148, 163, 184, 0.25);
       color: #94A3B8;
@@ -411,200 +436,160 @@
       padding: 6px 14px;
       font-size: 0.8rem;
       cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s;
     }
 
-    .chip-btn.active, .chip-btn:hover {
+    .fav-filter-btn.active {
       background: rgba(245, 158, 11, 0.15);
       border-color: #F59E0B;
       color: #F8FAFC;
     }
 
-    .poem-card {
-      background: #FAF7F2;
-      color: #2D3748;
-      border-radius: 18px;
-      padding: 30px 24px 20px;
+    .poem-list-item {
+      background: rgba(2, 6, 23, 0.65);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 14px;
+      padding: 16px 16px;
+      margin-bottom: 10px;
       text-align: left;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-      border: 1px solid #E2E8F0;
-      margin-bottom: 20px;
-      position: relative;
+      cursor: pointer;
+      transition: all 0.25s ease;
     }
 
-    .poem-header {
+    .poem-list-item:active {
+      border-color: #F59E0B;
+    }
+
+    .poem-item-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px dashed #CBD5E1;
-      padding-bottom: 12px;
-      margin-bottom: 18px;
     }
 
-    .poem-title {
+    .poem-item-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.15rem;
-      color: #92400E;
+      font-size: 0.95rem;
+      color: #F8FAFC;
+      font-weight: 600;
     }
 
-    .fav-heart-btn {
-      background: none;
-      border: none;
-      font-size: 1.25rem;
-      cursor: pointer;
-      transition: transform 0.2s;
+    .poem-item-date {
+      font-size: 0.75rem;
+      color: #94A3B8;
+      margin-top: 3px;
     }
 
-    .fav-heart-btn:hover {
-      transform: scale(1.25);
-    }
-
-    .poem-body {
+    .poem-item-body {
+      display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(212, 175, 55, 0.3);
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1rem;
+      font-size: 0.96rem;
       line-height: 1.85;
       white-space: pre-line;
-      color: #334155;
-      text-align: center;
-    }
-
-    .poem-footer {
-      margin-top: 18px;
-      font-size: 0.75rem;
-      color: #94A3B8;
-      text-align: right;
-      font-style: italic;
-    }
-
-    /* Таймлайн */
-    .timeline {
-      position: relative;
-      padding-left: 24px;
+      color: #E2E8F0;
       text-align: left;
-      margin-top: 20px;
     }
 
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 4px;
-      top: 6px;
-      bottom: 6px;
-      width: 2px;
-      background: rgba(212, 175, 55, 0.3);
+    .poem-list-item.open .poem-item-body {
+      display: block;
     }
 
-    .timeline-item {
-      position: relative;
-      margin-bottom: 22px;
-    }
-
-    .timeline-dot {
-      position: absolute;
-      left: -24px;
-      top: 4px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #F59E0B;
-      box-shadow: 0 0 8px #F59E0B;
-    }
-
-    .timeline-date {
-      font-size: 0.75rem;
-      color: #F59E0B;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-
-    .timeline-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #F1F5F9;
-      margin: 2px 0 4px;
-    }
-
-    .timeline-desc {
-      font-size: 0.85rem;
-      color: #94A3B8;
-      line-height: 1.5;
-    }
-
-    /* Капсула времени */
-    .capsule-box {
-      border: 1px dashed rgba(245, 158, 11, 0.4);
-      border-radius: 16px;
-      padding: 30px 20px;
-      margin-top: 20px;
-      background: rgba(2, 6, 23, 0.5);
-    }
-
-    .capsule-lock {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-    }
-
-    /* Ночник */
-    .nightlight-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, rgba(245, 158, 11, 0.08) 0%, rgba(6, 8, 16, 0.95) 75%);
-      z-index: 200;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
-
-    .nightlight-overlay.active {
-      display: flex;
-      opacity: 1;
-    }
-
-    .moon-orb {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #FDE68A 0%, #F59E0B 70%);
-      box-shadow: 0 0 60px rgba(245, 158, 11, 0.5), 0 0 100px rgba(245, 158, 11, 0.25);
-      animation: moonPulse 6s infinite alternate ease-in-out;
-      margin-bottom: 24px;
-    }
-
-    @keyframes moonPulse {
-      0% { transform: scale(0.96); filter: drop-shadow(0 0 20px rgba(245,158,11,0.4)); }
-      100% { transform: scale(1.04); filter: drop-shadow(0 0 40px rgba(245,158,11,0.7)); }
-    }
-
-    .exit-night-btn {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      color: #CBD5E1;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 0.85rem;
+    .heart-btn {
+      background: none;
+      border: none;
+      font-size: 1.15rem;
       cursor: pointer;
-      margin-top: 30px;
-      transition: all 0.3s;
+      padding: 4px;
     }
 
-    .exit-night-btn:hover {
-      background: rgba(245, 158, 11, 0.2);
-      color: #FFF;
+    /* Карточки шифра и письма */
+    .letter-wrapper {
+      display: none;
+      opacity: 0;
+      transform: scale(0.97);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Кнопки и инпуты шифра */
+    .letter-card {
+      background: #FAF7F2;
+      color: #2D3748;
+      border-radius: 18px;
+      padding: 30px 22px;
+      text-align: left;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+      border: 1px solid #E2E8F0;
+    }
+
+    .secret-theme {
+      background: #0B1120;
+      color: #E2E8F0;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 35px rgba(245, 158, 11, 0.25);
+    }
+
+    .letter-header {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: #92400E;
+      text-align: center;
+      margin-bottom: 20px;
+      letter-spacing: 1.5px;
+      border-bottom: 1px dashed #CBD5E1;
+      padding-bottom: 12px;
+    }
+
+    .secret-theme .letter-header {
+      color: #F59E0B;
+      border-bottom-color: rgba(245, 158, 11, 0.2);
+    }
+
+    .letter-body {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.98rem;
+      line-height: 1.8;
+      white-space: pre-line;
+      color: #334155;
+      text-align: left;
+    }
+
+    .secret-theme .letter-body {
+      color: #CBD5E1;
+    }
+
+    .letter-signature {
+      margin-top: 24px;
+      text-align: right;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      color: #78350F;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .secret-trigger {
+      cursor: pointer;
+      display: inline-block;
+      transition: all 0.3s ease;
+      animation: pulseGlow 2s infinite ease-in-out;
+      user-select: none;
+      padding: 2px 6px;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
+      50% { filter: drop-shadow(0 0 8px rgba(245, 158, 11, 1)); }
+    }
+
+    /* Кнопки верификации */
     .options-grid {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 9px;
       margin-bottom: 16px;
     }
 
@@ -612,21 +597,21 @@
       background: rgba(2, 6, 23, 0.65);
       border: 1px solid rgba(148, 163, 184, 0.25);
       border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 0.9rem;
+      padding: 13px 16px;
+      font-size: 0.88rem;
       color: #F1F5F9;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
       font-family: 'Montserrat', sans-serif;
     }
 
-    .option-btn:hover {
+    .option-btn:active {
       border-color: #F59E0B;
       background: rgba(245, 158, 11, 0.12);
     }
 
     .input-group {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     input[type="text"] {
@@ -634,9 +619,9 @@
       background: rgba(2, 6, 23, 0.7);
       border: 1px solid rgba(148, 163, 184, 0.3);
       border-radius: 12px;
-      padding: 14px 20px;
-      font-size: 1.35rem;
-      letter-spacing: 6px;
+      padding: 13px 18px;
+      font-size: 1.3rem;
+      letter-spacing: 5px;
       text-align: center;
       color: #F1F5F9;
       outline: none;
@@ -654,25 +639,25 @@
       color: #FFF;
       border: none;
       border-radius: 12px;
-      padding: 14px 24px;
-      font-size: 0.9rem;
+      padding: 13px 20px;
+      font-size: 0.88rem;
       font-weight: 600;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(217, 119, 6, 0.4);
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 18px rgba(217, 119, 6, 0.35);
+      transition: all 0.25s ease;
     }
 
-    .submit-btn:hover {
+    .submit-btn:active {
       background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
     }
 
     .error-msg {
       color: #F87171;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       margin-top: 10px;
-      min-height: 20px;
+      min-height: 18px;
       opacity: 0;
       transition: opacity 0.3s ease;
     }
@@ -687,8 +672,8 @@
 
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-8px); }
-      40%, 80% { transform: translateX(8px); }
+      20%, 60% { transform: translateX(-7px); }
+      40%, 80% { transform: translateX(7px); }
     }
   </style>
 </head>
@@ -701,20 +686,12 @@
 
   <!-- Верхняя панель -->
   <div class="top-nav">
-    <div class="nav-actions">
-      <button class="icon-btn" onclick="toggleSidebar()">
-        <span>☰</span> Меню
-      </button>
-      <button class="icon-btn" id="ambient-btn" onclick="toggleAmbientSound()" title="Космический эмбиент">
-        <span>🎧</span> Звук
-      </button>
-      <button class="icon-btn" onclick="toggleNightLight()" title="Режим ночника">
-        <span>🌙</span> Ночник
-      </button>
-    </div>
+    <button class="menu-toggle-btn" onclick="toggleSidebar()">
+      <span>☰</span> Меню
+    </button>
     <div class="status-badge">
       <div class="status-dot"></div>
-      <span>Созвездие активно</span>
+      <span>Созвездие любит Вас</span>
     </div>
   </div>
 
@@ -728,44 +705,39 @@
       <span>🔑</span> Ввести шифр
     </button>
     <button class="nav-btn" onclick="switchTab('tab-support')">
-      <span>💊</span> Аптечка настроения
+      <span>💊</span> Аптечка тепла
     </button>
     <button class="nav-btn" onclick="switchTab('tab-coupons')">
-      <span>🎟️</span> Купоны и желания
+      <span>🎟️</span> Купоны желаний
     </button>
     <button class="nav-btn" onclick="switchTab('tab-poems')">
       <span>📜</span> Свиток стихов
     </button>
-    <button class="nav-btn" onclick="switchTab('tab-capsule')">
-      <span>⏳</span> Капсула времени
-    </button>
-    <button class="nav-btn" onclick="switchTab('tab-timeline')">
-      <span>📖</span> Звёздная хроника
-    </button>
   </div>
 
-  <!-- Экран ночника -->
-  <div class="nightlight-overlay" id="nightlight-screen">
-    <div class="moon-orb"></div>
-    <div style="font-family: 'Playfair Display', serif; font-size: 1.25rem; color: #FEF3C7; max-width: 320px;">
-      «Ты в безопасности. Выдохни и сладко спи под моим созвездием.»
-    </div>
-    <button class="exit-night-btn" onclick="toggleNightLight()">✕ Выйти из ночника</button>
-  </div>
-
-  <div class="container" id="main-container">
+  <div class="container">
     
     <!-- 1. ГЛАВНЫЙ ХАБ -->
     <div class="tab-content active" id="tab-home">
       <div class="card">
         <div class="protocol-tag">Личное пространство Лизы</div>
         <h1 id="greeting-title">Добро пожаловать в Убежище</h1>
-        <p class="subtitle">Здесь тихо, тепло и тебя очень сильно любят. Выбирай любой раздел:</p>
+        <p class="subtitle">Здесь спокойно, тепло и безопасно.</p>
+
+        <!-- Интерактивная сфера-прикосновение -->
+        <div class="touch-orb-card" onclick="touchConstellation()">
+          <div class="touch-orb-icon">✨</div>
+          <div class="touch-orb-text" id="touch-text">Прикоснись к созвездию...</div>
+        </div>
 
         <div class="hub-grid">
+          <div class="hub-item" onclick="switchTab('tab-cipher')">
+            <div class="hub-icon">🔑</div>
+            <div class="hub-title">Шифры</div>
+          </div>
           <div class="hub-item" onclick="switchTab('tab-support')">
             <div class="hub-icon">💊</div>
-            <div class="hub-title">Аптечка тепла</div>
+            <div class="hub-title">Аптечка</div>
           </div>
           <div class="hub-item" onclick="switchTab('tab-coupons')">
             <div class="hub-icon">🎟️</div>
@@ -775,15 +747,7 @@
             <div class="hub-icon">📜</div>
             <div class="hub-title">Стихи</div>
           </div>
-          <div class="hub-item" onclick="switchTab('tab-capsule')">
-            <div class="hub-icon">⏳</div>
-            <div class="hub-title">Капсула времени</div>
-          </div>
         </div>
-
-        <button class="submit-btn" style="margin-top: 20px;" onclick="switchTab('tab-cipher')">
-          Перейти к вводу шифра 🔑
-        </button>
       </div>
     </div>
 
@@ -791,9 +755,9 @@
     <div class="tab-content" id="tab-cipher">
       <div class="card" id="lock-screen">
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
-        <div class="protocol-tag" id="q-tag">Верификация Созвездия</div>
+        <div class="protocol-tag" id="q-tag">Верификация</div>
         <h1 id="q-title">Вопрос</h1>
-        <p class="subtitle" id="q-desc">Выбери ответ:</p>
+        <p class="subtitle" id="q-desc">Выбери верный ответ:</p>
 
         <div class="options-grid" id="options-container"></div>
 
@@ -805,17 +769,27 @@
         <div class="error-msg" id="error-msg">Неверный выбор</div>
       </div>
 
-      <div class="tab-content" id="letter-container">
-        <div class="poem-card">
+      <!-- Основное разблокированное письмо -->
+      <div class="letter-wrapper" id="letter-screen">
+        <div class="letter-card">
           <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
-          <div class="poem-title">Послание от Созвездия "Аноним"</div>
-          <div class="poem-body">Любимая кисонька,
+          <div class="letter-header" id="letter-header-text">Послание от Созвездия "Аноним"</div>
+          <div class="letter-body" id="letter-body-text"></div>
+          <div class="letter-signature" id="letter-signature-text">
+            Твоё Созвездие <span class="secret-trigger" onclick="openSecretLetter()" title="Нажми сюда...">✨</span>
+          </div>
+        </div>
+      </div>
 
-Этот код — просто ключ, а главное сокровище — это ты.
-
-Я хочу пожелать тебе спокойствия, лёгкости и уверенности в каждом шаге. Когда кажется, что всё давит, не забывай, насколько ты стойкая и потрясающая. Никакие чужие слова или сложные дни не способны изменить того, насколько ты прекрасна.
-
-Даже сквозь любые километры — я всегда рядом с тобой. Буду твоей поддержкой в любой момент, когда тебе это нужно. Очень сильно тебя люблю.</div>
+      <!-- Скрытое второе письмо -->
+      <div class="letter-wrapper" id="secret-screen">
+        <div class="letter-card secret-theme">
+          <div class="letter-header">✦ Секретный фрагмент памяти ✦</div>
+          <div class="letter-body" id="secret-body-text"></div>
+          <div class="letter-signature" style="color: #F59E0B;">
+            Навсегда твой ✨
+          </div>
+          <button class="back-btn" style="margin-top: 18px; width: 100%; justify-content: center;" onclick="backToMainLetter()">← Вернуться к первому письму</button>
         </div>
       </div>
     </div>
@@ -826,7 +800,7 @@
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
         <div class="protocol-tag">Генератор тепла</div>
         <h1>Аптечка настроения</h1>
-        <p class="subtitle">Если на душе тяжело или просто хочется улыбнуться — нажми на кнопку:</p>
+        <p class="subtitle">Если на душе тяжело или нужно выдохнуть — нажми на кнопку:</p>
 
         <div class="support-box" id="support-box">
           Нажми кнопку ниже, чтобы получить тёплое послание ✨
@@ -844,7 +818,7 @@
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
         <div class="protocol-tag">Интерактивные призы</div>
         <h1>Купоны и желания</h1>
-        <p class="subtitle">После использования купон перезаряжается в течение 24 часов:</p>
+        <p class="subtitle">После использования купон перезаряжается 24 часа:</p>
 
         <div class="coupon-card" id="coupon-1">
           <div class="coupon-info">
@@ -867,7 +841,7 @@
         <div class="coupon-card" id="coupon-3">
           <div class="coupon-info">
             <h3>Безлимитные обнимашки</h3>
-            <p>Действует бесконечно при первой же встрече 🫂</p>
+            <p>Действует бесконечно при нашей встрече 🫂</p>
             <div class="coupon-timer" id="timer-coupon-3"></div>
           </div>
           <button class="coupon-btn" onclick="useCoupon('coupon-3')">Погасить</button>
@@ -875,94 +849,36 @@
       </div>
     </div>
 
-    <!-- 5. СТИХИ С КАТАЛОГОМ И ИЗБРАННЫМ -->
+    <!-- 5. СТИХИ -->
     <div class="tab-content" id="tab-poems">
-      <div class="card" style="padding: 22px 20px 14px; margin-bottom: 16px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <button class="back-btn" style="margin-bottom: 0;" onclick="switchTab('tab-home')">← Назад в хаб</button>
-          <button class="icon-btn" style="padding: 6px 12px; font-size: 0.75rem;" onclick="showRandomPoem()">🎲 Случайный стих</button>
-        </div>
+      <div class="card">
+        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
         
-        <div class="poem-filters">
-          <button class="chip-btn active" onclick="filterPoems('all', this)">Все</button>
-          <button class="chip-btn" onclick="filterPoems('love', this)">О любви и тепле</button>
-          <button class="chip-btn" onclick="filterPoems('support', this)">Когда тяжело</button>
-          <button class="chip-btn" onclick="filterPoems('stars', this)">Созвездие</button>
-          <button class="chip-btn" onclick="filterPoems('favorites', this)">Избранное ❤️</button>
+        <div class="poem-filter-bar">
+          <div class="protocol-tag" style="margin-bottom:0;">Сборник стихов</div>
+          <button class="fav-filter-btn" id="fav-toggle-btn" onclick="toggleFavFilter()">
+            <span>❤️</span> Только любимые
+          </button>
         </div>
-      </div>
 
-      <!-- Контейнер для отображения стихов -->
-      <div id="poems-list"></div>
-    </div>
-
-    <!-- 6. КАПСУЛА ВРЕМЕНИ -->
-    <div class="tab-content" id="tab-capsule">
-      <div class="card">
-        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
-        <div class="protocol-tag">Запечатанное послание</div>
-        <h1>Капсула времени</h1>
-        <p class="subtitle">Секретное письмо запечатано до дня нашей встречи:</p>
-
-        <div class="capsule-box">
-          <div class="capsule-lock">🔒</div>
-          <div style="font-family: 'Cinzel', serif; font-size: 1.1rem; color: #F59E0B; margin-bottom: 8px;">
-            Протокол ожидания активирован
-          </div>
-          <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">
-            Это послание откроется автоматически, когда наступит весна 2027 года и мы встретимся в Москве. Внутри спрятано кое-что особенное.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 7. ЗВЁЗДНАЯ ХРОНИКА -->
-    <div class="tab-content" id="tab-timeline">
-      <div class="card">
-        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
-        <div class="protocol-tag">Таймлайн Созвездия</div>
-        <h1>Звёздная хроника</h1>
-        <p class="subtitle">Наша маленькая история в ключевых моментах:</p>
-
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-date">ТОЧКА КОНТАКТА</div>
-            <div class="timeline-title">Пересечение на Мангабаффе</div>
-            <div class="timeline-desc">День, когда наши орбиты сошлись в одном клубе.</div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-date">29 АВГУСТА</div>
-            <div class="timeline-title">День рождения</div>
-            <div class="timeline-desc">День рождения самой прекрасной девушки во всей вселенной ✨</div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-date">В ПРОЦЕССЕ</div>
-            <div class="timeline-title">Тысячи сообщений и звонков</div>
-            <div class="timeline-desc">Совместные киносеансы, смех до ночи и разговоры обо всём на свете.</div>
-          </div>
-        </div>
+        <div id="poems-list-container" style="margin-top: 14px;"></div>
       </div>
     </div>
 
   </div>
 
   <script>
-    // НАСТРОЙКИ TELEGRAM (Вставь свои токен и Chat ID при желании)
+    // НАСТРОЙКИ TELEGRAM (вставь токен и chat_id, если захочешь пуши)
     const TG_BOT_TOKEN = "";
     const TG_CHAT_ID = "";
 
     function sendTelegramNotification(text) {
       if (!TG_BOT_TOKEN || !TG_CHAT_ID) return;
       const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}&text=${encodeURIComponent(text)}&parse_mode=HTML`;
-      fetch(url).catch(err => console.error("Ошибка TG:", err));
+      fetch(url).catch(err => console.error(err));
     }
 
-    // 1. Канвас: Звёзды, Метеоры и Пыльца
+    // 1. Канвас звёздного неба и следа от пальца
     const canvas = document.getElementById('stars-canvas');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -1001,7 +917,7 @@
         stars.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          radius: Math.random() * 1.5 + 0.5,
+          radius: Math.random() * 1.5 + 0.4,
           alpha: Math.random(),
           speed: 0.006 + Math.random() * 0.015
         });
@@ -1029,11 +945,11 @@
           const dy = stars[i].y - stars[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 80) {
+          if (dist < 75) {
             ctx.beginPath();
             ctx.moveTo(stars[i].x, stars[i].y);
             ctx.lineTo(stars[j].x, stars[j].y);
-            ctx.strokeStyle = `rgba(212, 175, 55, ${0.1 * (1 - dist / 80)})`;
+            ctx.strokeStyle = `rgba(212, 175, 55, ${0.1 * (1 - dist / 75)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -1077,7 +993,7 @@
       for (let i = sparkles.length - 1; i >= 0; i--) {
         const sp = sparkles[i];
         sp.y += 0.4;
-        sp.alpha -= 0.02;
+        sp.alpha -= 0.025;
 
         if (sp.alpha <= 0) {
           sparkles.splice(i, 1);
@@ -1122,14 +1038,46 @@
       if (sidebar.classList.contains('active')) toggleSidebar();
 
       if (tabId === 'tab-cipher') initCipherGame();
-      if (tabId === 'tab-poems') renderPoems();
+      if (tabId === 'tab-poems') renderPoemsList();
     }
 
-    // 3. База стихов
+    // 3. Интерактивная сфера на главной
+    const microPhrases = [
+      "Ты прекраснее всех созвездий ✨",
+      "Я всегда рядом с тобой ❤️",
+      "Улыбнись, любимая кисонька 🐾",
+      "Ты моё главное сокровище 🌟",
+      "Отправляю тебе тепло сквозь километры 💫",
+      "Ты невероятная умничка 🥰"
+    ];
+
+    function touchConstellation() {
+      const el = document.getElementById('touch-text');
+      el.style.opacity = '0';
+      
+      // Салют искорок из центра экрана
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      for (let i = 0; i < 20; i++) {
+        sparkles.push({
+          x: cx + (Math.random() - 0.5) * 80,
+          y: cy + (Math.random() - 0.5) * 80,
+          size: Math.random() * 3 + 1,
+          alpha: 1,
+          color: Math.random() > 0.3 ? '#F59E0B' : '#FFFFFF'
+        });
+      }
+
+      setTimeout(() => {
+        el.innerText = microPhrases[Math.floor(Math.random() * microPhrases.length)];
+        el.style.opacity = '1';
+      }, 200);
+    }
+
+    // 4. База стихов (Список, раскрытие, избранное)
     const poemsDatabase = [
       {
         id: "poem-1",
-        category: "stars",
         title: "Созвездие в твоих глазах",
         date: "Август 2026",
         text: `Сквозь километры тихих звёзд
@@ -1144,7 +1092,6 @@
       },
       {
         id: "poem-2",
-        category: "love",
         title: "Шёпот тишины",
         date: "Для любимой кисоньки",
         text: `Когда за окнами темно,
@@ -1159,7 +1106,6 @@
       },
       {
         id: "poem-3",
-        category: "support",
         title: "Стойкость сияния",
         date: "В минуты усталости",
         text: `Пусть день порою давит грузом,
@@ -1174,7 +1120,7 @@
       }
     ];
 
-    let currentPoemCategory = 'all';
+    let showOnlyFavorites = false;
 
     function getFavoritePoems() {
       try {
@@ -1184,7 +1130,8 @@
       }
     }
 
-    function toggleFavoritePoem(id) {
+    function toggleFavoritePoem(e, id) {
+      e.stopPropagation();
       let favs = getFavoritePoems();
       if (favs.includes(id)) {
         favs = favs.filter(item => item !== id);
@@ -1192,33 +1139,37 @@
         favs.push(id);
       }
       localStorage.setItem('fav_poems', JSON.stringify(favs));
-      renderPoems();
+      renderPoemsList();
     }
 
-    function filterPoems(category, chipElement) {
-      currentPoemCategory = category;
-      document.querySelectorAll('.chip-btn').forEach(btn => btn.classList.remove('active'));
-      if (chipElement) chipElement.classList.add('active');
-      renderPoems();
+    function toggleFavFilter() {
+      showOnlyFavorites = !showOnlyFavorites;
+      const btn = document.getElementById('fav-toggle-btn');
+      if (showOnlyFavorites) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+      renderPoemsList();
     }
 
-    function renderPoems(customList = null) {
-      const container = document.getElementById('poems-list');
+    function togglePoemItem(el) {
+      el.classList.toggle('open');
+    }
+
+    function renderPoemsList() {
+      const container = document.getElementById('poems-list-container');
       const favs = getFavoritePoems();
-      let list = customList || poemsDatabase;
+      let list = poemsDatabase;
 
-      if (!customList) {
-        if (currentPoemCategory === 'favorites') {
-          list = poemsDatabase.filter(p => favs.includes(p.id));
-        } else if (currentPoemCategory !== 'all') {
-          list = poemsDatabase.filter(p => p.category === currentPoemCategory);
-        }
+      if (showOnlyFavorites) {
+        list = list.filter(p => favs.includes(p.id));
       }
 
       if (list.length === 0) {
         container.innerHTML = `
-          <div class="card" style="padding: 30px;">
-            <p style="color: #94A3B8;">В этой категории пока нет стихов или избранное пусто ❤️</p>
+          <div style="padding: 24px 10px; color: #94A3B8; font-size: 0.88rem;">
+            В избранном пока нет стихов ❤️
           </div>
         `;
         return;
@@ -1227,26 +1178,238 @@
       container.innerHTML = list.map(poem => {
         const isFav = favs.includes(poem.id);
         return `
-          <div class="poem-card">
-            <div class="poem-header">
-              <div class="poem-title">${poem.title}</div>
-              <button class="fav-heart-btn" onclick="toggleFavoritePoem('${poem.id}')" title="В избранное">
+          <div class="poem-list-item" onclick="togglePoemItem(this)">
+            <div class="poem-item-header">
+              <div>
+                <div class="poem-item-title">${poem.title}</div>
+                <div class="poem-item-date">${poem.date}</div>
+              </div>
+              <button class="heart-btn" onclick="toggleFavoritePoem(event, '${poem.id}')">
                 ${isFav ? '❤️' : '🤍'}
               </button>
             </div>
-            <div class="poem-body">${poem.text}</div>
-            <div class="poem-footer">${poem.date}</div>
+            <div class="poem-item-body">${poem.text}</div>
           </div>
         `;
       }).join('');
     }
 
-    function showRandomPoem() {
-      const rand = poemsDatabase[Math.floor(Math.random() * poemsDatabase.length)];
-      renderPoems([rand]);
+    // 5. БАЗА ШИФРОВ И ПИСЕМ (Сюда легко добавлять новые коды!)
+    const secretCodes = {
+      "290805": {
+        header: "Послание от Созвездия \"Аноним\"",
+        body: `Любимая кисонька,
+
+Этот код — просто ключ, а главное сокровище — это ты.
+
+Я хочу пожелать тебе спокойствия, лёгкости и уверенности в каждом шаге. Когда кажется, что всё давит, не забывай, насколько ты стойкая и потрясающая. Никакие чужие слова или сложные дни не способны изменить того, насколько ты прекрасна.
+
+Даже сквозь любые километры — я всегда рядом с тобой. Буду твоей поддержкой в любой момент, когда тебе это нужно. Очень сильно тебя люблю.`,
+        signature: "Твоё Созвездие",
+        hasSecret: true,
+        secretBody: `Ты нашла самое сокровенное послание.
+
+Знай, что для меня нет ничего важнее твоей искренней улыбки. Всякий раз, когда тебе станет грустно или тяжело — открой эту страницу и вспомни: ты самое дорогое, что у меня есть. 
+
+И этот приз — бесконечный абонемент на мою заботу, тепло и бесконечные обнимашки при нашей встрече.`
+      }
+    };
+
+    // 6. БАЗА ВОПРОСОВ (Строго один правильный ответ!)
+    const questionBank = [
+      {
+        question: "Кто здесь самая главная умничка и победитель?",
+        options: [
+          { text: "Конечно же Лиза ✨", isCorrect: true },
+          { text: "Случайный прохожий", isCorrect: false },
+          { text: "Искусственный интеллект", isCorrect: false }
+        ]
+      },
+      {
+        question: "Кто самая красивая, милая и любимая кисонька?",
+        options: [
+          { text: "Соседский кот", isCorrect: false },
+          { text: "Елизавета 🐾", isCorrect: true },
+          { text: "Инопланетянин", isCorrect: false }
+        ]
+      },
+      {
+        question: "Чья улыбка затмевает сияние всех звёзд созвездия?",
+        options: [
+          { text: "Фонарный столб", isCorrect: false },
+          { text: "Улыбка Лизы 🌟", isCorrect: true },
+          { text: "Далекая галактика", isCorrect: false }
+        ]
+      },
+      {
+        question: "Кого созвездие \"Аноним\" любит больше всех на этом свете?",
+        options: [
+          { text: "Пиццу с сыром", isCorrect: false },
+          { text: "Просто звёзды", isCorrect: false },
+          { text: "Лизу ❤️", isCorrect: true }
+        ]
+      },
+      {
+        question: "Чьи глазки самые выразительные и прекрасные?",
+        options: [
+          { text: "Лизины ✨", isCorrect: true },
+          { text: "Ничьи", isCorrect: false },
+          { text: "Не знаю", isCorrect: false }
+        ]
+      },
+      {
+        question: "Кто заслуживает бесконечной заботы и тепла?",
+        options: [
+          { text: "Робот-пылесос", isCorrect: false },
+          { text: "Только Лиза 🥰", isCorrect: true },
+          { text: "Никто", isCorrect: false }
+        ]
+      }
+    ];
+
+    let currentQueue = [];
+    let currentStepIndex = 0;
+    let unlockedCodeData = null;
+
+    function initCipherGame() {
+      // Берём 3 случайных вопроса и тасуем варианты
+      currentQueue = [...questionBank]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+        .map(q => ({
+          question: q.question,
+          options: [...q.options].sort(() => Math.random() - 0.5)
+        }));
+
+      currentStepIndex = 0;
+      document.getElementById('lock-screen').style.display = 'block';
+      document.getElementById('letter-screen').style.display = 'none';
+      document.getElementById('letter-screen').style.opacity = '0';
+      document.getElementById('secret-screen').style.display = 'none';
+      document.getElementById('secret-screen').style.opacity = '0';
+      renderStep();
     }
 
-    // 4. 30 тёплых фраз для Аптечки
+    function renderStep() {
+      const errorMsg = document.getElementById('error-msg');
+      errorMsg.classList.remove('visible');
+
+      if (currentStepIndex < currentQueue.length) {
+        const item = currentQueue[currentStepIndex];
+        document.getElementById('q-tag').innerText = `Верификация ${currentStepIndex + 1} из ${currentQueue.length}`;
+        document.getElementById('q-title').innerText = item.question;
+        document.getElementById('q-desc').innerText = "Выбери верный ответ:";
+        
+        const optContainer = document.getElementById('options-container');
+        optContainer.style.display = 'flex';
+        optContainer.innerHTML = '';
+        document.getElementById('input-container').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
+
+        item.options.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.innerText = opt.text;
+          btn.onclick = () => {
+            if (opt.isCorrect) {
+              currentStepIndex++;
+              renderStep();
+            } else {
+              showError("Ответ неверный, подумай ещё раз 😉");
+            }
+          };
+          optContainer.appendChild(btn);
+        });
+      } else {
+        document.getElementById('q-tag').innerText = "Финальный протокол";
+        document.getElementById('q-title').innerText = "Введи шестизначный шифр";
+        document.getElementById('q-desc').innerText = "Шифр созвездия:";
+        document.getElementById('options-container').style.display = 'none';
+        document.getElementById('input-container').style.display = 'block';
+        document.getElementById('submit-btn').style.display = 'block';
+        document.getElementById('secret-code').value = '';
+        document.getElementById('secret-code').focus();
+      }
+    }
+
+    function checkFinalCode() {
+      const val = document.getElementById('secret-code').value.trim();
+      if (secretCodes[val]) {
+        unlockedCodeData = secretCodes[val];
+        showUnlockedLetter(unlockedCodeData);
+        sendTelegramNotification(`🔓 <b>Лиза расшифровала код: ${val}</b>`);
+      } else {
+        showError("Координаты созвездия неверны");
+      }
+    }
+
+    function showUnlockedLetter(data) {
+      const lockScreen = document.getElementById('lock-screen');
+      const letterScreen = document.getElementById('letter-screen');
+
+      document.getElementById('letter-header-text').innerText = data.header;
+      document.getElementById('letter-body-text').innerText = data.body;
+      document.getElementById('secret-body-text').innerText = data.secretBody || "";
+
+      lockScreen.style.opacity = '0';
+      setTimeout(() => {
+        lockScreen.style.display = 'none';
+        letterScreen.style.display = 'block';
+        setTimeout(() => {
+          letterScreen.style.opacity = '1';
+          letterScreen.style.transform = 'scale(1)';
+        }, 50);
+      }, 350);
+    }
+
+    function openSecretLetter() {
+      const letterScreen = document.getElementById('letter-screen');
+      const secretScreen = document.getElementById('secret-screen');
+
+      letterScreen.style.opacity = '0';
+      letterScreen.style.transform = 'scale(0.95)';
+
+      setTimeout(() => {
+        letterScreen.style.display = 'none';
+        secretScreen.style.display = 'block';
+        setTimeout(() => {
+          secretScreen.style.opacity = '1';
+          secretScreen.style.transform = 'scale(1)';
+        }, 50);
+      }, 350);
+    }
+
+    function backToMainLetter() {
+      const letterScreen = document.getElementById('letter-screen');
+      const secretScreen = document.getElementById('secret-screen');
+
+      secretScreen.style.opacity = '0';
+      secretScreen.style.transform = 'scale(0.95)';
+
+      setTimeout(() => {
+        secretScreen.style.display = 'none';
+        letterScreen.style.display = 'block';
+        setTimeout(() => {
+          letterScreen.style.opacity = '1';
+          letterScreen.style.transform = 'scale(1)';
+        }, 50);
+      }, 350);
+    }
+
+    function showError(msg) {
+      const err = document.getElementById('error-msg');
+      const card = document.getElementById('lock-screen');
+      err.innerText = msg;
+      err.classList.add('visible');
+      card.classList.add('shake');
+      setTimeout(() => card.classList.remove('shake'), 400);
+    }
+
+    document.getElementById('secret-code').addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') checkFinalCode();
+    });
+
+    // 7. Аптечка настроения (30 неповторяющихся фраз)
     const supportQuotes = [
       "Вдохни глубоко и медленно выдохни. Ты со всем справишься, а я рядом ❤️",
       "Ты не обязана быть идеальной для кого-то. Для меня ты уже самое дорогое чудо.",
@@ -1295,10 +1458,10 @@
         box.style.opacity = '1';
       }, 200);
 
-      sendTelegramNotification("💊 <b>Лиза открыла аптечку настроения</b> и запросила порцию тепла.");
+      sendTelegramNotification("💊 <b>Лиза открыла аптечку настроения</b>");
     }
 
-    // 5. Купоны с кулдауном 24ч
+    // 8. Купоны желаний (24 часа кулдаун)
     const COOLDOWN_MS = 24 * 60 * 60 * 1000;
 
     function getCouponData() {
@@ -1337,6 +1500,7 @@
 
       coupons.forEach(id => {
         const card = document.getElementById(id);
+        if (!card) return;
         const btn = card.querySelector('.coupon-btn');
         const timer = document.getElementById(`timer-${id}`);
         const usedTime = data[id];
@@ -1365,7 +1529,7 @@
     setInterval(updateCouponsUI, 1000);
     updateCouponsUI();
 
-    // 6. МСК время
+    // 9. Время по Москве для приветствия
     function setTimeGreeting() {
       const title = document.getElementById('greeting-title');
       const now = new Date();
@@ -1384,182 +1548,6 @@
     }
 
     setTimeGreeting();
-
-    // 7. Ночник и Звуковой генератор (Web Audio API)
-    let audioCtx = null;
-    let isAmbientPlaying = false;
-    let osc1, osc2, gainNode;
-
-    function toggleAmbientSound() {
-      const btn = document.getElementById('ambient-btn');
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-
-      if (isAmbientPlaying) {
-        if (gainNode) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.5);
-        isAmbientPlaying = false;
-        btn.classList.remove('active');
-      } else {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        
-        osc1 = audioCtx.createOscillator();
-        osc2 = audioCtx.createOscillator();
-        gainNode = audioCtx.createGain();
-        const filter = audioCtx.createBiquadFilter();
-
-        osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(108, audioCtx.currentTime); // Гармонический тон
-
-        osc2.type = 'triangle';
-        osc2.frequency.setValueAtTime(216, audioCtx.currentTime);
-
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(300, audioCtx.currentTime);
-
-        gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime + 3);
-
-        osc1.connect(filter);
-        osc2.connect(filter);
-        filter.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-
-        osc1.start();
-        osc2.start();
-        isAmbientPlaying = true;
-        btn.classList.add('active');
-      }
-    }
-
-    function toggleNightLight() {
-      const night = document.getElementById('nightlight-screen');
-      const container = document.getElementById('main-container');
-      const topNav = document.querySelector('.top-nav');
-
-      if (night.classList.contains('active')) {
-        night.classList.remove('active');
-        container.style.opacity = '1';
-        topNav.style.opacity = '1';
-      } else {
-        night.classList.add('active');
-        container.style.opacity = '0';
-        topNav.style.opacity = '0';
-      }
-    }
-
-    // 8. Игра шифра
-    const questionBank = [
-      {
-        question: "Кто здесь самая главная умничка и победитель?",
-        options: [
-          { text: "Конечно же Лиза ✨", isCorrect: true },
-          { text: "Кто-то другой", isCorrect: false },
-          { text: "Только Лиза!", isCorrect: true }
-        ]
-      },
-      {
-        question: "Кто самая красивая, милая и любимая кисонька?",
-        options: [
-          { text: "Елизавета 🐾", isCorrect: true },
-          { text: "Случайный кот", isCorrect: false },
-          { text: "Лиза и только Лиза", isCorrect: true }
-        ]
-      },
-      {
-        question: "Чья улыбка способна затмить сияние всех звёзд созвездия?",
-        options: [
-          { text: "Улыбка Лизы 🌟", isCorrect: true },
-          { text: "Далекая галактика", isCorrect: false },
-          { text: "Моя (Лизина) улыбка", isCorrect: true }
-        ]
-      },
-      {
-        question: "Кого созвездие \"Аноним\" любит больше всех на этом свете?",
-        options: [
-          { text: "Лизу ❤️", isCorrect: true },
-          { text: "Никого", isCorrect: false },
-          { text: "Меня! 🥰", isCorrect: true }
-        ]
-      }
-    ];
-
-    let currentQueue = [];
-    let currentStepIndex = 0;
-
-    function initCipherGame() {
-      currentQueue = [...questionBank].sort(() => Math.random() - 0.5);
-      currentStepIndex = 0;
-      document.getElementById('lock-screen').style.display = 'block';
-      document.getElementById('letter-container').classList.remove('active');
-      renderStep();
-    }
-
-    function renderStep() {
-      const errorMsg = document.getElementById('error-msg');
-      errorMsg.classList.remove('visible');
-
-      if (currentStepIndex < currentQueue.length) {
-        const item = currentQueue[currentStepIndex];
-        document.getElementById('q-tag').innerText = `Вопрос ${currentStepIndex + 1} из ${currentQueue.length}`;
-        document.getElementById('q-title').innerText = item.question;
-        document.getElementById('q-desc').innerText = "Выбери верный ответ:";
-        
-        const optContainer = document.getElementById('options-container');
-        optContainer.style.display = 'flex';
-        optContainer.innerHTML = '';
-        document.getElementById('input-container').style.display = 'none';
-        document.getElementById('submit-btn').style.display = 'none';
-
-        item.options.forEach(opt => {
-          const btn = document.createElement('button');
-          btn.className = 'option-btn';
-          btn.innerText = opt.text;
-          btn.onclick = () => {
-            if (opt.isCorrect) {
-              currentStepIndex++;
-              renderStep();
-            } else {
-              showError("Ответ неверный, подумай ещё раз 😉");
-            }
-          };
-          optContainer.appendChild(btn);
-        });
-      } else {
-        document.getElementById('q-tag').innerText = "Финальный протокол";
-        document.getElementById('q-title').innerText = "Введи шестизначный шифр";
-        document.getElementById('q-desc').innerText = "Шифр созвездия:";
-        document.getElementById('options-container').style.display = 'none';
-        document.getElementById('input-container').style.display = 'block';
-        document.getElementById('submit-btn').style.display = 'block';
-        document.getElementById('secret-code').value = '';
-        document.getElementById('secret-code').focus();
-      }
-    }
-
-    function checkFinalCode() {
-      const val = document.getElementById('secret-code').value.trim();
-      if (val === "290805") {
-        document.getElementById('lock-screen').style.display = 'none';
-        document.getElementById('letter-container').classList.add('active');
-        sendTelegramNotification("🔓 <b>Лиза успешно расшифровала код созвездия!</b>");
-      } else {
-        showError("Неверный код");
-      }
-    }
-
-    function showError(msg) {
-      const err = document.getElementById('error-msg');
-      const card = document.getElementById('lock-screen');
-      err.innerText = msg;
-      err.classList.add('visible');
-      card.classList.add('shake');
-      setTimeout(() => card.classList.remove('shake'), 400);
-    }
-
-    document.getElementById('secret-code').addEventListener('keyup', function(e) {
-      if (e.key === 'Enter') checkFinalCode();
-    });
   </script>
 </body>
 </html>

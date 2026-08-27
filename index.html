@@ -33,7 +33,7 @@
       transition: background 1.5s ease;
     }
 
-    /* Фоновые темы по времени суток (МСК) */
+    /* Фазы неба по Московскому времени */
     body.time-night { background: radial-gradient(ellipse at bottom, #0d1322 0%, #060810 100%); }
     body.time-morning { background: radial-gradient(ellipse at bottom, #2d1b36 0%, #0d1527 100%); }
     body.time-day { background: radial-gradient(ellipse at bottom, #163252 0%, #091728 100%); }
@@ -77,7 +77,7 @@
       pointer-events: none;
     }
 
-    /* Верхняя панель */
+    /* Навигация */
     .top-nav {
       position: fixed;
       top: 14px;
@@ -197,7 +197,7 @@
       color: #FFF;
     }
 
-    /* Контейнер */
+    /* Карточки страниц */
     .container {
       position: relative;
       z-index: 2;
@@ -260,7 +260,7 @@
       margin-bottom: 20px;
     }
 
-    /* Интерактивная сфера */
+    /* Сфера на главной */
     .touch-orb-card {
       background: rgba(2, 6, 23, 0.55);
       border: 1px dashed rgba(245, 158, 11, 0.35);
@@ -343,7 +343,7 @@
       display: none;
     }
 
-    /* Аптечка настроения (Просторный светящийся свиток) */
+    /* Аптечка */
     .support-box {
       background: rgba(2, 6, 23, 0.75);
       border: 1px solid rgba(245, 158, 11, 0.45);
@@ -363,7 +363,7 @@
       transition: opacity 0.35s ease;
     }
 
-    /* Кристалл предсказаний */
+    /* Оракул / Кристалл */
     .crystal-box {
       background: rgba(2, 6, 23, 0.6);
       border: 1px solid rgba(212, 175, 55, 0.3);
@@ -374,45 +374,40 @@
       flex-direction: column;
       align-items: center;
       gap: 14px;
+      position: relative;
+      overflow: hidden;
     }
 
     .crystal-orb {
-      width: 100px;
-      height: 100px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #FDE68A 0%, #D97706 60%, #451A03 100%);
-      box-shadow: 0 0 35px rgba(245, 158, 11, 0.5);
+      background: radial-gradient(circle at 35% 35%, #FDE68A 0%, #D97706 55%, #451A03 100%);
+      box-shadow: 0 0 35px rgba(245, 158, 11, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.4);
       cursor: pointer;
       user-select: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.2rem;
-      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 2.5rem;
+      transition: all 0.3s ease;
+      position: relative;
     }
 
-    .crystal-orb:active {
-      transform: scale(0.92);
-      box-shadow: 0 0 60px rgba(245, 158, 11, 0.9);
+    .crystal-orb.charging {
+      animation: crystalCharge 1.2s infinite alternate ease-in-out;
     }
 
-    .crystal-result {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.05rem;
-      color: #FEF3C7;
-      min-height: 50px;
-      line-height: 1.6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.3s;
+    @keyframes crystalCharge {
+      0% { transform: scale(0.95); box-shadow: 0 0 25px rgba(245, 158, 11, 0.5); }
+      100% { transform: scale(1.08); box-shadow: 0 0 70px rgba(245, 158, 11, 0.9), 0 0 100px rgba(251, 191, 36, 0.6); }
     }
 
     /* Ловец падающих звёзд */
     .star-catcher-box {
       position: relative;
       width: 100%;
-      height: 280px;
+      height: 290px;
       background: rgba(2, 6, 23, 0.85);
       border: 1px solid rgba(212, 175, 55, 0.35);
       border-radius: 16px;
@@ -423,10 +418,30 @@
 
     .game-star {
       position: absolute;
-      font-size: 1.8rem;
+      font-size: 1.85rem;
       cursor: pointer;
       user-select: none;
-      filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8));
+      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.9));
+      transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+    }
+
+    .game-star.caught {
+      transform: scale(1.6) rotate(20deg);
+      opacity: 0;
+    }
+
+    .floating-score {
+      position: absolute;
+      color: #F59E0B;
+      font-weight: 700;
+      font-size: 1rem;
+      pointer-events: none;
+      animation: floatUpScore 0.7s ease-out forwards;
+    }
+
+    @keyframes floatUpScore {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-30px); opacity: 0; }
     }
 
     .game-stats {
@@ -477,7 +492,32 @@
 
     .coupon-btn.disabled { background: #334155; color: #94A3B8; cursor: not-allowed; }
 
-    /* Почтовый ящик */
+    /* Почтовый ящик с вкладками */
+    .letters-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .letters-tab-btn {
+      flex: 1;
+      background: rgba(2, 6, 23, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      color: #94A3B8;
+      border-radius: 12px;
+      padding: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .letters-tab-btn.active {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #F59E0B;
+      color: #F8FAFC;
+    }
+
     .letter-input-box {
       width: 100%;
       background: rgba(2, 6, 23, 0.7);
@@ -499,35 +539,72 @@
       box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
     }
 
-    .incoming-letter-card {
-      background: #FAF7F2;
-      color: #2D3748;
+    .letter-list-item {
+      background: rgba(2, 6, 23, 0.65);
+      border: 1px solid rgba(212, 175, 55, 0.25);
       border-radius: 14px;
-      padding: 18px 16px;
-      margin-top: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
       text-align: left;
-      border: 1px solid #E2E8F0;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transition: all 0.25s ease;
     }
 
-    .incoming-letter-header {
-      font-family: 'Cinzel', serif;
-      font-size: 0.85rem;
-      color: #92400E;
-      border-bottom: 1px dashed #CBD5E1;
-      padding-bottom: 6px;
-      margin-bottom: 10px;
+    .letter-list-item:active {
+      border-color: #F59E0B;
+      transform: scale(0.98);
+    }
+
+    .letter-item-header {
       display: flex;
       justify-content: space-between;
+      font-size: 0.75rem;
+      color: #F59E0B;
+      margin-bottom: 4px;
+      font-weight: 600;
     }
 
-    .incoming-letter-body {
+    .letter-item-preview {
+      font-size: 0.85rem;
+      color: #CBD5E1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Просмотр письма / свитка */
+    .scroll-view-card {
+      background: #FAF7F2;
+      color: #2D3748;
+      border-radius: 18px;
+      padding: 30px 22px;
+      text-align: left;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+      border: 1px solid #E2E8F0;
+      display: none;
+      opacity: 0;
+      transform: scale(0.97);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .scroll-view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed #CBD5E1;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+    }
+
+    .scroll-view-title { font-family: 'Cinzel', serif; font-size: 1.05rem; color: #92400E; }
+    .scroll-view-body {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 0.95rem;
-      line-height: 1.75;
+      font-size: 0.98rem;
+      line-height: 1.85;
       white-space: pre-line;
       color: #334155;
     }
+    .scroll-view-footer { margin-top: 18px; font-size: 0.78rem; color: #94A3B8; text-align: right; font-style: italic; }
 
     /* Стихи */
     .poem-filter-bar {
@@ -572,41 +649,6 @@
     .poem-item-title { font-family: 'Cinzel', serif; font-size: 0.95rem; color: #F8FAFC; font-weight: 600; }
     .poem-item-date { font-size: 0.75rem; color: #94A3B8; margin-top: 3px; }
     .heart-btn { background: none; border: none; font-size: 1.15rem; cursor: pointer; padding: 4px; }
-
-    .poem-scroll-card {
-      background: #FAF7F2;
-      color: #2D3748;
-      border-radius: 18px;
-      padding: 30px 22px;
-      text-align: left;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
-      border: 1px solid #E2E8F0;
-      display: none;
-      opacity: 0;
-      transform: scale(0.97);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .poem-scroll-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px dashed #CBD5E1;
-      padding-bottom: 12px;
-      margin-bottom: 18px;
-    }
-
-    .poem-scroll-title { font-family: 'Cinzel', serif; font-size: 1.1rem; color: #92400E; }
-    .poem-scroll-body {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.02rem;
-      line-height: 1.85;
-      white-space: pre-line;
-      color: #334155;
-      text-align: left;
-    }
-
-    .poem-scroll-footer { margin-top: 18px; font-size: 0.78rem; color: #94A3B8; text-align: right; font-style: italic; }
 
     /* Письма шифра */
     .letter-wrapper {
@@ -784,7 +826,7 @@
       <span>✉️</span> Письма Созвездию
     </button>
     <button class="nav-btn" onclick="switchTab('tab-crystal')">
-      <span>🔮</span> Кристалл тайн
+      <span>🔮</span> Оракул чувств
     </button>
     <button class="nav-btn" onclick="switchTab('tab-catcher')">
       <span>⭐</span> Ловец звёзд
@@ -821,7 +863,7 @@
           </div>
           <div class="hub-item" onclick="switchTab('tab-crystal')">
             <div class="hub-icon">🔮</div>
-            <div class="hub-title">Кристалл</div>
+            <div class="hub-title">Оракул</div>
           </div>
           <div class="hub-item" onclick="switchTab('tab-catcher')">
             <div class="hub-icon">⭐</div>
@@ -896,7 +938,7 @@
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
         <div class="protocol-tag">Интерактивные призы</div>
         <h1>Купоны и желания</h1>
-        <p class="subtitle">После использования купон перезаряжается 24 часа:</p>
+        <p class="subtitle">Синхронизировано: после использования купон перезаряжается 24 часа:</p>
 
         <div class="coupon-card" id="coupon-1">
           <div class="coupon-info">
@@ -947,7 +989,7 @@
 
     <!-- 5. ПИСЬМА СОЗВЕЗДИЮ -->
     <div class="tab-content" id="tab-letters">
-      <div class="card">
+      <div class="card" id="letters-main-card">
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
         <div class="protocol-tag">Тайный ящик</div>
         <h1>Письма Созвездию</h1>
@@ -956,25 +998,50 @@
         <textarea class="letter-input-box" id="liza-letter-text" placeholder="Дорогое Созвездие, хочу рассказать тебе..."></textarea>
         <button class="submit-btn" onclick="sendLetterToConstellation()">Отправить Созвездию ✨</button>
 
-        <div style="margin-top: 24px; text-align: left;">
-          <div class="protocol-tag" style="font-size: 0.7rem;">Ответы от Созвездия</div>
-          <div id="constellation-replies-feed"></div>
+        <div style="margin-top: 24px;">
+          <div class="letters-tabs">
+            <button class="letters-tab-btn active" id="tab-btn-replies" onclick="switchLettersFeed('replies')">✨ Ответы Созвездия</button>
+            <button class="letters-tab-btn" id="tab-btn-outbox" onclick="switchLettersFeed('outbox')">💌 Мои письма</button>
+          </div>
+          <div id="letters-feed-container"></div>
         </div>
+      </div>
+
+      <!-- Отдельный свиток просмотра выбранного письма -->
+      <div class="scroll-view-card" id="letter-scroll-reader">
+        <div class="scroll-view-header">
+          <button class="back-btn" style="margin-bottom:0;" onclick="closeLetterReader()">← К списку писем</button>
+          <span style="font-size:0.8rem; color:#F59E0B;" id="reader-author-tag">Послание</span>
+        </div>
+        <div class="scroll-view-title" id="reader-title">Письмо</div>
+        <div class="scroll-view-body" id="reader-body"></div>
+        <div class="scroll-view-footer" id="reader-date"></div>
       </div>
     </div>
 
-    <!-- 6. КРИСТАЛЛ ТАЙН -->
+    <!-- 6. ОРАКУЛ ЧУВСТВ (КРИСТАЛЛ) -->
     <div class="tab-content" id="tab-crystal">
-      <div class="card">
+      <div class="card" id="crystal-main-card">
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
         <div class="protocol-tag">Оракул чувств</div>
-        <h1>Кристалл Созвездия</h1>
-        <p class="subtitle">Коснись кристалла, чтобы узнать своё предсказание:</p>
+        <h1>Оракул Созвездия</h1>
+        <p class="subtitle">Нажми на кристалл, чтобы зарядить его и узнать предсказание:</p>
 
         <div class="crystal-box">
-          <div class="crystal-orb" onclick="revealPrediction()">🔮</div>
-          <div class="crystal-result" id="crystal-text">Коснись кристалла...</div>
+          <div class="crystal-orb" id="crystal-orb" onclick="triggerCrystalOracle()">🔮</div>
+          <div style="font-size:0.85rem; color:#94A3B8;">Нажмите, чтобы пробудить оракул...</div>
         </div>
+      </div>
+
+      <!-- Свиток предсказания -->
+      <div class="scroll-view-card" id="crystal-scroll-view">
+        <div class="scroll-view-header">
+          <button class="back-btn" style="margin-bottom:0;" onclick="closeCrystalScroll()">← К кристаллу</button>
+          <span style="font-size:0.8rem; color:#F59E0B;">✦ Предсказание звёзд ✦</span>
+        </div>
+        <div class="scroll-view-title" style="text-align:center;">Послание Оракула</div>
+        <div class="scroll-view-body" id="crystal-scroll-text" style="text-align:center; padding: 15px 0;"></div>
+        <div class="scroll-view-footer">Созвездие шепчет истину ✨</div>
       </div>
     </div>
 
@@ -1010,14 +1077,14 @@
         <div id="poems-list-container" style="margin-top: 14px;"></div>
       </div>
 
-      <div class="poem-scroll-card" id="poem-scroll-view">
-        <div class="poem-scroll-header">
+      <div class="scroll-view-card" id="poem-scroll-view">
+        <div class="scroll-view-header">
           <button class="back-btn" style="margin-bottom:0;" onclick="closePoemScroll()">← К списку стихов</button>
           <button class="heart-btn" id="scroll-heart-btn" onclick="toggleFavoriteFromScroll()">🤍</button>
         </div>
-        <div class="poem-scroll-title" id="scroll-title"></div>
-        <div class="poem-scroll-body" id="scroll-body"></div>
-        <div class="poem-scroll-footer" id="scroll-date"></div>
+        <div class="scroll-view-title" id="scroll-title"></div>
+        <div class="scroll-view-body" id="scroll-body"></div>
+        <div class="scroll-view-footer" id="scroll-date"></div>
       </div>
     </div>
 
@@ -1028,7 +1095,6 @@
         <div class="protocol-tag" style="color:#10B981;">Управление Созвездия</div>
         <h1 style="color:#10B981;">Входящие от Лизы</h1>
 
-        <!-- Лента входящих писем от Лизы -->
         <div id="admin-liza-inbox" style="text-align:left; margin-bottom:20px; max-height:220px; overflow-y:auto;"></div>
 
         <div class="protocol-tag" style="color:#10B981;">Ответить Лизе</div>
@@ -1213,7 +1279,9 @@
 
       if (tabId === 'tab-cipher') initCipherGame();
       if (tabId === 'tab-poems') { closePoemScroll(); renderPoemsList(); }
+      if (tabId === 'tab-crystal') closeCrystalScroll();
       if (tabId === 'tab-letters') {
+        closeLetterReader();
         document.getElementById('hub-unread-badge').style.display = 'none';
         localStorage.setItem('last_read_reply_time', Date.now());
       }
@@ -1259,26 +1327,60 @@
       }, 200);
     }
 
-    // 5. Кристалл тайн
+    // 5. Оракул чувств (Кристалл)
     const crystalPredictions = [
-      "Сегодня тебя ждёт улыбка и очень много тепла от Созвездия 🌟",
-      "Звёзды говорят: ты самая красивая кисонька во всей вселенной 🐾",
-      "Твои тревоги скоро рассеются, как звёздная пыль ✨",
-      "Знак свыше: сегодня идеальный день для отдыха и вкусного чая ☕",
-      "Созвездие шепчет: ты сильнее, чем тебе кажется, и тебя безумно любят ❤️",
-      "Впереди тебя ждёт много искреннего смеха и радости 🥰"
+      "Сегодня звёзды сулят тебе спокойствие и очень много нежности от Созвездия 🌟",
+      "Оракул шепчет: ты самая прекрасная и любимая кисонька во всей вселенной 🐾",
+      "Все дневные тревоги скоро растают без следа, уступив место уюту ✨",
+      "Звёздный знак: сегодня идеальный момент, чтобы укутаться в плед и отдохнуть ☕",
+      "Ты сильнее любых преград, а Созвездие всегда бережёт твой покой ❤️",
+      "Впереди тебя ждёт много тёплых моментов и искреннего смеха 🥰"
     ];
 
-    function revealPrediction() {
-      const text = document.getElementById('crystal-text');
-      text.style.opacity = '0';
+    function triggerCrystalOracle() {
+      const orb = document.getElementById('crystal-orb');
+      orb.classList.add('charging');
+
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      for (let i = 0; i < 25; i++) {
+        sparkles.push({
+          x: cx + (Math.random() - 0.5) * 100,
+          y: cy + (Math.random() - 0.5) * 100,
+          size: Math.random() * 3 + 1.5,
+          alpha: 1,
+          color: Math.random() > 0.4 ? '#F59E0B' : '#FFFFFF'
+        });
+      }
+
       setTimeout(() => {
-        text.innerText = crystalPredictions[Math.floor(Math.random() * crystalPredictions.length)];
-        text.style.opacity = '1';
-      }, 200);
+        orb.classList.remove('charging');
+        const mainCard = document.getElementById('crystal-main-card');
+        const scrollView = document.getElementById('crystal-scroll-view');
+        const text = crystalPredictions[Math.floor(Math.random() * crystalPredictions.length)];
+
+        document.getElementById('crystal-scroll-text').innerText = text;
+        mainCard.style.display = 'none';
+        scrollView.style.display = 'block';
+        setTimeout(() => {
+          scrollView.style.opacity = '1';
+          scrollView.style.transform = 'scale(1)';
+        }, 50);
+      }, 1000);
     }
 
-    // 6. Ловец звёзд
+    function closeCrystalScroll() {
+      const mainCard = document.getElementById('crystal-main-card');
+      const scrollView = document.getElementById('crystal-scroll-view');
+      scrollView.style.opacity = '0';
+      scrollView.style.transform = 'scale(0.97)';
+      setTimeout(() => {
+        scrollView.style.display = 'none';
+        mainCard.style.display = 'block';
+      }, 350);
+    }
+
+    // 6. Ловец звёзд с анимацией вспышки и +10
     let gameScore = 0;
     let gameTime = 30;
     let gameInterval = null;
@@ -1299,12 +1401,10 @@
       gameInterval = setInterval(() => {
         gameTime--;
         document.getElementById('game-timer').innerText = gameTime;
-        if (gameTime <= 0) {
-          endGame();
-        }
+        if (gameTime <= 0) endGame();
       }, 1000);
 
-      spawnInterval = setInterval(spawnGameStar, 600);
+      spawnInterval = setInterval(spawnGameStar, 550);
     }
 
     function spawnGameStar() {
@@ -1312,11 +1412,11 @@
       const star = document.createElement('div');
       star.className = 'game-star';
       star.innerText = Math.random() > 0.3 ? '⭐' : '🌟';
-      star.style.left = (Math.random() * (box.clientWidth - 40)) + 'px';
-      star.style.top = '-40px';
+      star.style.left = (Math.random() * (box.clientWidth - 45)) + 'px';
+      star.style.top = '-45px';
       box.appendChild(star);
 
-      let topPos = -40;
+      let topPos = -45;
       const speed = Math.random() * 3 + 2.5;
 
       const move = setInterval(() => {
@@ -1328,11 +1428,36 @@
         }
       }, 20);
 
-      star.onclick = () => {
+      star.onclick = (e) => {
         gameScore += 10;
         document.getElementById('game-score').innerText = gameScore;
         clearInterval(move);
-        if (box.contains(star)) box.removeChild(star);
+
+        // Вспышка и растворение
+        star.classList.add('caught');
+
+        // Всплывающий индикатор +10
+        const scorePop = document.createElement('div');
+        scorePop.className = 'floating-score';
+        scorePop.innerText = '+10 ⭐';
+        scorePop.style.left = star.style.left;
+        scorePop.style.top = star.style.top;
+        box.appendChild(scorePop);
+        setTimeout(() => { if (box.contains(scorePop)) box.removeChild(scorePop); }, 700);
+
+        // Искры
+        const rect = star.getBoundingClientRect();
+        for (let i = 0; i < 6; i++) {
+          sparkles.push({
+            x: rect.left + rect.width / 2 + (Math.random() - 0.5) * 20,
+            y: rect.top + rect.height / 2 + (Math.random() - 0.5) * 20,
+            size: Math.random() * 2.5 + 1.5,
+            alpha: 1,
+            color: '#F59E0B'
+          });
+        }
+
+        setTimeout(() => { if (box.contains(star)) box.removeChild(star); }, 150);
       };
     }
 
@@ -1340,12 +1465,77 @@
       clearInterval(gameInterval);
       clearInterval(spawnInterval);
       const box = document.getElementById('star-catcher-box');
-      box.innerHTML = `<div style="padding:40px 10px; font-family:'Playfair Display', serif; font-size:1.1rem; color:#FEF3C7;">Охота завершена! ✨<br>Ты поймала звёзд на <b>${gameScore}</b> очков.<br>Твой статус: <b>Хранительница сердца</b> ❤️</div>`;
+      box.innerHTML = `<div style="padding:45px 10px; font-family:'Playfair Display', serif; font-size:1.1rem; color:#FEF3C7; text-align:center;">Охота завершена! ✨<br>Ты поймала звёзд на <b>${gameScore}</b> очков.<br>Твой ранг: <b>Хранительница сердца</b> ❤️</div>`;
       document.getElementById('game-start-btn').style.display = 'block';
       document.getElementById('game-start-btn').innerText = 'Сыграть ещё раз 💫';
     }
 
-    // 7. СИНХРОНИЗАЦИЯ ЧЕРЕЗ FIREBASE
+    // 7. СИНХРОНИЗАЦИЯ ПИСЕМ И КУПОНОВ (FIREBASE)
+    let lettersFeedMode = 'replies';
+    let rawRepliesData = {};
+    let rawOutboxData = {};
+
+    function switchLettersFeed(mode) {
+      lettersFeedMode = mode;
+      document.getElementById('tab-btn-replies').classList.toggle('active', mode === 'replies');
+      document.getElementById('tab-btn-outbox').classList.toggle('active', mode === 'outbox');
+      renderLettersList();
+    }
+
+    function renderLettersList() {
+      const container = document.getElementById('letters-feed-container');
+      const data = lettersFeedMode === 'replies' ? rawRepliesData : rawOutboxData;
+      const list = Object.values(data || {}).reverse();
+
+      if (list.length === 0) {
+        container.innerHTML = `<div style="padding:20px; color:#94A3B8; font-size:0.85rem;">Здесь пока нет писем.</div>`;
+        return;
+      }
+
+      container.innerHTML = list.map((item, idx) => `
+        <div class="letter-list-item" onclick="openLetterReader('${lettersFeedMode}', ${idx})">
+          <div class="letter-item-header">
+            <span>${lettersFeedMode === 'replies' ? '✦ Созвездие' : '💌 Вы'}</span>
+            <span>${item.date}</span>
+          </div>
+          <div class="letter-item-preview">${item.text}</div>
+        </div>
+      `).join('');
+    }
+
+    function openLetterReader(mode, idx) {
+      const data = mode === 'replies' ? rawRepliesData : rawOutboxData;
+      const list = Object.values(data || {}).reverse();
+      const item = list[idx];
+      if (!item) return;
+
+      const mainCard = document.getElementById('letters-main-card');
+      const reader = document.getElementById('letter-scroll-reader');
+
+      document.getElementById('reader-author-tag').innerText = mode === 'replies' ? 'Ответ Созвездия' : 'Ваше письмо';
+      document.getElementById('reader-title').innerText = mode === 'replies' ? 'Послание от Созвездия' : 'Письмо в Созвездие';
+      document.getElementById('reader-body').innerText = item.text;
+      document.getElementById('reader-date').innerText = item.date;
+
+      mainCard.style.display = 'none';
+      reader.style.display = 'block';
+      setTimeout(() => {
+        reader.style.opacity = '1';
+        reader.style.transform = 'scale(1)';
+      }, 50);
+    }
+
+    function closeLetterReader() {
+      const mainCard = document.getElementById('letters-main-card');
+      const reader = document.getElementById('letter-scroll-reader');
+      reader.style.opacity = '0';
+      reader.style.transform = 'scale(0.97)';
+      setTimeout(() => {
+        reader.style.display = 'none';
+        mainCard.style.display = 'block';
+      }, 350);
+    }
+
     function sendLetterToConstellation() {
       const text = document.getElementById('liza-letter-text').value.trim();
       if (!text) return;
@@ -1358,34 +1548,15 @@
       }).then(() => {
         alert("Письмо успешно доставлено в самое сердце Созвездия ✨");
         document.getElementById('liza-letter-text').value = '';
-      }).catch(err => {
-        alert("Ошибка отправки. Проверьте соединение.");
       });
     }
 
-    // Прослушивание ответов Созвездия (для Лизы)
+    // Слушатели базы данных
     db.ref('replies_from_constellation').on('value', (snapshot) => {
-      const data = snapshot.val();
-      const feed = document.getElementById('constellation-replies-feed');
-      if (!data) {
-        feed.innerHTML = `
-          <div class="incoming-letter-card">
-            <div class="incoming-letter-header"><span>✦ Созвездие</span><span>Навсегда</span></div>
-            <div class="incoming-letter-body">Каждое твоё слово сохраняется в самом сердце этого созвездия. Я всегда рядом и всегда тебя слышу ❤️</div>
-          </div>
-        `;
-        return;
-      }
+      rawRepliesData = snapshot.val() || {};
+      if (lettersFeedMode === 'replies') renderLettersList();
 
-      const list = Object.values(data).reverse();
-      feed.innerHTML = list.map(r => `
-        <div class="incoming-letter-card">
-          <div class="incoming-letter-header"><span>✦ Созвездие</span><span>${r.date}</span></div>
-          <div class="incoming-letter-body">${r.text}</div>
-        </div>
-      `).join('');
-
-      // Проверка непрочитанных
+      const list = Object.values(rawRepliesData).reverse();
       const lastRead = parseInt(localStorage.getItem('last_read_reply_time') || '0', 10);
       const latest = list[0];
       if (latest && latest.timestamp > lastRead) {
@@ -1393,15 +1564,17 @@
       }
     });
 
-    // Прослушивание писем Лизы (для тебя в админке)
     db.ref('letters_from_liza').on('value', (snapshot) => {
-      const data = snapshot.val();
+      rawOutboxData = snapshot.val() || {};
+      if (lettersFeedMode === 'outbox') renderLettersList();
+
+      // Отображение входящих для тебя в панели
       const inbox = document.getElementById('admin-liza-inbox');
-      if (!data) {
+      const list = Object.values(rawOutboxData).reverse();
+      if (list.length === 0) {
         inbox.innerHTML = `<p style="color:#94A3B8; font-size:0.85rem;">Писем от Лизы пока нет.</p>`;
         return;
       }
-      const list = Object.values(data).reverse();
       inbox.innerHTML = list.map(m => `
         <div style="background:rgba(2,6,23,0.8); border:1px solid #10B981; border-radius:10px; padding:10px; margin-bottom:8px;">
           <div style="font-size:0.75rem; color:#10B981; margin-bottom:4px;">${m.date}</div>
@@ -1410,6 +1583,7 @@
       `).join('');
     });
 
+    // Публикация ответа без сброса панели
     function postAdminReply() {
       const text = document.getElementById('admin-reply-text').value.trim();
       if (!text) return;
@@ -1420,13 +1594,12 @@
         date: dateStr,
         timestamp: Date.now()
       }).then(() => {
-        alert("Ответ успешно опубликован!");
+        alert("Ответ опубликован в Убежище ✨");
         document.getElementById('admin-reply-text').value = '';
-        switchTab('tab-letters');
       });
     }
 
-    // Тройной клик для админки
+    // Тройной клик по бейджу
     let adminClickCount = 0;
     let adminClickTimer = null;
 
@@ -1441,7 +1614,54 @@
       }
     }
 
-    // 8. СБОРНИК СТИХОВ (10 штук без дат и городов)
+    // 8. КУПОНЫ СИНХРОНИЗИРОВАННЫЕ В FIREBASE
+    const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+    let liveCouponsData = {};
+
+    function useCoupon(couponId) {
+      db.ref(`coupons_state/${couponId}`).set(Date.now());
+    }
+
+    db.ref('coupons_state').on('value', (snapshot) => {
+      liveCouponsData = snapshot.val() || {};
+      updateCouponsUI();
+    });
+
+    function updateCouponsUI() {
+      const now = Date.now();
+      const coupons = ['coupon-1', 'coupon-2', 'coupon-3', 'coupon-4', 'coupon-5'];
+
+      coupons.forEach(id => {
+        const card = document.getElementById(id);
+        if (!card) return;
+        const btn = card.querySelector('.coupon-btn');
+        const timer = document.getElementById(`timer-${id}`);
+        const usedTime = liveCouponsData[id];
+
+        if (usedTime && (now - usedTime < COOLDOWN_MS)) {
+          const remaining = COOLDOWN_MS - (now - usedTime);
+          const hours = Math.floor(remaining / (1000 * 60 * 60));
+          const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+          card.classList.add('used');
+          btn.classList.add('disabled');
+          btn.disabled = true;
+          btn.innerText = "Погашен";
+          timer.innerText = `⏳ Восстановится через: ${hours}ч ${minutes}м ${seconds}с`;
+        } else {
+          card.classList.remove('used');
+          btn.classList.remove('disabled');
+          btn.disabled = false;
+          btn.innerText = "Погасить";
+          timer.innerText = "";
+        }
+      });
+    }
+
+    setInterval(updateCouponsUI, 1000);
+
+    // 9. СБОРНИК ИЗ 10 СТИХОТВОРЕНИЙ
     const poemsDatabase = [
       {
         id: "poem-1",
@@ -1602,7 +1822,7 @@
       currentlyOpenPoemId = null;
     }
 
-    // 9. Шифры
+    // 10. Шифры
     const secretCodes = {
       "290805": {
         header: "Послание от Созвездия \"Аноним\"",
@@ -1785,7 +2005,7 @@
       if (e.key === 'Enter') checkFinalCode();
     });
 
-    // 10. Аптечка настроения (30 неповторяющихся фраз)
+    // 11. Аптечка настроения (30 фраз)
     const supportQuotes = [
       "Вдохни глубоко и медленно выдохни. Ты со всем справишься, а я рядом ❤️",
       "Ты не обязана быть идеальной для кого-то. Для меня ты уже самое дорогое чудо.",
@@ -1832,60 +2052,6 @@
         box.style.opacity = '1';
       }, 200);
     }
-
-    // 11. Купоны желаний
-    const COOLDOWN_MS = 24 * 60 * 60 * 1000;
-
-    function getCouponData() {
-      try { return JSON.parse(localStorage.getItem('constellation_coupons')) || {}; } catch (e) { return {}; }
-    }
-
-    function setCouponData(data) {
-      try { localStorage.setItem('constellation_coupons', JSON.stringify(data)); } catch (e) {}
-    }
-
-    function useCoupon(couponId) {
-      const data = getCouponData();
-      data[couponId] = Date.now();
-      setCouponData(data);
-      updateCouponsUI();
-    }
-
-    function updateCouponsUI() {
-      const data = getCouponData();
-      const now = Date.now();
-      const coupons = ['coupon-1', 'coupon-2', 'coupon-3', 'coupon-4', 'coupon-5'];
-
-      coupons.forEach(id => {
-        const card = document.getElementById(id);
-        if (!card) return;
-        const btn = card.querySelector('.coupon-btn');
-        const timer = document.getElementById(`timer-${id}`);
-        const usedTime = data[id];
-
-        if (usedTime && (now - usedTime < COOLDOWN_MS)) {
-          const remaining = COOLDOWN_MS - (now - usedTime);
-          const hours = Math.floor(remaining / (1000 * 60 * 60));
-          const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-
-          card.classList.add('used');
-          btn.classList.add('disabled');
-          btn.disabled = true;
-          btn.innerText = "Погашен";
-          timer.innerText = `⏳ Восстановится через: ${hours}ч ${minutes}м ${seconds}с`;
-        } else {
-          card.classList.remove('used');
-          btn.classList.remove('disabled');
-          btn.disabled = false;
-          btn.innerText = "Погасить";
-          timer.innerText = "";
-        }
-      });
-    }
-
-    setInterval(updateCouponsUI, 1000);
-    updateCouponsUI();
 
     // 12. Живое небо по Московскому времени (МСК)
     function applyTimeOfDay() {

@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Убежище Созвездия</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #060810;
+      color: #E2E8F0;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+      padding: 75px 16px 30px;
+    }
+
+    /* Фоновые туманности */
+    .nebula {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 20s infinite alternate ease-in-out;
+    }
+
+    .nebula-1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #3b1d60 0%, rgba(27, 39, 53, 0) 70%);
+      top: -100px;
+      left: -100px;
+    }
+
+    .nebula-2 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #1a365d 0%, rgba(6, 8, 16, 0) 70%);
+      bottom: -150px;
+      right: -100px;
+      animation-duration: 25s;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 30px) scale(1.15); }
+    }
+
+    #stars-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Верхняя панель */
+    .top-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      max-width: 560px;
+      margin: 0 auto;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu-toggle-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: #F59E0B;
+      border-radius: 12px;
+      padding: 10px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .menu-toggle-btn:hover {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #F59E0B;
+    }
+
+    .status-badge {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: #94A3B8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10B981;
+    }
+
+    /* Сайдбар */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 110;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 290px;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.96);
+      border-right: 1px solid rgba(212, 175, 55, 0.3);
+      backdrop-filter: blur(16px);
+      z-index: 120;
+      padding: 70px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 10px 0 30px rgba(0,0,0,0.7);
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .nav-btn {
+      background: rgba(2, 6, 23, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #CBD5E1;
+      font-size: 0.9rem;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #F59E0B;
+      color: #FFF;
+    }
+
+    /* Контейнер */
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 540px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 25px rgba(212, 175, 55, 0.15);
+      text-align: center;
+      position: relative;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      color: #94A3B8;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-bottom: 16px;
+      transition: color 0.2s;
+    }
+
+    .back-btn:hover {
+      color: #F59E0B;
+    }
+
+    .protocol-tag {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: #F59E0B;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      color: #F8FAFC;
+      font-size: 1.25rem;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .subtitle {
+      color: #94A3B8;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    /* Главный хаб */
+    .hub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .hub-item {
+      background: rgba(2, 6, 23, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 14px;
+      padding: 18px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .hub-item:hover {
+      border-color: #F59E0B;
+      background: rgba(245, 158, 11, 0.12);
+      transform: translateY(-3px);
+    }
+
+    .hub-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .hub-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #F1F5F9;
+    }
+
+    /* Аптечка */
+    .support-box {
+      background: rgba(2, 6, 23, 0.7);
+      border: 1px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 14px;
+      padding: 24px;
+      margin: 20px 0;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #FEF3C7;
+      text-align: center;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Купоны */
+    .coupon-card {
+      background: rgba(2, 6, 23, 0.65);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      transition: all 0.3s ease;
+    }
+
+    .coupon-card.used {
+      border-color: rgba(148, 163, 184, 0.2);
+      background: rgba(2, 6, 23, 0.4);
+    }
+
+    .coupon-info h3 {
+      font-size: 0.92rem;
+      color: #F8FAFC;
+      margin-bottom: 4px;
+    }
+
+    .coupon-info p {
+      font-size: 0.78rem;
+      color: #94A3B8;
+    }
+
+    .coupon-timer {
+      font-size: 0.75rem;
+      color: #F59E0B;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .coupon-btn {
+      background: #D97706;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .coupon-btn:hover {
+      background: #B45309;
+    }
+
+    .coupon-btn.disabled {
+      background: #334155;
+      color: #94A3B8;
+      cursor: not-allowed;
+    }
+
+    /* Таймлайн */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: rgba(212, 175, 55, 0.3);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -24px;
+      top: 4px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #F59E0B;
+      box-shadow: 0 0 8px #F59E0B;
+    }
+
+    .timeline-date {
+      font-size: 0.75rem;
+      color: #F59E0B;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .timeline-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #F1F5F9;
+      margin: 2px 0 4px;
+    }
+
+    .timeline-desc {
+      font-size: 0.85rem;
+      color: #94A3B8;
+      line-height: 1.5;
+    }
+
+    /* Свиток стихов */
+    .poem-card {
+      background: #FAF7F2;
+      color: #2D3748;
+      border-radius: 18px;
+      padding: 34px 26px;
+      text-align: left;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      border: 1px solid #E2E8F0;
+      margin-bottom: 20px;
+    }
+
+    .poem-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: #92400E;
+      text-align: center;
+      margin-bottom: 18px;
+      border-bottom: 1px dashed #CBD5E1;
+      padding-bottom: 12px;
+    }
+
+    .poem-body {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.85;
+      white-space: pre-line;
+      color: #334155;
+      text-align: center;
+    }
+
+    /* Кнопки и инпуты шифра */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .option-btn {
+      background: rgba(2, 6, 23, 0.65);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 0.9rem;
+      color: #F1F5F9;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .option-btn:hover {
+      border-color: #F59E0B;
+      background: rgba(245, 158, 11, 0.12);
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background: rgba(2, 6, 23, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 1.35rem;
+      letter-spacing: 6px;
+      text-align: center;
+      color: #F1F5F9;
+      outline: none;
+      font-family: 'Cinzel', monospace;
+    }
+
+    input[type="text"]:focus {
+      border-color: #F59E0B;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+      color: #FFF;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(217, 119, 6, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    }
+
+    .error-msg {
+      color: #F87171;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      min-height: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .error-msg.visible {
+      opacity: 1;
+    }
+
+    .shake {
+      animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nebula nebula-1"></div>
+  <div class="nebula nebula-2"></div>
+
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- Верхний бар -->
+  <div class="top-nav">
+    <button class="menu-toggle-btn" onclick="toggleSidebar()">
+      <span>☰</span> Меню Убежища
+    </button>
+    <div class="status-badge">
+      <div class="status-dot"></div>
+      <span>Созвездие активно</span>
+    </div>
+  </div>
+
+  <!-- Сайдбар -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+  <div class="sidebar" id="sidebar">
+    <button class="nav-btn active" onclick="switchTab('tab-home')">
+      <span>🌌</span> Главный хаб
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-cipher')">
+      <span>🔑</span> Ввести шифр
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-support')">
+      <span>💊</span> Аптечка настроения
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-coupons')">
+      <span>🎟️</span> Купоны и желания
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-timeline')">
+      <span>⏳</span> Звёздная хроника
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-poems')">
+      <span>📜</span> Свиток стихов
+    </button>
+  </div>
+
+  <div class="container">
+    
+    <!-- 1. ГЛАВНЫЙ ХАБ -->
+    <div class="tab-content active" id="tab-home">
+      <div class="card">
+        <div class="protocol-tag">Личное пространство Лизы</div>
+        <h1 id="greeting-title">Добро пожаловать в Убежище</h1>
+        <p class="subtitle">Здесь тихо, безопасно и тебя всегда очень сильно любят. Выбирай любой раздел:</p>
+
+        <div class="hub-grid">
+          <div class="hub-item" onclick="switchTab('tab-support')">
+            <div class="hub-icon">💊</div>
+            <div class="hub-title">Аптечка тепла</div>
+          </div>
+          <div class="hub-item" onclick="switchTab('tab-coupons')">
+            <div class="hub-icon">🎟️</div>
+            <div class="hub-title">Купоны</div>
+          </div>
+          <div class="hub-item" onclick="switchTab('tab-timeline')">
+            <div class="hub-icon">⏳</div>
+            <div class="hub-title">Хроника дат</div>
+          </div>
+          <div class="hub-item" onclick="switchTab('tab-poems')">
+            <div class="hub-icon">📜</div>
+            <div class="hub-title">Стихи</div>
+          </div>
+        </div>
+
+        <button class="submit-btn" style="margin-top: 20px;" onclick="switchTab('tab-cipher')">
+          Перейти к вводу шифра 🔑
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. ВВОД ШИФРА -->
+    <div class="tab-content" id="tab-cipher">
+      <div class="card" id="lock-screen">
+        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
+        <div class="protocol-tag" id="q-tag">Верификация Созвездия</div>
+        <h1 id="q-title">Вопрос</h1>
+        <p class="subtitle" id="q-desc">Выбери ответ:</p>
+
+        <div class="options-grid" id="options-container"></div>
+
+        <div class="input-group" id="input-container" style="display: none;">
+          <input type="text" id="secret-code" maxlength="6" placeholder="______" autocomplete="off">
+        </div>
+
+        <button class="submit-btn" id="submit-btn" style="display: none;" onclick="checkFinalCode()">Расшифровать</button>
+        <div class="error-msg" id="error-msg">Неверный выбор</div>
+      </div>
+
+      <div class="tab-content" id="letter-container">
+        <div class="poem-card">
+          <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
+          <div class="poem-title">Послание от Созвездия "Аноним"</div>
+          <div class="poem-body">Любимая кисонька,
+
+Этот код — просто ключ, а главное сокровище — это ты.
+
+Я хочу пожелать тебе спокойствия, лёгкости и уверенности в каждом шаге. Когда кажется, что всё давит, не забывай, насколько ты стойкая и потрясающая. Никакие чужие слова или сложные дни не способны изменить того, насколько ты прекрасна.
+
+Даже сквозь любые километры — я всегда рядом с тобой. Буду твоей поддержкой в любой момент, когда тебе это нужно. Очень сильно тебя люблю.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. АПТЕЧКА НАСТРОЕНИЯ -->
+    <div class="tab-content" id="tab-support">
+      <div class="card">
+        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
+        <div class="protocol-tag">Генератор тепла</div>
+        <h1>Аптечка настроения</h1>
+        <p class="subtitle">Если на душе тяжело или просто хочется улыбнуться — нажми на кнопку:</p>
+
+        <div class="support-box" id="support-box">
+          Нажми кнопку ниже, чтобы получить тёплое послание ✨
+        </div>
+
+        <button class="submit-btn" onclick="getRandomSupport()">
+          Нужна порция любви 💖
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. КУПОНЫ И ЖЕЛАНИЯ -->
+    <div class="tab-content" id="tab-coupons">
+      <div class="card">
+        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
+        <div class="protocol-tag">Интерактивные призы</div>
+        <h1>Купоны и желания</h1>
+        <p class="subtitle">После использования купон перезаряжается в течение 24 часов:</p>
+
+        <div class="coupon-card" id="coupon-1">
+          <div class="coupon-info">
+            <h3>Внеочередная доставка вкусностей</h3>
+            <p>Любая еда по твоему выбору за мой счёт 🍕</p>
+            <div class="coupon-timer" id="timer-coupon-1"></div>
+          </div>
+          <button class="coupon-btn" onclick="useCoupon('coupon-1')">Погасить</button>
+        </div>
+
+        <div class="coupon-card" id="coupon-2">
+          <div class="coupon-info">
+            <h3>Вечер твоего фильма</h3>
+            <p>Смотрим абсолютно всё, что ты выберешь, без споров 🎬</p>
+            <div class="coupon-timer" id="timer-coupon-2"></div>
+          </div>
+          <button class="coupon-btn" onclick="useCoupon('coupon-2')">Погасить</button>
+        </div>
+
+        <div class="coupon-card" id="coupon-3">
+          <div class="coupon-info">
+            <h3>Безлимитные обнимашки</h3>
+            <p>Действует бесконечно при первой же встрече 🫂</p>
+            <div class="coupon-timer" id="timer-coupon-3"></div>
+          </div>
+          <button class="coupon-btn" onclick="useCoupon('coupon-3')">Погасить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. ЗВЁЗДНАЯ ХРОНИКА -->
+    <div class="tab-content" id="tab-timeline">
+      <div class="card">
+        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в хаб</button>
+        <div class="protocol-tag">Таймлайн Созвездия</div>
+        <h1>Звёздная хроника</h1>
+        <p class="subtitle">Наша маленькая история в ключевых моментах:</p>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">ТОЧКА КОНТАКТА</div>
+            <div class="timeline-title">Пересечение на Мангабаффе</div>
+            <div class="timeline-desc">День, когда наши орбиты сошлись в одном клубе.</div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">29 АВГУСТА</div>
+            <div class="timeline-desc">День рождения самой прекрасной девушки во всей вселенной ✨</div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">В ПРОЦЕССЕ</div>
+            <div class="timeline-title">Тысячи сообщений и звонков</div>
+            <div class="timeline-desc">Совместные киносеансы, смех до ночи и разговоры обо всём на свете.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. СТИХИ -->
+    <div class="tab-content" id="tab-poems">
+      <div class="card" style="padding: 20px 20px 10px; margin-bottom: 16px;">
+        <button class="back-btn" style="margin-bottom: 0;" onclick="switchTab('tab-home')">← Назад в хаб</button>
+      </div>
+      <div class="poem-card">
+        <div class="poem-title">Созвездие в твоих глазах</div>
+        <div class="poem-body">Сквозь километры тихих звёзд
+Твой свет струится в полумраке.
+С тобой исчез былой мороз,
+Оставив искренние знаки.
+
+Здесь нет тревоги и потерь,
+Укутает покой просторы.
+Ты только в силы свои верь,
+Мы вместе сдвинем эти горы.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 1. Канвас: звёзды, метеоры и пыльца от пальца/мыши
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    let meteors = [];
+    let sparkles = [];
+
+    function addSparkle(x, y) {
+      for (let i = 0; i < 2; i++) {
+        sparkles.push({
+          x: x + (Math.random() - 0.5) * 12,
+          y: y + (Math.random() - 0.5) * 12,
+          size: Math.random() * 2.2 + 1,
+          alpha: 1,
+          color: Math.random() > 0.4 ? '#F59E0B' : '#FFFFFF'
+        });
+      }
+    }
+
+    window.addEventListener('mousemove', (e) => addSparkle(e.clientX, e.clientY));
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        addSparkle(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      createStars();
+    }
+
+    function createStars() {
+      stars = [];
+      const count = Math.floor((canvas.width * canvas.height) / 3200);
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.5 + 0.5,
+          alpha: Math.random(),
+          speed: 0.006 + Math.random() * 0.015
+        });
+      }
+    }
+
+    function spawnMeteor() {
+      meteors.push({
+        x: Math.random() * canvas.width * 1.2,
+        y: -50,
+        length: Math.random() * 70 + 40,
+        speed: Math.random() * 6 + 5,
+        angle: Math.PI / 4,
+        alpha: 1
+      });
+      setTimeout(spawnMeteor, Math.random() * 4000 + 3500);
+    }
+
+    function renderLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Линии созвездий
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 80) {
+            ctx.beginPath();
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.strokeStyle = `rgba(212, 175, 55, ${0.1 * (1 - dist / 80)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Звёзды
+      stars.forEach(star => {
+        star.alpha += star.speed;
+        const currentAlpha = Math.abs(Math.sin(star.alpha));
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha * 0.85})`;
+        ctx.fill();
+      });
+
+      // Метеоры
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i];
+        m.x += Math.cos(m.angle) * m.speed;
+        m.y += Math.sin(m.angle) * m.speed;
+        m.alpha -= 0.01;
+
+        if (m.alpha <= 0 || m.x > canvas.width + 100 || m.y > canvas.height + 100) {
+          meteors.splice(i, 1);
+        } else {
+          ctx.save();
+          const tailX = m.x - Math.cos(m.angle) * m.length;
+          const tailY = m.y - Math.sin(m.angle) * m.length;
+          const grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
+          grad.addColorStop(0, `rgba(255, 255, 255, ${m.alpha})`);
+          grad.addColorStop(1, `rgba(245, 158, 11, 0)`);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(m.x, m.y);
+          ctx.lineTo(tailX, tailY);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+
+      // Звёздная пыльца
+      for (let i = sparkles.length - 1; i >= 0; i--) {
+        const sp = sparkles[i];
+        sp.y += 0.4;
+        sp.alpha -= 0.02;
+
+        if (sp.alpha <= 0) {
+          sparkles.splice(i, 1);
+        } else {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
+          ctx.fillStyle = sp.color;
+          ctx.globalAlpha = sp.alpha;
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = sp.color;
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      requestAnimationFrame(renderLoop);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    setTimeout(spawnMeteor, 1500);
+    renderLoop();
+
+    // 2. Навигация и сайдбар
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+      document.getElementById('sidebar-overlay').classList.toggle('active');
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+
+      const matchingNav = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (matchingNav) matchingNav.classList.add('active');
+
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('active')) {
+        toggleSidebar();
+      }
+
+      if (tabId === 'tab-cipher') {
+        initCipherGame();
+      }
+    }
+
+    // 3. 30 тёплых предложений без повторений
+    const supportQuotes = [
+      "Вдохни глубоко и медленно выдохни. Ты со всем справишься, а я рядом ❤️",
+      "Ты не обязана быть идеальной для кого-то. Для меня ты уже самое дорогое чудо.",
+      "Даже когда вокруг шторм, помни: ты невероятно стойкая и любимая кисонька 🐾",
+      "Сложные дни обязательно пройдут, а моя поддержка останется с тобой навсегда.",
+      "Никакие километры не отменят того, как сильно бьётся моё сердце, когда я думаю о тебе.",
+      "Улыбнись прямо сейчас — твоя улыбка освещает весь мой мир ✨",
+      "Если сегодня тяжело — просто отдохни. Ты уже сделала достаточно.",
+      "Я всегда на твоей стороне, в любой ситуации и против любых невзгод.",
+      "Помни, что ты никогда не останешься одна со своими переживаниями.",
+      "Ты делаешь этот мир теплее просто тем, что ты в нём есть 🌟",
+      "Мои мысли и объятия с тобой каждую минуту, где бы ты ни находилась.",
+      "Не позволяй чужому плохому настроению затмить твой внутренний свет.",
+      "Ты невероятно талантливая, умная и красивая — никогда не сомневайся в этом.",
+      "Спрячься ненадолго в нашем убежище и почувствуй, как сильно ты любима.",
+      "Пусть этот день станет чуточку мягче и добрее к тебе.",
+      "Ты — моё главное созвездие, сияющее ярче всех звёзд на небе ✨",
+      "Все трудности временны, а впереди нас ждёт столько счастливых моментов.",
+      "Береги себя, не забывай кушать и пить тёплый чай ☕",
+      "Твой покой и счастье для меня важнее всего на свете.",
+      "Горжусь каждым твоим маленьким и большим шагом вперёд.",
+      "Когда кажется, что опускаются руки, просто вспомни, что я держу тебя за руку.",
+      "Ты заслуживаешь самого бережного, нежного и доброго отношения.",
+      "Спасибо тебе за то, какая ты удивительная. Ты моё вдохновение.",
+      "Никакой шум вокруг не изменит того, насколько ты чистая и светлая душа.",
+      "Позволь себе выдохнуть и отпустить всё лишнее. Ты в безопасности.",
+      "Шлю тебе самый крепкий и нежный заряд космического тепла 💫",
+      "Для меня ты всегда на первом месте.",
+      "Даже сквозь расстояние я чувствую твою улыбку и улыбаюсь в ответ.",
+      "Ты справишься со всем, что бы ни приготовил этот день, а я подстрахую.",
+      "Очень сильно тебя люблю. Помни об этом каждую секунду ❤️"
+    ];
+
+    let quoteDeck = [];
+
+    function getRandomSupport() {
+      const box = document.getElementById('support-box');
+      if (quoteDeck.length === 0) {
+        quoteDeck = [...supportQuotes].sort(() => Math.random() - 0.5);
+      }
+      const quote = quoteDeck.pop();
+
+      box.style.opacity = '0';
+      setTimeout(() => {
+        box.innerText = quote;
+        box.style.opacity = '1';
+      }, 200);
+    }
+
+    // 4. Купоны с кулдауном 24 часа и сохранением в LocalStorage
+    const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 часа
+
+    function getCouponData() {
+      try {
+        return JSON.parse(localStorage.getItem('constellation_coupons')) || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function setCouponData(data) {
+      try {
+        localStorage.setItem('constellation_coupons', JSON.stringify(data));
+      } catch (e) {}
+    }
+
+    function useCoupon(couponId) {
+      const data = getCouponData();
+      data[couponId] = Date.now();
+      setCouponData(data);
+      updateCouponsUI();
+    }
+
+    function updateCouponsUI() {
+      const data = getCouponData();
+      const now = Date.now();
+      const coupons = ['coupon-1', 'coupon-2', 'coupon-3'];
+
+      coupons.forEach(id => {
+        const card = document.getElementById(id);
+        const btn = card.querySelector('.coupon-btn');
+        const timer = document.getElementById(`timer-${id}`);
+        const usedTime = data[id];
+
+        if (usedTime && (now - usedTime < COOLDOWN_MS)) {
+          const remaining = COOLDOWN_MS - (now - usedTime);
+          const hours = Math.floor(remaining / (1000 * 60 * 60));
+          const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+          card.classList.add('used');
+          btn.classList.add('disabled');
+          btn.disabled = true;
+          btn.innerText = "Погашен";
+          timer.innerText = `⏳ Восстановится через: ${hours}ч ${minutes}м ${seconds}с`;
+        } else {
+          card.classList.remove('used');
+          btn.classList.remove('disabled');
+          btn.disabled = false;
+          btn.innerText = "Погасить";
+          timer.innerText = "";
+        }
+      });
+    }
+
+    setInterval(updateCouponsUI, 1000);
+    updateCouponsUI();
+
+    // 5. Время по МСК для приветствия
+    function setTimeGreeting() {
+      const title = document.getElementById('greeting-title');
+      const now = new Date();
+      // Вычисляем текущий час в Москве (Europe/Moscow)
+      const mskHourStr = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Europe/Moscow',
+        hour: 'numeric',
+        hour12: false
+      }).format(now);
+      
+      const hour = parseInt(mskHourStr, 10);
+
+      if (hour >= 5 && hour < 12) {
+        title.innerText = "Доброе утро, кисонька ✨";
+      } else if (hour >= 12 && hour < 18) {
+        title.innerText = "Прекрасного дня, Лиза 🌟";
+      } else if (hour >= 18 && hour < 23) {
+        title.innerText = "Уютного вечера, любимая 🌙";
+      } else {
+        title.innerText = "Доброй и спокойной ночи ✨";
+      }
+    }
+
+    setTimeGreeting();
+
+    // 6. Игра шифра
+    const questionBank = [
+      {
+        question: "Кто здесь самая главная умничка и победитель?",
+        options: [
+          { text: "Конечно же Лиза ✨", isCorrect: true },
+          { text: "Кто-то другой", isCorrect: false },
+          { text: "Только Лиза!", isCorrect: true }
+        ]
+      },
+      {
+        question: "Кто самая красивая, милая и любимая кисонька?",
+        options: [
+          { text: "Елизавета 🐾", isCorrect: true },
+          { text: "Случайный кот", isCorrect: false },
+          { text: "Лиза и только Лиза", isCorrect: true }
+        ]
+      },
+      {
+        question: "Чья улыбка способна затмить сияние всех звёзд созвездия?",
+        options: [
+          { text: "Улыбка Лизы 🌟", isCorrect: true },
+          { text: "Далекая галактика", isCorrect: false },
+          { text: "Моя (Лизина) улыбка", isCorrect: true }
+        ]
+      },
+      {
+        question: "Кого созвездие \"Аноним\" любит больше всех на этом свете?",
+        options: [
+          { text: "Лизу ❤️", isCorrect: true },
+          { text: "Никого", isCorrect: false },
+          { text: "Меня! 🥰", isCorrect: true }
+        ]
+      }
+    ];
+
+    let currentQueue = [];
+    let currentStepIndex = 0;
+
+    function initCipherGame() {
+      currentQueue = [...questionBank].sort(() => Math.random() - 0.5);
+      currentStepIndex = 0;
+      document.getElementById('lock-screen').style.display = 'block';
+      document.getElementById('letter-container').classList.remove('active');
+      renderStep();
+    }
+
+    function renderStep() {
+      const errorMsg = document.getElementById('error-msg');
+      errorMsg.classList.remove('visible');
+
+      if (currentStepIndex < currentQueue.length) {
+        const item = currentQueue[currentStepIndex];
+        document.getElementById('q-tag').innerText = `Вопрос ${currentStepIndex + 1} из ${currentQueue.length}`;
+        document.getElementById('q-title').innerText = item.question;
+        document.getElementById('q-desc').innerText = "Выбери верный ответ:";
+        
+        const optContainer = document.getElementById('options-container');
+        optContainer.style.display = 'flex';
+        optContainer.innerHTML = '';
+        document.getElementById('input-container').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
+
+        item.options.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.innerText = opt.text;
+          btn.onclick = () => {
+            if (opt.isCorrect) {
+              currentStepIndex++;
+              renderStep();
+            } else {
+              showError("Ответ неверный, подумай ещё раз 😉");
+            }
+          };
+          optContainer.appendChild(btn);
+        });
+      } else {
+        document.getElementById('q-tag').innerText = "Финальный протокол";
+        document.getElementById('q-title').innerText = "Введи шестизначный шифр";
+        document.getElementById('q-desc').innerText = "Шифр созвездия:";
+        document.getElementById('options-container').style.display = 'none';
+        document.getElementById('input-container').style.display = 'block';
+        document.getElementById('submit-btn').style.display = 'block';
+        document.getElementById('secret-code').value = '';
+        document.getElementById('secret-code').focus();
+      }
+    }
+
+    function checkFinalCode() {
+      const val = document.getElementById('secret-code').value.trim();
+      if (val === "290805") {
+        document.getElementById('lock-screen').style.display = 'none';
+        document.getElementById('letter-container').classList.add('active');
+      } else {
+        showError("Неверный код");
+      }
+    }
+
+    function showError(msg) {
+      const err = document.getElementById('error-msg');
+      const card = document.getElementById('lock-screen');
+      err.innerText = msg;
+      err.classList.add('visible');
+      card.classList.add('shake');
+      setTimeout(() => card.classList.remove('shake'), 400);
+    }
+
+    document.getElementById('secret-code').addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') checkFinalCode();
+    });
+  </script>
+</body>
+</html>

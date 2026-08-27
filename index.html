@@ -41,7 +41,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: 1;
+      z-index: 50;
       pointer-events: none;
       transform: translateZ(0);
     }
@@ -184,7 +184,7 @@
       color: #FFF;
     }
 
-    /* Основной контейнер страницы */
+    /* Карточки */
     .container {
       position: relative;
       z-index: 2;
@@ -197,7 +197,6 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Плотная карточка без размытия */
     .card {
       background: #0B1120;
       border: 1px solid rgba(212, 175, 55, 0.35);
@@ -252,8 +251,8 @@
       background: #060810;
       border: 1px dashed rgba(245, 158, 11, 0.4);
       border-radius: 16px;
-      padding: 18px 12px;
-      margin-bottom: 16px;
+      padding: 22px 14px;
+      margin-bottom: 18px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -281,24 +280,11 @@
       transition: opacity 0.2s ease;
     }
 
-    /* Интерактивная зона для звёздного шлейфа */
-    .star-drawing-zone {
-      margin: 14px 0;
-      padding: 24px 12px;
-      border-radius: 14px;
-      border: 1px dashed rgba(148, 163, 184, 0.2);
-      background: rgba(6, 8, 16, 0.6);
-      text-align: center;
-      color: #94A3B8;
-      font-size: 0.8rem;
-      user-select: none;
-    }
-
     .hub-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 14px;
+      gap: 12px;
+      margin-top: 10px;
     }
 
     .hub-item {
@@ -334,7 +320,7 @@
       display: none;
     }
 
-    /* Аптечка настроения */
+    /* Аптечка */
     .support-box {
       background: #060810;
       border: 1px solid rgba(245, 158, 11, 0.45);
@@ -480,13 +466,13 @@
     .coupon-btn.disabled { background: #334155; color: #94A3B8; cursor: not-allowed; }
 
     /* Почтовый ящик */
-    .letters-tabs {
+    .subtabs-bar {
       display: flex;
       gap: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
-    .letters-tab-btn {
+    .subtab-btn {
       flex: 1;
       background: #060810;
       border: 1px solid rgba(148, 163, 184, 0.25);
@@ -496,9 +482,10 @@
       font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
-    .letters-tab-btn.active {
+    .subtab-btn.active {
       background: rgba(245, 158, 11, 0.15);
       border-color: #F59E0B;
       color: #F8FAFC;
@@ -556,7 +543,7 @@
       max-width: 100%;
     }
 
-    /* Свитки чтения (Плотные, без прозрачности) */
+    /* Свитки чтения */
     .scroll-view-card {
       background: #FAF7F2;
       color: #2D3748;
@@ -634,6 +621,37 @@
       font-weight: 600;
     }
 
+    /* Шифры: Книга открытых тайн */
+    .vault-card {
+      background: #060810;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .vault-card.locked {
+      border-color: rgba(148, 163, 184, 0.2);
+      cursor: default;
+      opacity: 0.8;
+    }
+
+    .vault-card-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #F59E0B;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .vault-card.locked .vault-card-header { color: #94A3B8; }
+    .vault-card-title { font-size: 0.9rem; color: #F8FAFC; font-weight: 600; margin-bottom: 2px; }
+    .vault-card-hint { font-size: 0.76rem; color: #94A3B8; font-style: italic; }
+
     /* Стихи */
     .poem-filter-bar {
       display: flex;
@@ -676,9 +694,7 @@
     .heart-btn { background: none; border: none; font-size: 1.1rem; cursor: pointer; padding: 4px; }
 
     /* Письма шифра */
-    .letter-wrapper {
-      display: none;
-    }
+    .letter-wrapper { display: none; }
 
     .letter-card {
       background: #FAF7F2;
@@ -919,11 +935,6 @@
           <div class="touch-orb-text" id="touch-text">Прикоснись к созвездию...</div>
         </div>
 
-        <!-- Зона свободного рисования звёздами -->
-        <div class="star-drawing-zone">
-          ✨ Проведи пальцем здесь или по экрану, чтобы зажечь звёздный шлейф ✨
-        </div>
-
         <div class="hub-grid">
           <div class="hub-item" onclick="switchTab('tab-cipher')">
             <div class="hub-icon">🔑</div>
@@ -946,38 +957,57 @@
       </div>
     </div>
 
-    <!-- 2. ВВОД ШИФРА -->
+    <!-- 2. ВВОД ШИФРА И КНИГА ОТКРЫТЫХ ТАЙН -->
     <div class="tab-content" id="tab-cipher">
-      <div class="card" id="lock-screen">
+      <div class="card" id="cipher-main-card">
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
-        <div class="protocol-tag" id="q-tag">Верификация</div>
-        <h1 id="q-title">Вопрос</h1>
-        <p class="subtitle" id="q-desc">Выбери верный ответ:</p>
-
-        <div class="options-grid" id="options-container"></div>
-
-        <div class="input-group" id="input-container" style="display: none;">
-          <input type="text" id="secret-code" maxlength="6" placeholder="______" autocomplete="off">
+        
+        <div class="subtabs-bar">
+          <button class="subtab-btn active" id="btn-subtab-input" onclick="switchCipherSubtab('input')">🔑 Ввести шифр</button>
+          <button class="subtab-btn" id="btn-subtab-vault" onclick="switchCipherSubtab('vault')">📜 Книга тайн</button>
         </div>
 
-        <button class="submit-btn" id="submit-btn" style="display: none;" onclick="checkFinalCode()">Расшифровать</button>
-        <div class="error-msg" id="error-msg">Неверный выбор</div>
+        <!-- 2.1 Подвкладка: Прохождение вопросов и ввод -->
+        <div id="cipher-input-section">
+          <div class="protocol-tag" id="q-tag">Верификация</div>
+          <h1 id="q-title">Вопрос</h1>
+          <p class="subtitle" id="q-desc">Выбери верный ответ:</p>
+
+          <div class="options-grid" id="options-container"></div>
+
+          <div class="input-group" id="input-container" style="display: none;">
+            <input type="text" id="secret-code" maxlength="6" placeholder="______" autocomplete="off">
+          </div>
+
+          <button class="submit-btn" id="submit-btn" style="display: none;" onclick="checkFinalCode()">Расшифровать</button>
+          <div class="error-msg" id="error-msg">Неверный выбор</div>
+        </div>
+
+        <!-- 2.2 Подвкладка: Книга тайн -->
+        <div id="cipher-vault-section" style="display: none;">
+          <div class="protocol-tag">Архив посланий</div>
+          <h1>Книга открытых тайн</h1>
+          <p class="subtitle">Разгаданные послания сохраняются здесь:</p>
+          <div id="vault-list-container"></div>
+        </div>
       </div>
 
+      <!-- Экран чтения открытого шифра -->
       <div class="letter-wrapper" id="letter-screen">
         <div class="letter-card" id="main-letter-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <button class="back-btn" style="margin-bottom:0;" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
+            <button class="back-btn" style="margin-bottom:0;" onclick="closeCipherLetterView()">← К разделу шифров</button>
             <button class="theme-toggle-btn" onclick="toggleGlobalScrollTheme()">🌙 Тёмная</button>
           </div>
-          <div class="letter-header" id="letter-header-text">Послание от Созвездия "Аноним"</div>
+          <div class="letter-header" id="letter-header-text">Послание Созвездия</div>
           <div class="letter-body" id="letter-body-text"></div>
           <div class="letter-signature" id="letter-signature-text">
-            Твоё Созвездие <span class="secret-trigger" onclick="openSecretLetter()" title="Нажми сюда...">✨</span>
+            Твоё Созвездие <span class="secret-trigger" id="secret-trigger-btn" onclick="openSecretLetter()" title="Нажми сюда...">✨</span>
           </div>
         </div>
       </div>
 
+      <!-- Экран чтения секретного фрагмента памяти -->
       <div class="letter-wrapper" id="secret-screen">
         <div class="letter-card secret-theme">
           <div class="letter-header">✦ Секретный фрагмент памяти ✦</div>
@@ -985,7 +1015,7 @@
           <div class="letter-signature" style="color: #F59E0B;">
             Навсегда твой ✨
           </div>
-          <button class="back-btn" style="margin-top: 18px; width: 100%; justify-content: center;" onclick="backToMainLetter()">← Вернуться к первому письму</button>
+          <button class="back-btn" style="margin-top: 18px; width: 100%; justify-content: center;" onclick="backToMainLetter()">← Вернуться к письму</button>
         </div>
       </div>
     </div>
@@ -1075,9 +1105,9 @@
         <button class="submit-btn" onclick="sendLetterToConstellation()">Отправить Созвездию ✨</button>
 
         <div style="margin-top: 20px;">
-          <div class="letters-tabs">
-            <button class="letters-tab-btn active" id="tab-btn-replies" onclick="switchLettersFeed('replies')">✨ Ответы Созвездия</button>
-            <button class="letters-tab-btn" id="tab-btn-outbox" onclick="switchLettersFeed('outbox')">💌 Мои письма</button>
+          <div class="subtabs-bar">
+            <button class="subtab-btn active" id="tab-btn-replies" onclick="switchLettersFeed('replies')">✨ Ответы Созвездия</button>
+            <button class="subtab-btn" id="tab-btn-outbox" onclick="switchLettersFeed('outbox')">💌 Мои письма</button>
           </div>
           <div id="letters-feed-container"></div>
         </div>
@@ -1213,7 +1243,7 @@
   </div>
 
   <script>
-    // 1. FIREBASE
+    // 1. FIREBASE ИНИЦИАЛИЗАЦИЯ
     const firebaseConfig = {
       apiKey: "AIzaSyBIr0vRsNn_g3fR7sPu2032t_pz4W4Nl4o",
       authDomain: "liza-space.firebaseapp.com",
@@ -1227,7 +1257,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 2. ЗВЁЗДНЫЙ ХОЛСТ И ШЛЕЙФ ПРИ КАСАНИИ
+    // 2. ЗВЁЗДНЫЙ ХОЛСТ И ШЛЕЙФ
     const canvas = document.getElementById('stars-canvas');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -1252,24 +1282,28 @@
 
     window.addEventListener('resize', handleResize);
 
-    function addSparkle(x, y) {
-      for (let i = 0; i < 3; i++) {
+    function triggerSparkles(clientX, clientY) {
+      for (let i = 0; i < 4; i++) {
         sparkles.push({
-          x: x + (Math.random() - 0.5) * 16,
-          y: y + (Math.random() - 0.5) * 16,
-          size: Math.random() * 2.8 + 1.2,
+          x: clientX + (Math.random() - 0.5) * 22,
+          y: clientY + (Math.random() - 0.5) * 22,
+          size: Math.random() * 3 + 1.5,
           alpha: 1,
-          color: Math.random() > 0.35 ? '#F59E0B' : '#FFFFFF'
+          color: Math.random() > 0.3 ? '#F59E0B' : '#FFFFFF'
         });
       }
     }
 
-    window.addEventListener('mousemove', (e) => addSparkle(e.clientX, e.clientY));
+    window.addEventListener('mousemove', (e) => triggerSparkles(e.clientX, e.clientY));
     window.addEventListener('touchstart', (e) => {
-      if (e.touches.length > 0) addSparkle(e.touches[0].clientX, e.touches[0].clientY);
+      if (e.touches && e.touches.length > 0) {
+        triggerSparkles(e.touches[0].clientX, e.touches[0].clientY);
+      }
     }, { passive: true });
     window.addEventListener('touchmove', (e) => {
-      if (e.touches.length > 0) addSparkle(e.touches[0].clientX, e.touches[0].clientY);
+      if (e.touches && e.touches.length > 0) {
+        triggerSparkles(e.touches[0].clientX, e.touches[0].clientY);
+      }
     }, { passive: true });
 
     function createStars() {
@@ -1462,7 +1496,10 @@
       const sidebar = document.getElementById('sidebar');
       if (sidebar.classList.contains('active')) toggleSidebar();
 
-      if (tabId === 'tab-cipher') initCipherGame();
+      if (tabId === 'tab-cipher') {
+        closeCipherLetterView();
+        switchCipherSubtab('input');
+      }
       if (tabId === 'tab-poems') { closePoemScroll(); renderPoemsList(); }
       if (tabId === 'tab-crystal') closeCrystalScroll();
       if (tabId === 'tab-letters') {
@@ -2036,54 +2073,232 @@
       currentlyOpenPoemId = null;
     }
 
-    // 13. ШИФРЫ
+    // 13. БАЗА ШИФРОВ, 30 ВОПРОСОВ И КНИГА ТАЙН
     const secretCodes = {
       "290805": {
+        title: "Главное послание Созвездия",
+        hint: "Твой особенный день и координаты сердца",
         header: "Послание от Созвездия \"Аноним\"",
         body: `Любимая кисонька,\n\nЭтот код — просто ключ, а главное сокровище — это ты.\n\nЯ хочу пожелать тебе спокойствия, лёгкости и уверенности в каждом шаге. Когда кажется, что всё давит, не забывай, насколько ты стойкая и потрясающая. Никакие чужие слова или сложные дни не способны изменить того, насколько ты прекрасна.\n\nДаже сквозь любые километры — я всегда рядом с тобой. Буду твоей поддержкой в любой момент, когда тебе это нужно. Очень сильно тебя люблю.`,
         signature: "Твоё Созвездие",
         hasSecret: true,
         secretBody: `Ты нашла самое сокровенное послание.\n\nЗнай, что для меня нет ничего важнее твоей искренней улыбки. Всякий раз, когда тебе станет грустно или тяжело — открой эту страницу и вспомни: ты самое дорогое, что у меня есть. \n\nИ этот приз — бесконечный абонемент на мою заботу, тепло и бесконечные обнимашки.`
+      },
+      "130722": {
+        title: "Напоминание о еде / Режим кисоньки 🍲",
+        hint: "Секретный протокол для той, кто забывает вовремя покушать",
+        header: "Приказ Созвездия: Время подкрепиться!",
+        body: `Так, любимая кисонька, срочный приказ от Созвездия: прямо сейчас оторвись от всех дел, соцсетей и забот!\n\nТы у меня одна такая замечательная, и твоему организму нужны силы. Никакие дела в мире не стоят того, чтобы морить себя голодом.\n\nПойди на кухню, сделай себе что-нибудь вкусное, завари ароматный чай или кофе и поешь с удовольствием. Твоё здоровье и сытое мурчание для меня на первом месте. Приятного аппетита, моя хорошая ❤️`,
+        signature: "Твой заботливый защитник",
+        hasSecret: true,
+        secretBody: `✦ Секретное дополнение ✦\n\nИ не забудь какую-нибудь сладкую вкусняшку к чаю. Сладким девочкам положены десерты! Съешь за моё здоровье и улыбнись 😏🍫`
+      },
+      "770314": {
+        title: "Когда не спится / Ночной оберег 🌙",
+        hint: "Шифр для бессонных ночей, когда мысли не дают покоя",
+        header: "Ночной протокол Созвездия",
+        body: `Если ты открыла этот шифр ночью, значит, мысли в голове крутятся слишком громко и не пускают в сон.\n\nВыдохни всё напряжение этого дня. Отпусти тревоги — завтра будет новый день, и со всем мы разберёмся вместе. А сейчас ты в полной безопасности.\n\nУкутайся в одеяло, закрой глазки и представь, как я лежу рядом, обнимаю тебя со спины и медленно перебираю твои волосы. Слушай тишину ночи. Я охраняю твой покой. Сладких снов, моя малышка ✨`,
+        signature: "Охраняющий твой сон",
+        hasSecret: true,
+        secretBody: `✦ Ночной шёпот ✦\n\nЯ держу тебя за руку сквозь любые расстояния. Засыпай, моё чудо. Я буду ждать тебя в наших снах ❤️`
+      },
+      "696969": {
+        title: "Запретный архив / Только для тебя 🔥",
+        hint: "Шесть самых горячих цифр Созвездия (18+)",
+        header: "Совершенно секретно: 18+",
+        body: `А вот сюда заглядывать было необязательно... но раз уж ты ввела этот код, значит, мысли у тебя сегодня такие же непослушные, как и у меня 😏\n\nЗнала бы ты, как сильно меня к тебе тянет. Как я хочу прижать тебя к себе так близко, чтобы между нами не осталось даже миллиметра воздуха. Чувствовать твоё прерывистое дыхание на своей шее, касаться губами твоих ключиц, целовать медленно, жадно, до мурашек по всему телу.\n\nСлышать твой шёпот, гладить твоё тело и заставлять тебя забыть обо всём на свете. Ты сводишь меня с ума одной мыслью о себе, моя ненасытная кисонька...`,
+        signature: "Твой искуситель",
+        hasSecret: true,
+        secretBody: `✦ Самое сокровенное ✦\n\nИ поверь, при встрече я зацелую каждый сантиметр твоей кожи и исполню все твои самые смелые фантазии. Ты от меня так просто не отвертишься 😈🔥`
       }
     };
 
+    // БАНК ИЗ 30 ВОПРОСОВ (90 ВАРИАНТОВ ОТВЕТОВ)
     const questionBank = [
       {
         question: "Кто здесь самая главная умничка и победитель?",
-        options: [
-          { text: "Конечно же Лиза ✨", isCorrect: true },
-          { text: "Случайный прохожий", isCorrect: false },
-          { text: "Искусственный интеллект", isCorrect: false }
-        ]
+        options: [{ text: "Конечно же Лиза ✨", isCorrect: true }, { text: "Случайный прохожий", isCorrect: false }, { text: "Искусственный интеллект", isCorrect: false }]
       },
       {
-        question: "Кто самая красивая, милая и любимая кисонька?",
-        options: [
-          { text: "Соседский кот", isCorrect: false },
-          { text: "Елизавета 🐾", isCorrect: true },
-          { text: "Инопланетянин", isCorrect: false }
-        ]
+        question: "Кто самая красивая и любимая кисонька во вселенной?",
+        options: [{ text: "Елизавета 🐾", isCorrect: true }, { text: "Соседский кот", isCorrect: false }, { text: "Инопланетянин", isCorrect: false }]
       },
       {
-        question: "Чья улыбка затмевает сияние всех звёзд созвездия?",
-        options: [
-          { text: "Фонарный столб", isCorrect: false },
-          { text: "Улыбка Лизы 🌟", isCorrect: true },
-          { text: "Далекая галактика", isCorrect: false }
-        ]
+        question: "Чья улыбка затмевает сияние всех звёзд?",
+        options: [{ text: "Улыбка Лизы 🌟", isCorrect: true }, { text: "Фонарный столб", isCorrect: false }, { text: "Далёкая галактика", isCorrect: false }]
       },
       {
-        question: "Кого созвездие \"Аноним\" любит больше всех на этом свете?",
-        options: [
-          { text: "Пиццу с сыром", isCorrect: false },
-          { text: "Просто звёзды", isCorrect: false },
-          { text: "Лизу ❤️", isCorrect: true }
-        ]
+        question: "Кого Созвездие любит больше всего на свете?",
+        options: [{ text: "Лизу ❤️", isCorrect: true }, { text: "Пиццу с сыром", isCorrect: false }, { text: "Просто звёзды", isCorrect: false }]
+      },
+      {
+        question: "Что нужно сделать, если Лиза вдруг загрустила?",
+        options: [{ text: "Зацеловать и укутать в плед 🤗", isCorrect: true }, { text: "Отправить на Марс", isCorrect: false }, { text: "Сказать 'не грусти'", isCorrect: false }]
+      },
+      {
+        question: "Кто украл моё сердечко без права на возврат?",
+        options: [{ text: "Одна прекрасная вредина 😼", isCorrect: true }, { text: "Детектив", isCorrect: false }, { text: "Служба доставки", isCorrect: false }]
+      },
+      {
+        question: "Самое уютное место во всей вселенной?",
+        options: [{ text: "В твоих объятиях ✨", isCorrect: true }, { text: "В очереди в супермаркете", isCorrect: false }, { text: "В лифте", isCorrect: false }]
+      },
+      {
+        question: "Какое главное правило нашего Созвездия?",
+        options: [{ text: "Лиза всегда права 👑", isCorrect: true }, { text: "Спать 2 часа в день", isCorrect: false }, { text: "Никаких правил", isCorrect: false }]
+      },
+      {
+        question: "Что делать, если кисонька включила режим 'вредность'?",
+        options: [{ text: "Крепко обнять и поцеловать ❤️", isCorrect: true }, { text: "Бежать в укрытие", isCorrect: false }, { text: "Вызвать полицию", isCorrect: false }]
+      },
+      {
+        question: "Чей голос лечит любую усталость за пару секунд?",
+        options: [{ text: "Твой голос 🎵", isCorrect: true }, { text: "Звук перфоратора", isCorrect: false }, { text: "Голос навигатора", isCorrect: false }]
+      },
+      {
+        question: "Кто обладает самым гипнотическим и красивым взглядом?",
+        options: [{ text: "Лиза 👀✨", isCorrect: true }, { text: "Сова из леса", isCorrect: false }, { text: "Картинка в интернете", isCorrect: false }]
+      },
+      {
+        question: "Что побеждает любые километры и преграды?",
+        options: [{ text: "Наша искренняя любовь ❤️", isCorrect: true }, { text: "Сильный ветер", isCorrect: false }, { text: "Голубиная почта", isCorrect: false }]
+      },
+      {
+        question: "Какое лучшее лекарство от тяжёлого дня?",
+        options: [{ text: "Тёплые объятия Созвездия 💫", isCorrect: true }, { text: "Мытьё полов", isCorrect: false }, { text: "Чтение словаря", isCorrect: false }]
+      },
+      {
+        question: "Кто самый стойкий и замечательный человечек?",
+        options: [{ text: "Моя любимая девочка 🌸", isCorrect: true }, { text: "Терминатор", isCorrect: false }, { text: "Кактус на окне", isCorrect: false }]
+      },
+      {
+        question: "Что происходит, когда Лиза искренне улыбается?",
+        options: [{ text: "Весь мир становится теплее ☀️", isCorrect: true }, { text: "Гаснут фонари", isCorrect: false }, { text: "Падает метеорит", isCorrect: false }]
+      },
+      {
+        question: "Какой статус закреплён за Лизой навечно?",
+        options: [{ text: "Хранительница сердца 💖", isCorrect: true }, { text: "Временный гость", isCorrect: false }, { text: "Тайный агент", isCorrect: false }]
+      },
+      {
+        question: "Кто заслуживает самого нежного и бережного отношения?",
+        options: [{ text: "Елизавета 🕊️", isCorrect: true }, { text: "Никто", isCorrect: false }, { text: "Прохожий на улице", isCorrect: false }]
+      },
+      {
+        question: "Чьё мурчание способно растопить любой лёд?",
+        options: [{ text: "Мурчание любимой кисоньки 🐾", isCorrect: true }, { text: "Звук мотора", isCorrect: false }, { text: "Радиоприёмник", isCorrect: false }]
+      },
+      {
+        question: "О ком Созвездие думает каждую свободную минуту?",
+        options: [{ text: "О Лизе 💫", isCorrect: true }, { text: "О погоде в Антарктиде", isCorrect: false }, { text: "О схеме метро", isCorrect: false }]
+      },
+      {
+        question: "Что нужно делать, когда всё вокруг навалилось?",
+        options: [{ text: "Выдохнуть и довериться мне ❤️", isCorrect: true }, { text: "Паниковать", isCorrect: false }, { text: "Работать всю ночь", isCorrect: false }]
+      },
+      {
+        question: "Кто здесь непревзойдённая королева уюта и красоты?",
+        options: [{ text: "Лиза 👑", isCorrect: true }, { text: "Британская корона", isCorrect: false }, { text: "Плюшевый мишка", isCorrect: false }]
+      },
+      {
+        question: "Какая улыбка способна заставить сердце биться чаще?",
+        options: [{ text: "Твоя улыбка ✨", isCorrect: true }, { text: "Улыбка Джокера", isCorrect: false }, { text: "Смайлик в телефоне", isCorrect: false }]
+      },
+      {
+        question: "Что положено кисоньке за то, что она умничка?",
+        options: [{ text: "Бесконечная любовь и вкусняшки 🍫", isCorrect: true }, { text: "Строгий выговор", isCorrect: false }, { text: "Ничего", isCorrect: false }]
+      },
+      {
+        question: "Кто для меня важнее всех дел, планов и суеты?",
+        options: [{ text: "Ты, моя хорошая ❤️", isCorrect: true }, { text: "Курс акций", isCorrect: false }, { text: "Расписание автобусов", isCorrect: false }]
+      },
+      {
+        question: "Какое самое надёжное убежище на Земле?",
+        options: [{ text: "Наше убежище Созвездия 🌌", isCorrect: true }, { text: "Бункер", isCorrect: false }, { text: "Остановка", isCorrect: false }]
+      },
+      {
+        question: "Кто самый желанный и сладкий человечек?",
+        options: [{ text: "Моя любимая малышка 🍓", isCorrect: true }, { text: "Сахарная вата", isCorrect: false }, { text: "Пончик", isCorrect: false }]
+      },
+      {
+        question: "Что сделает Созвездие при первой же встрече?",
+        options: [{ text: "Крепко-крепко обнимет и не отпустит 🤗", isCorrect: true }, { text: "Пройдёт мимо", isCorrect: false }, { text: "Пожмёт руку", isCorrect: false }]
+      },
+      {
+        question: "Кто самое главное чудо во всей этой галактике?",
+        options: [{ text: "Лиза 🌟", isCorrect: true }, { text: "Кольца Сатурна", isCorrect: false }, { text: "Чёрная дыра", isCorrect: false }]
+      },
+      {
+        question: "Чьи капризы всегда будут выслушаны и исполнены?",
+        options: [{ text: "Капризы любимой кисоньки 🪄", isCorrect: true }, { text: "Соседские просьбы", isCorrect: false }, { text: "Ничьи", isCorrect: false }]
+      },
+      {
+        question: "Как сильно Созвездие любит Лизу?",
+        options: [{ text: "Бесконечно и навсегда ❤️", isCorrect: true }, { text: "Чуть-чуть", isCorrect: false }, { text: "До завтра", isCorrect: false }]
       }
     ];
 
     let currentQueue = [];
     let currentStepIndex = 0;
+    let currentActiveCodeData = null;
+
+    function getUnlockedVaultCodes() {
+      try { return JSON.parse(localStorage.getItem('unlocked_vault_codes')) || []; } catch (e) { return []; }
+    }
+
+    function saveUnlockedVaultCode(code) {
+      let list = getUnlockedVaultCodes();
+      if (!list.includes(code)) {
+        list.push(code);
+        localStorage.setItem('unlocked_vault_codes', JSON.stringify(list));
+      }
+    }
+
+    function switchCipherSubtab(subtab) {
+      document.getElementById('btn-subtab-input').classList.toggle('active', subtab === 'input');
+      document.getElementById('btn-subtab-vault').classList.toggle('active', subtab === 'vault');
+
+      if (subtab === 'input') {
+        document.getElementById('cipher-input-section').style.display = 'block';
+        document.getElementById('cipher-vault-section').style.display = 'none';
+        initCipherGame();
+      } else {
+        document.getElementById('cipher-input-section').style.display = 'none';
+        document.getElementById('cipher-vault-section').style.display = 'block';
+        renderVaultList();
+      }
+    }
+
+    function renderVaultList() {
+      const container = document.getElementById('vault-list-container');
+      const unlocked = getUnlockedVaultCodes();
+
+      container.innerHTML = Object.entries(secretCodes).map(([code, item]) => {
+        const isUnlocked = unlocked.includes(code);
+        if (isUnlocked) {
+          return `
+            <div class="vault-card" onclick="openCipherLetterByCode('${code}')">
+              <div class="vault-card-header">
+                <span>✦ Открыто</span>
+                <span>Код: ${code}</span>
+              </div>
+              <div class="vault-card-title">${item.title}</div>
+              <div class="vault-card-hint">Нажмите, чтобы перечитать послание ✨</div>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="vault-card locked">
+              <div class="vault-card-header">
+                <span>🔒 Заблокировано</span>
+                <span>Шифр: ??????</span>
+              </div>
+              <div class="vault-card-title">${item.title}</div>
+              <div class="vault-card-hint">Подсказка: ${item.hint}</div>
+            </div>
+          `;
+        }
+      }).join('');
+    }
 
     function initCipherGame() {
       currentQueue = [...questionBank]
@@ -2095,13 +2310,10 @@
         }));
 
       currentStepIndex = 0;
-      document.getElementById('lock-screen').style.display = 'block';
-      document.getElementById('letter-screen').style.display = 'none';
-      document.getElementById('secret-screen').style.display = 'none';
-      renderStep();
+      renderCipherStep();
     }
 
-    function renderStep() {
+    function renderCipherStep() {
       const errorMsg = document.getElementById('error-msg');
       errorMsg.classList.remove('visible');
 
@@ -2124,7 +2336,7 @@
           btn.onclick = () => {
             if (opt.isCorrect) {
               currentStepIndex++;
-              renderStep();
+              renderCipherStep();
             } else {
               showError("Ответ неверный, подумай ещё раз 😉");
             }
@@ -2150,39 +2362,48 @@
         return;
       }
       if (secretCodes[val]) {
-        const data = secretCodes[val];
-        document.getElementById('letter-header-text').innerText = data.header;
-        document.getElementById('letter-body-text').innerText = data.body;
-        document.getElementById('secret-body-text').innerText = data.secretBody || "";
-
-        const lockScreen = document.getElementById('lock-screen');
-        const letterScreen = document.getElementById('letter-screen');
-
-        updateAllScrollThemes();
-        lockScreen.style.display = 'none';
-        letterScreen.style.display = 'block';
+        saveUnlockedVaultCode(val);
+        openCipherLetterByCode(val);
       } else {
-        showError("Координаты созвездия неверны");
+        showError("Координаты шифра неверны");
       }
     }
 
+    function openCipherLetterByCode(code) {
+      const data = secretCodes[code];
+      if (!data) return;
+      currentActiveCodeData = data;
+
+      document.getElementById('letter-header-text').innerText = data.header;
+      document.getElementById('letter-body-text').innerText = data.body;
+      document.getElementById('secret-body-text').innerText = data.secretBody || "";
+      document.getElementById('secret-trigger-btn').style.display = data.hasSecret ? 'inline-block' : 'none';
+
+      document.getElementById('cipher-main-card').style.display = 'none';
+      document.getElementById('secret-screen').style.display = 'none';
+      document.getElementById('letter-screen').style.display = 'block';
+      updateAllScrollThemes();
+    }
+
+    function closeCipherLetterView() {
+      document.getElementById('letter-screen').style.display = 'none';
+      document.getElementById('secret-screen').style.display = 'none';
+      document.getElementById('cipher-main-card').style.display = 'block';
+    }
+
     function openSecretLetter() {
-      const letterScreen = document.getElementById('letter-screen');
-      const secretScreen = document.getElementById('secret-screen');
-      letterScreen.style.display = 'none';
-      secretScreen.style.display = 'block';
+      document.getElementById('letter-screen').style.display = 'none';
+      document.getElementById('secret-screen').style.display = 'block';
     }
 
     function backToMainLetter() {
-      const letterScreen = document.getElementById('letter-screen');
-      const secretScreen = document.getElementById('secret-screen');
-      secretScreen.style.display = 'none';
-      letterScreen.style.display = 'block';
+      document.getElementById('secret-screen').style.display = 'none';
+      document.getElementById('letter-screen').style.display = 'block';
     }
 
     function showError(msg) {
       const err = document.getElementById('error-msg');
-      const card = document.getElementById('lock-screen');
+      const card = document.getElementById('cipher-main-card');
       err.innerText = msg;
       err.classList.add('visible');
       card.classList.add('shake');

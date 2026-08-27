@@ -29,7 +29,7 @@
       align-items: center;
       overflow-x: hidden;
       position: relative;
-      padding: 85px 16px 30px;
+      padding: 85px 14px 30px;
       transition: background 1.5s ease;
     }
 
@@ -74,7 +74,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: 1;
+      z-index: 10;
       pointer-events: none;
       transform: translateZ(0);
     }
@@ -85,7 +85,7 @@
       top: 12px;
       left: 12px;
       right: 12px;
-      max-width: 520px;
+      max-width: 500px;
       margin: 0 auto;
       z-index: 100;
       display: flex;
@@ -147,7 +147,7 @@
       50% { transform: scale(1.25); opacity: 1; }
     }
 
-    /* Виджет погоды Дедовска */
+    /* Погода Дедовска */
     .dedovsk-bar {
       background: rgba(15, 23, 42, 0.75);
       border: 1px solid rgba(148, 163, 184, 0.2);
@@ -226,7 +226,8 @@
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
+      margin: 0 auto;
     }
 
     .tab-content { display: none; }
@@ -238,7 +239,7 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-radius: 24px;
-      padding: 30px 22px;
+      padding: 28px 20px;
       box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(212, 175, 55, 0.12);
       text-align: center;
       position: relative;
@@ -289,7 +290,7 @@
       background: rgba(2, 6, 23, 0.55);
       border: 1px dashed rgba(245, 158, 11, 0.35);
       border-radius: 18px;
-      padding: 22px 14px;
+      padding: 20px 14px;
       margin-bottom: 18px;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -372,7 +373,7 @@
       background: rgba(2, 6, 23, 0.75);
       border: 1px solid rgba(245, 158, 11, 0.45);
       border-radius: 20px;
-      padding: 34px 22px;
+      padding: 32px 20px;
       margin: 22px 0;
       min-height: 160px;
       display: flex;
@@ -389,12 +390,12 @@
       transition: opacity 0.35s ease;
     }
 
-    /* Оракул / Кристалл */
+    /* Оракул */
     .crystal-box {
       background: rgba(2, 6, 23, 0.6);
       border: 1px solid rgba(212, 175, 55, 0.3);
       border-radius: 20px;
-      padding: 32px 16px;
+      padding: 30px 16px;
       margin: 18px 0;
       display: flex;
       flex-direction: column;
@@ -426,11 +427,11 @@
       100% { transform: scale(1.08); box-shadow: 0 0 70px rgba(245, 158, 11, 0.9), 0 0 100px rgba(251, 191, 36, 0.6); }
     }
 
-    /* Ловец падающих звёзд */
+    /* Ловец звёзд */
     .star-catcher-box {
       position: relative;
       width: 100%;
-      height: 300px;
+      height: 290px;
       background: rgba(2, 6, 23, 0.85);
       border: 1px solid rgba(212, 175, 55, 0.35);
       border-radius: 18px;
@@ -669,12 +670,17 @@
     }
 
     .theme-toggle-btn {
-      background: none;
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      padding: 4px 8px;
+      background: rgba(2, 6, 23, 0.5);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #FDE68A;
+      padding: 5px 10px;
       border-radius: 12px;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
     /* Стихи */
@@ -874,7 +880,7 @@
       40%, 80% { transform: translateX(7px); }
     }
 
-    /* Админка (Панель Созвездия) */
+    /* Админка */
     .admin-tab-bar {
       display: flex;
       gap: 6px;
@@ -920,7 +926,7 @@
 
   <canvas id="stars-canvas"></canvas>
 
-  <!-- Верхняя панель с виджетом погоды Дедовска -->
+  <!-- Верхняя панель -->
   <div class="top-nav">
     <div class="nav-row-main">
       <button class="menu-toggle-btn" onclick="toggleSidebar()">
@@ -1025,7 +1031,7 @@
         <div class="letter-card" id="main-letter-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <button class="back-btn" style="margin-bottom:0;" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
-            <button class="theme-toggle-btn" onclick="toggleScrollTheme('main-letter-card')">🌙 / ☀️</button>
+            <button class="theme-toggle-btn" onclick="toggleGlobalScrollTheme()">🌙 Тёмная</button>
           </div>
           <div class="letter-header" id="letter-header-text">Послание от Созвездия "Аноним"</div>
           <div class="letter-body" id="letter-body-text"></div>
@@ -1145,7 +1151,7 @@
         <div class="scroll-view-header">
           <button class="back-btn" style="margin-bottom:0;" onclick="closeLetterReader()">← К списку писем</button>
           <div style="display:flex; align-items:center; gap:8px;">
-            <button class="theme-toggle-btn" onclick="toggleScrollTheme('letter-scroll-reader')">🌙 / ☀️</button>
+            <button class="theme-toggle-btn" onclick="toggleGlobalScrollTheme()">🌙 Тёмная</button>
             <span style="font-size:0.8rem; color:#F59E0B;" id="reader-author-tag">Послание</span>
           </div>
         </div>
@@ -1155,7 +1161,7 @@
       </div>
     </div>
 
-    <!-- 6. ОРАКУЛ ЧУВСТВ (КРИСТАЛЛ) -->
+    <!-- 6. ОРАКУЛ ЧУВСТВ -->
     <div class="tab-content" id="tab-crystal">
       <div class="card" id="crystal-main-card">
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
@@ -1173,7 +1179,7 @@
       <div class="scroll-view-card" id="crystal-scroll-view">
         <div class="scroll-view-header">
           <button class="back-btn" style="margin-bottom:0;" onclick="closeCrystalScroll()">← К кристаллу</button>
-          <button class="theme-toggle-btn" onclick="toggleScrollTheme('crystal-scroll-view')">🌙 / ☀️</button>
+          <button class="theme-toggle-btn" onclick="toggleGlobalScrollTheme()">🌙 Тёмная</button>
         </div>
         <div class="scroll-view-title" style="text-align:center;">Послание Оракула</div>
         <div class="scroll-view-body" id="crystal-scroll-text" style="text-align:center; padding: 15px 0;"></div>
@@ -1217,7 +1223,7 @@
         <div class="scroll-view-header">
           <button class="back-btn" style="margin-bottom:0;" onclick="closePoemScroll()">← К списку стихов</button>
           <div style="display:flex; align-items:center; gap:8px;">
-            <button class="theme-toggle-btn" onclick="toggleScrollTheme('poem-scroll-view')">🌙 / ☀️</button>
+            <button class="theme-toggle-btn" onclick="toggleGlobalScrollTheme()">🌙 Тёмная</button>
             <button class="heart-btn" id="scroll-heart-btn" onclick="toggleFavoriteFromScroll()">🤍</button>
           </div>
         </div>
@@ -1252,12 +1258,12 @@
           <button class="admin-action-btn" onclick="adminClearTestData()">🧹 Очистить все тестовые письма</button>
         </div>
 
-        <!-- 2. Входящие от Лизы с удалением -->
+        <!-- 2. Входящие от Лизы -->
         <div id="admin-sec-inbox" style="display:none; text-align:left; max-height:280px; overflow-y:auto;">
           <div id="admin-liza-inbox-list"></div>
         </div>
 
-        <!-- 3. Форма ответа + удаление своих ответов -->
+        <!-- 3. Форма ответа -->
         <div id="admin-sec-reply" style="display:none; text-align:left;">
           <textarea class="letter-input-box" id="admin-reply-text" placeholder="Текст твоего ответа для Лизы..."></textarea>
           <button class="submit-btn" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); margin-bottom:18px;" onclick="postAdminReply()">Опубликовать ответ ✨</button>
@@ -1285,7 +1291,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 2. КАНВАС БЕЗ ЗАСТЫВАНИЙ И СБРОСОВ ПРИ СКРОЛЛЕ
+    // 2. КАНВАС И СВЕТЯЩИЙСЯ ЗВЁЗДНЫЙ СЛЕД
     const canvas = document.getElementById('stars-canvas');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -1300,7 +1306,6 @@
     }
 
     function handleResize() {
-      // Игнорируем микро-изменения высоты от скрытия адресной строки браузера на смартфоне
       if (Math.abs(window.innerWidth - lastWidth) > 50) {
         lastWidth = window.innerWidth;
         canvas.width = window.innerWidth;
@@ -1312,18 +1317,21 @@
     window.addEventListener('resize', handleResize);
 
     function addSparkle(x, y) {
-      for (let i = 0; i < 2; i++) {
+      for (let i = 0; i < 3; i++) {
         sparkles.push({
-          x: x + (Math.random() - 0.5) * 12,
-          y: y + (Math.random() - 0.5) * 12,
-          size: Math.random() * 2.2 + 1,
+          x: x + (Math.random() - 0.5) * 16,
+          y: y + (Math.random() - 0.5) * 16,
+          size: Math.random() * 2.8 + 1.2,
           alpha: 1,
-          color: Math.random() > 0.4 ? '#F59E0B' : '#FFFFFF'
+          color: Math.random() > 0.35 ? '#F59E0B' : '#FFFFFF'
         });
       }
     }
 
     window.addEventListener('mousemove', (e) => addSparkle(e.clientX, e.clientY));
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) addSparkle(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
     window.addEventListener('touchmove', (e) => {
       if (e.touches.length > 0) addSparkle(e.touches[0].clientX, e.touches[0].clientY);
     }, { passive: true });
@@ -1421,7 +1429,7 @@
           ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
           ctx.fillStyle = sp.color;
           ctx.globalAlpha = sp.alpha;
-          ctx.shadowBlur = 6;
+          ctx.shadowBlur = 8;
           ctx.shadowColor = sp.color;
           ctx.fill();
           ctx.restore();
@@ -1466,27 +1474,38 @@
     }
 
     fetchDedovskWeather();
-    setInterval(fetchDedovskWeather, 600000); // каждые 10 мин
+    setInterval(fetchDedovskWeather, 600000);
     setInterval(updateDedovskTime, 1000);
     updateDedovskTime();
 
-    // 4. ТЁМНАЯ ТЕМА ДЛЯ СВИТКОВ
-    function toggleScrollTheme(cardId) {
-      const card = document.getElementById(cardId);
-      card.classList.toggle('dark-mode');
-      localStorage.setItem('reader_theme', card.classList.contains('dark-mode') ? 'dark' : 'light');
-    }
+    // 4. ЕДИНЫЙ ГЛОБАЛЬНЫЙ НОЧНОЙ РЕЖИМ ДЛЯ ВСЕХ СВИТКОВ
+    let globalScrollTheme = localStorage.getItem('scroll_theme') || 'dark';
 
-    function applySavedTheme() {
-      const saved = localStorage.getItem('reader_theme');
-      const cards = ['main-letter-card', 'letter-scroll-reader', 'crystal-scroll-view', 'poem-scroll-view'];
-      cards.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && saved === 'dark') el.classList.add('dark-mode');
+    function updateAllScrollThemes() {
+      const isDark = globalScrollTheme === 'dark';
+      const scrollCards = [
+        document.getElementById('main-letter-card'),
+        document.getElementById('letter-scroll-reader'),
+        document.getElementById('crystal-scroll-view'),
+        document.getElementById('poem-scroll-view')
+      ];
+
+      scrollCards.forEach(card => {
+        if (card) card.classList.toggle('dark-mode', isDark);
+      });
+
+      document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+        btn.innerText = isDark ? '🌙 Тёмная' : '☀️ Светлая';
       });
     }
 
-    applySavedTheme();
+    function toggleGlobalScrollTheme() {
+      globalScrollTheme = (globalScrollTheme === 'dark') ? 'light' : 'dark';
+      localStorage.setItem('scroll_theme', globalScrollTheme);
+      updateAllScrollThemes();
+    }
+
+    updateAllScrollThemes();
 
     // 5. НАВИГАЦИЯ
     function toggleSidebar() {
@@ -1557,7 +1576,7 @@
       }, 200);
     }
 
-    // 7. ОРАКУЛ ЧУВСТВ (КРИСТАЛЛ)
+    // 7. ОРАКУЛ ЧУВСТВ
     const crystalPredictions = [
       "Сегодня звёзды сулят тебе спокойствие и очень много нежности от Созвездия 🌟",
       "Оракул шепчет: ты самая прекрасная и любимая кисонька во всей вселенной 🐾",
@@ -1590,6 +1609,7 @@
         const text = crystalPredictions[Math.floor(Math.random() * crystalPredictions.length)];
 
         document.getElementById('crystal-scroll-text').innerText = text;
+        updateAllScrollThemes();
         mainCard.style.display = 'none';
         scrollView.style.display = 'block';
         setTimeout(() => {
@@ -1696,7 +1716,7 @@
       document.getElementById('game-start-btn').innerText = 'Сыграть ещё раз 💫';
     }
 
-    // 9. ПИСЬМА И СИНХРОНИЗАЦИЯ FIREBASE
+    // 9. ПИСЬМА И FIREBASE
     let lettersFeedMode = 'replies';
     let rawRepliesData = {};
     let rawOutboxData = {};
@@ -1742,6 +1762,7 @@
       document.getElementById('reader-body').innerText = item.text;
       document.getElementById('reader-date').innerText = item.date;
 
+      updateAllScrollThemes();
       mainCard.style.display = 'none';
       reader.style.display = 'block';
       setTimeout(() => {
@@ -1795,7 +1816,7 @@
       updateAdminUI();
     });
 
-    // 10. АДМИНКА (Управление, Удаление, Ответы)
+    // 10. АДМИНКА
     function switchAdminTab(tab) {
       document.getElementById('atab-btn-dash').classList.toggle('active', tab === 'dash');
       document.getElementById('atab-btn-inbox').classList.toggle('active', tab === 'inbox');
@@ -1813,7 +1834,6 @@
       document.getElementById('adm-count-inbox').innerText = inboxEntries.length;
       document.getElementById('adm-count-replies').innerText = replyEntries.length;
 
-      // Лента писем Лизы с удалением
       const inboxList = document.getElementById('admin-liza-inbox-list');
       if (inboxEntries.length === 0) {
         inboxList.innerHTML = `<p style="color:#94A3B8; font-size:0.85rem;">Писем от Лизы пока нет.</p>`;
@@ -1827,7 +1847,6 @@
         `).join('');
       }
 
-      // Лента твоих ответов с удалением
       const myRepliesList = document.getElementById('admin-my-replies-list');
       if (replyEntries.length === 0) {
         myRepliesList.innerHTML = `<p style="color:#94A3B8; font-size:0.82rem;">Ответов пока нет.</p>`;
@@ -1871,7 +1890,7 @@
 
     function adminResetCoupons() {
       db.ref('coupons_state').remove().then(() => {
-        alert("Кулдаун всех купонов успешно сброшен! Все купоны активны.");
+        alert("Кулдаун всех купонов успешно сброшен!");
       });
     }
 
@@ -1883,7 +1902,7 @@
       }
     }
 
-    // Тройной клик по бейджу
+    // Тройной клик
     let adminClickCount = 0;
     let adminClickTimer = null;
 
@@ -2074,6 +2093,7 @@
       document.getElementById('scroll-body').innerText = poem.text;
       document.getElementById('scroll-date').innerText = poem.date;
       updateScrollHeart(id);
+      updateAllScrollThemes();
 
       listCard.style.display = 'none';
       scrollView.style.display = 'block';
@@ -2228,6 +2248,7 @@
         const lockScreen = document.getElementById('lock-screen');
         const letterScreen = document.getElementById('letter-screen');
 
+        updateAllScrollThemes();
         lockScreen.style.opacity = '0';
         setTimeout(() => {
           lockScreen.style.display = 'none';
@@ -2337,7 +2358,7 @@
       }, 200);
     }
 
-    // 15. ВРЕМЯ СУТОК ПО МСК
+    // 15. ВРЕМЯ СУТОК
     function applyTimeOfDay() {
       const title = document.getElementById('greeting-title');
       const now = new Date();

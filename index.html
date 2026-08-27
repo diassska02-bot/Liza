@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
   
-  <!-- Firebase SDK для мгновенной синхронизации писем -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
@@ -33,6 +33,7 @@
       transition: background 1.5s ease;
     }
 
+    /* Фоновые темы по времени суток (МСК) */
     body.time-night { background: radial-gradient(ellipse at bottom, #0d1322 0%, #060810 100%); }
     body.time-morning { background: radial-gradient(ellipse at bottom, #2d1b36 0%, #0d1527 100%); }
     body.time-day { background: radial-gradient(ellipse at bottom, #163252 0%, #091728 100%); }
@@ -208,7 +209,7 @@
     .tab-content.active { display: block; }
 
     .card {
-      background: rgba(15, 23, 42, 0.84);
+      background: rgba(15, 23, 42, 0.86);
       border: 1px solid rgba(212, 175, 55, 0.35);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
@@ -246,7 +247,7 @@
     h1 {
       font-family: 'Cinzel', serif;
       color: #F8FAFC;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       letter-spacing: 1px;
       margin-bottom: 10px;
       line-height: 1.4;
@@ -314,6 +315,7 @@
       padding: 16px 10px;
       text-align: center;
       cursor: pointer;
+      position: relative;
       transition: all 0.25s ease;
     }
 
@@ -326,40 +328,114 @@
     .hub-icon { font-size: 1.6rem; margin-bottom: 6px; }
     .hub-title { font-size: 0.82rem; font-weight: 600; color: #F1F5F9; }
 
-    /* Кликер заботы */
-    .cat-clicker-card {
-      background: rgba(2, 6, 23, 0.65);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      border-radius: 20px;
-      padding: 24px 16px;
-      margin: 16px 0;
-      position: relative;
+    .gold-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #F59E0B;
+      color: #060810;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #F59E0B;
+      animation: pulseGlow 1.5s infinite alternate ease-in-out;
+      display: none;
     }
 
-    .cat-avatar {
-      font-size: 4.2rem;
+    /* Аптечка настроения (Просторный светящийся свиток) */
+    .support-box {
+      background: rgba(2, 6, 23, 0.75);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      border-radius: 18px;
+      padding: 34px 22px;
+      margin: 22px 0;
+      min-height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: #FEF3C7;
+      text-align: center;
+      box-shadow: inset 0 0 25px rgba(245, 158, 11, 0.1), 0 8px 25px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.35s ease;
+    }
+
+    /* Кристалл предсказаний */
+    .crystal-box {
+      background: rgba(2, 6, 23, 0.6);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 18px;
+      padding: 30px 16px;
+      margin: 18px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .crystal-orb {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #FDE68A 0%, #D97706 60%, #451A03 100%);
+      box-shadow: 0 0 35px rgba(245, 158, 11, 0.5);
       cursor: pointer;
       user-select: none;
-      display: inline-block;
-      transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.4));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .cat-avatar:active { transform: scale(0.88); }
+    .crystal-orb:active {
+      transform: scale(0.92);
+      box-shadow: 0 0 60px rgba(245, 158, 11, 0.9);
+    }
 
-    .warmth-counter {
+    .crystal-result {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.05rem;
+      color: #FEF3C7;
+      min-height: 50px;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s;
+    }
+
+    /* Ловец падающих звёзд */
+    .star-catcher-box {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      background: rgba(2, 6, 23, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 16px;
+      margin: 16px 0;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .game-star {
+      position: absolute;
+      font-size: 1.8rem;
+      cursor: pointer;
+      user-select: none;
+      filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8));
+    }
+
+    .game-stats {
+      display: flex;
+      justify-content: space-between;
       font-family: 'Cinzel', serif;
-      font-size: 1.5rem;
+      font-size: 0.95rem;
       color: #F59E0B;
-      margin: 12px 0 4px;
-      font-weight: 700;
-    }
-
-    .warmth-milestone {
-      font-size: 0.85rem;
-      color: #CBD5E1;
-      min-height: 24px;
-      font-family: 'Playfair Display', serif;
+      margin-bottom: 8px;
     }
 
     /* Купоны */
@@ -527,7 +603,7 @@
       line-height: 1.85;
       white-space: pre-line;
       color: #334155;
-      text-align: center;
+      text-align: left;
     }
 
     .poem-scroll-footer { margin-top: 18px; font-size: 0.78rem; color: #94A3B8; text-align: right; font-style: italic; }
@@ -707,8 +783,11 @@
     <button class="nav-btn" onclick="switchTab('tab-letters')">
       <span>✉️</span> Письма Созвездию
     </button>
-    <button class="nav-btn" onclick="switchTab('tab-game')">
-      <span>🐾</span> Кликер заботы
+    <button class="nav-btn" onclick="switchTab('tab-crystal')">
+      <span>🔮</span> Кристалл тайн
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-catcher')">
+      <span>⭐</span> Ловец звёзд
     </button>
     <button class="nav-btn" onclick="switchTab('tab-poems')">
       <span>📜</span> Свиток стихов
@@ -736,16 +815,17 @@
             <div class="hub-title">Шифры</div>
           </div>
           <div class="hub-item" onclick="switchTab('tab-letters')">
+            <div class="gold-badge" id="hub-unread-badge">NEW</div>
             <div class="hub-icon">✉️</div>
             <div class="hub-title">Письма</div>
           </div>
-          <div class="hub-item" onclick="switchTab('tab-coupons')">
-            <div class="hub-icon">🎟️</div>
-            <div class="hub-title">Купоны</div>
+          <div class="hub-item" onclick="switchTab('tab-crystal')">
+            <div class="hub-icon">🔮</div>
+            <div class="hub-title">Кристалл</div>
           </div>
-          <div class="hub-item" onclick="switchTab('tab-game')">
-            <div class="hub-icon">🐾</div>
-            <div class="hub-title">Кликер</div>
+          <div class="hub-item" onclick="switchTab('tab-catcher')">
+            <div class="hub-icon">⭐</div>
+            <div class="hub-title">Ловец звёзд</div>
           </div>
         </div>
       </div>
@@ -878,42 +958,50 @@
 
         <div style="margin-top: 24px; text-align: left;">
           <div class="protocol-tag" style="font-size: 0.7rem;">Ответы от Созвездия</div>
-          <div id="constellation-replies-feed">
-            <div class="incoming-letter-card">
-              <div class="incoming-letter-header">
-                <span>✦ Созвездие</span>
-                <span>Навсегда</span>
-              </div>
-              <div class="incoming-letter-body">Каждое твоё слово сохраняется в самом сердце этого созвездия. Я всегда рядом и всегда тебя слышу ❤️</div>
-            </div>
-          </div>
+          <div id="constellation-replies-feed"></div>
         </div>
       </div>
     </div>
 
-    <!-- 6. КЛИКЕР ЗАБОТЫ -->
-    <div class="tab-content" id="tab-game">
+    <!-- 6. КРИСТАЛЛ ТАЙН -->
+    <div class="tab-content" id="tab-crystal">
       <div class="card">
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
-        <div class="protocol-tag">Мини-игра</div>
-        <h1>Космический кликер заботы</h1>
-        <p class="subtitle">Погладь кошечку Созвездия и согрей её своим теплом:</p>
+        <div class="protocol-tag">Оракул чувств</div>
+        <h1>Кристалл Созвездия</h1>
+        <p class="subtitle">Коснись кристалла, чтобы узнать своё предсказание:</p>
 
-        <div class="cat-clicker-card">
-          <div class="cat-avatar" id="cat-avatar" onclick="tapCat(event)">🐱💤</div>
-          <div class="warmth-counter" id="warmth-counter">0</div>
-          <div class="warmth-milestone" id="warmth-milestone">Погладь кошечку, чтобы она замурчала ✨</div>
+        <div class="crystal-box">
+          <div class="crystal-orb" onclick="revealPrediction()">🔮</div>
+          <div class="crystal-result" id="crystal-text">Коснись кристалла...</div>
         </div>
       </div>
     </div>
 
-    <!-- 7. СТИХИ -->
+    <!-- 7. ЛОВЕЦ ЗВЁЗД -->
+    <div class="tab-content" id="tab-catcher">
+      <div class="card">
+        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
+        <div class="protocol-tag">Мини-аркада</div>
+        <h1>Ловец звёзд</h1>
+        
+        <div class="game-stats">
+          <span>Счёт: <b id="game-score">0</b></span>
+          <span>Время: <b id="game-timer">30</b>с</span>
+        </div>
+
+        <div class="star-catcher-box" id="star-catcher-box"></div>
+        <button class="submit-btn" id="game-start-btn" onclick="startGame()">Начать охоту за звёздами ⭐</button>
+      </div>
+    </div>
+
+    <!-- 8. СТИХИ -->
     <div class="tab-content" id="tab-poems">
       <div class="card" id="poems-list-card">
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
         
         <div class="poem-filter-bar">
-          <div class="protocol-tag" style="margin-bottom:0;">Сборник стихов</div>
+          <div class="protocol-tag" style="margin-bottom:0;">Сборник стихов (10)</div>
           <button class="fav-filter-btn" id="fav-toggle-btn" onclick="toggleFavFilter()">
             <span>❤️</span> Только любимые
           </button>
@@ -933,14 +1021,17 @@
       </div>
     </div>
 
-    <!-- 8. СКРЫТАЯ ПАНЕЛЬ СОЗВЕЗДИЯ (АДМИНКА) -->
+    <!-- 9. СКРЫТАЯ ПАНЕЛЬ СОЗВЕЗДИЯ (АДМИНКА) -->
     <div class="tab-content" id="tab-admin">
       <div class="card">
         <button class="back-btn" onclick="switchTab('tab-home')">← Выйти из режима Созвездия</button>
         <div class="protocol-tag" style="color:#10B981;">Управление Созвездия</div>
-        <h1 style="color:#10B981;">Панель Ответов</h1>
-        <p class="subtitle">Напиши ответ Лизе, и он сразу появится в её почтовом ящике:</p>
+        <h1 style="color:#10B981;">Входящие от Лизы</h1>
 
+        <!-- Лента входящих писем от Лизы -->
+        <div id="admin-liza-inbox" style="text-align:left; margin-bottom:20px; max-height:220px; overflow-y:auto;"></div>
+
+        <div class="protocol-tag" style="color:#10B981;">Ответить Лизе</div>
         <textarea class="letter-input-box" id="admin-reply-text" placeholder="Текст твоего ответа для Лизы..."></textarea>
         <button class="submit-btn" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);" onclick="postAdminReply()">Опубликовать ответ ✨</button>
       </div>
@@ -949,17 +1040,21 @@
   </div>
 
   <script>
-    // НАСТРОЙКИ TELEGRAM
-    const TG_BOT_TOKEN = "";
-    const TG_CHAT_ID = "";
+    // 1. ИНИЦИАЛИЗАЦИЯ FIREBASE
+    const firebaseConfig = {
+      apiKey: "AIzaSyBIr0vRsNn_g3fR7sPu2032t_pz4W4Nl4o",
+      authDomain: "liza-space.firebaseapp.com",
+      databaseURL: "https://liza-space-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "liza-space",
+      storageBucket: "liza-space.firebasestorage.app",
+      messagingSenderId: "506176308056",
+      appId: "1:506176308056:web:4cbece69bb1242e4569b2d"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    function sendTelegramNotification(text) {
-      if (!TG_BOT_TOKEN || !TG_CHAT_ID) return;
-      const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}&text=${encodeURIComponent(text)}&parse_mode=HTML`;
-      fetch(url).catch(err => console.error(err));
-    }
-
-    // 1. Канвас звёздного неба
+    // 2. Канвас звёздного неба
     const canvas = document.getElementById('stars-canvas');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -1097,7 +1192,7 @@
     setTimeout(spawnMeteor, 1500);
     renderLoop();
 
-    // 2. Навигация и сайдбар
+    // 3. Навигация и сайдбар
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('active');
       document.getElementById('sidebar-overlay').classList.toggle('active');
@@ -1118,9 +1213,13 @@
 
       if (tabId === 'tab-cipher') initCipherGame();
       if (tabId === 'tab-poems') { closePoemScroll(); renderPoemsList(); }
+      if (tabId === 'tab-letters') {
+        document.getElementById('hub-unread-badge').style.display = 'none';
+        localStorage.setItem('last_read_reply_time', Date.now());
+      }
     }
 
-    // 3. 30 фраз для прикосновения к созвездию
+    // 4. Фразы для прикосновения к созвездию
     const touchPhrases = [
       "Люблю тебя ❤️", "Мяу 🐾", "Хочу тебя ✨", "Извращенка моя 😏", "бе 😛",
       "Попалась! Обнимаю крепко-крепко.", "Ты моё главное сокровище 🌟", "Самая красивая кисонька на свете.",
@@ -1160,113 +1259,174 @@
       }, 200);
     }
 
-    // 4. Кликер заботы
-    let warmthCount = parseInt(localStorage.getItem('cat_warmth') || '0', 10);
+    // 5. Кристалл тайн
+    const crystalPredictions = [
+      "Сегодня тебя ждёт улыбка и очень много тепла от Созвездия 🌟",
+      "Звёзды говорят: ты самая красивая кисонька во всей вселенной 🐾",
+      "Твои тревоги скоро рассеются, как звёздная пыль ✨",
+      "Знак свыше: сегодня идеальный день для отдыха и вкусного чая ☕",
+      "Созвездие шепчет: ты сильнее, чем тебе кажется, и тебя безумно любят ❤️",
+      "Впереди тебя ждёт много искреннего смеха и радости 🥰"
+    ];
 
-    function updateCatUI() {
-      document.getElementById('warmth-counter').innerText = warmthCount;
-      const avatar = document.getElementById('cat-avatar');
-      const milestone = document.getElementById('warmth-milestone');
-
-      if (warmthCount >= 500) {
-        avatar.innerText = "😻💖";
-        milestone.innerText = "Абонемент на миллион поцелуев активирован! 💋";
-      } else if (warmthCount >= 250) {
-        avatar.innerText = "😸✨";
-        milestone.innerText = "Уровень любви превысил критический максимум ❤️";
-      } else if (warmthCount >= 100) {
-        avatar.innerText = "😺🐾";
-        milestone.innerText = "Ты согрела всё созвездие своим теплом ✨";
-      } else if (warmthCount >= 50) {
-        avatar.innerText = "😽💤";
-        milestone.innerText = "Кошечка довольно замурчала... Мур-мур 🐾";
-      }
+    function revealPrediction() {
+      const text = document.getElementById('crystal-text');
+      text.style.opacity = '0';
+      setTimeout(() => {
+        text.innerText = crystalPredictions[Math.floor(Math.random() * crystalPredictions.length)];
+        text.style.opacity = '1';
+      }, 200);
     }
 
-    function tapCat(e) {
-      warmthCount++;
-      localStorage.setItem('cat_warmth', warmthCount);
-      updateCatUI();
+    // 6. Ловец звёзд
+    let gameScore = 0;
+    let gameTime = 30;
+    let gameInterval = null;
+    let spawnInterval = null;
 
-      const rect = e.target.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
+    function startGame() {
+      const box = document.getElementById('star-catcher-box');
+      box.innerHTML = '';
+      gameScore = 0;
+      gameTime = 30;
+      document.getElementById('game-score').innerText = gameScore;
+      document.getElementById('game-timer').innerText = gameTime;
+      document.getElementById('game-start-btn').style.display = 'none';
 
-      for (let i = 0; i < 8; i++) {
-        sparkles.push({
-          x: x + (Math.random() - 0.5) * 40,
-          y: y + (Math.random() - 0.5) * 40,
-          size: Math.random() * 3 + 2,
-          alpha: 1,
-          color: Math.random() > 0.5 ? '#F43F5E' : '#F59E0B'
-        });
-      }
+      clearInterval(gameInterval);
+      clearInterval(spawnInterval);
+
+      gameInterval = setInterval(() => {
+        gameTime--;
+        document.getElementById('game-timer').innerText = gameTime;
+        if (gameTime <= 0) {
+          endGame();
+        }
+      }, 1000);
+
+      spawnInterval = setInterval(spawnGameStar, 600);
     }
 
-    updateCatUI();
+    function spawnGameStar() {
+      const box = document.getElementById('star-catcher-box');
+      const star = document.createElement('div');
+      star.className = 'game-star';
+      star.innerText = Math.random() > 0.3 ? '⭐' : '🌟';
+      star.style.left = (Math.random() * (box.clientWidth - 40)) + 'px';
+      star.style.top = '-40px';
+      box.appendChild(star);
 
-    // 5. Почтовый ящик и синхронизация ответов
-    function getStoredReplies() {
-      try {
-        return JSON.parse(localStorage.getItem('constellation_replies')) || [];
-      } catch (e) {
-        return [];
-      }
+      let topPos = -40;
+      const speed = Math.random() * 3 + 2.5;
+
+      const move = setInterval(() => {
+        topPos += speed;
+        star.style.top = topPos + 'px';
+        if (topPos > box.clientHeight) {
+          clearInterval(move);
+          if (box.contains(star)) box.removeChild(star);
+        }
+      }, 20);
+
+      star.onclick = () => {
+        gameScore += 10;
+        document.getElementById('game-score').innerText = gameScore;
+        clearInterval(move);
+        if (box.contains(star)) box.removeChild(star);
+      };
     }
 
-    function renderRepliesFeed() {
+    function endGame() {
+      clearInterval(gameInterval);
+      clearInterval(spawnInterval);
+      const box = document.getElementById('star-catcher-box');
+      box.innerHTML = `<div style="padding:40px 10px; font-family:'Playfair Display', serif; font-size:1.1rem; color:#FEF3C7;">Охота завершена! ✨<br>Ты поймала звёзд на <b>${gameScore}</b> очков.<br>Твой статус: <b>Хранительница сердца</b> ❤️</div>`;
+      document.getElementById('game-start-btn').style.display = 'block';
+      document.getElementById('game-start-btn').innerText = 'Сыграть ещё раз 💫';
+    }
+
+    // 7. СИНХРОНИЗАЦИЯ ЧЕРЕЗ FIREBASE
+    function sendLetterToConstellation() {
+      const text = document.getElementById('liza-letter-text').value.trim();
+      if (!text) return;
+
+      const dateStr = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
+      db.ref('letters_from_liza').push({
+        text: text,
+        date: dateStr,
+        timestamp: Date.now()
+      }).then(() => {
+        alert("Письмо успешно доставлено в самое сердце Созвездия ✨");
+        document.getElementById('liza-letter-text').value = '';
+      }).catch(err => {
+        alert("Ошибка отправки. Проверьте соединение.");
+      });
+    }
+
+    // Прослушивание ответов Созвездия (для Лизы)
+    db.ref('replies_from_constellation').on('value', (snapshot) => {
+      const data = snapshot.val();
       const feed = document.getElementById('constellation-replies-feed');
-      const replies = getStoredReplies();
-
-      if (replies.length === 0) {
+      if (!data) {
         feed.innerHTML = `
           <div class="incoming-letter-card">
-            <div class="incoming-letter-header">
-              <span>✦ Созвездие</span>
-              <span>Навсегда</span>
-            </div>
+            <div class="incoming-letter-header"><span>✦ Созвездие</span><span>Навсегда</span></div>
             <div class="incoming-letter-body">Каждое твоё слово сохраняется в самом сердце этого созвездия. Я всегда рядом и всегда тебя слышу ❤️</div>
           </div>
         `;
         return;
       }
 
-      feed.innerHTML = replies.map(r => `
+      const list = Object.values(data).reverse();
+      feed.innerHTML = list.map(r => `
         <div class="incoming-letter-card">
-          <div class="incoming-letter-header">
-            <span>✦ Созвездие</span>
-            <span>${r.date}</span>
-          </div>
+          <div class="incoming-letter-header"><span>✦ Созвездие</span><span>${r.date}</span></div>
           <div class="incoming-letter-body">${r.text}</div>
         </div>
       `).join('');
-    }
 
-    function sendLetterToConstellation() {
-      const text = document.getElementById('liza-letter-text').value.trim();
-      if (!text) return;
+      // Проверка непрочитанных
+      const lastRead = parseInt(localStorage.getItem('last_read_reply_time') || '0', 10);
+      const latest = list[0];
+      if (latest && latest.timestamp > lastRead) {
+        document.getElementById('hub-unread-badge').style.display = 'block';
+      }
+    });
 
-      sendTelegramNotification(`💌 <b>Новое письмо от Лизы Созвездию:</b>\n\n${text}`);
-      alert("Письмо успешно доставлено в самое сердце Созвездия ✨");
-      document.getElementById('liza-letter-text').value = '';
-    }
+    // Прослушивание писем Лизы (для тебя в админке)
+    db.ref('letters_from_liza').on('value', (snapshot) => {
+      const data = snapshot.val();
+      const inbox = document.getElementById('admin-liza-inbox');
+      if (!data) {
+        inbox.innerHTML = `<p style="color:#94A3B8; font-size:0.85rem;">Писем от Лизы пока нет.</p>`;
+        return;
+      }
+      const list = Object.values(data).reverse();
+      inbox.innerHTML = list.map(m => `
+        <div style="background:rgba(2,6,23,0.8); border:1px solid #10B981; border-radius:10px; padding:10px; margin-bottom:8px;">
+          <div style="font-size:0.75rem; color:#10B981; margin-bottom:4px;">${m.date}</div>
+          <div style="font-size:0.9rem; color:#F8FAFC; white-space:pre-line;">${m.text}</div>
+        </div>
+      `).join('');
+    });
 
     function postAdminReply() {
       const text = document.getElementById('admin-reply-text').value.trim();
       if (!text) return;
 
-      const replies = getStoredReplies();
-      const dateStr = new Date().toLocaleDateString('ru-RU', { timeZone: 'Europe/Moscow' });
-      replies.unshift({ date: dateStr, text: text });
-      localStorage.setItem('constellation_replies', JSON.stringify(replies));
-
-      alert("Ответ опубликован в Убежище!");
-      document.getElementById('admin-reply-text').value = '';
-      renderRepliesFeed();
-      switchTab('tab-letters');
+      const dateStr = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
+      db.ref('replies_from_constellation').push({
+        text: text,
+        date: dateStr,
+        timestamp: Date.now()
+      }).then(() => {
+        alert("Ответ успешно опубликован!");
+        document.getElementById('admin-reply-text').value = '';
+        switchTab('tab-letters');
+      });
     }
 
-    // Тройной клик по статусу для входа в режим Созвездия
+    // Тройной клик для админки
     let adminClickCount = 0;
     let adminClickTimer = null;
 
@@ -1281,20 +1441,18 @@
       }
     }
 
-    renderRepliesFeed();
-
-    // 6. База стихов
+    // 8. СБОРНИК СТИХОВ (10 штук без дат и городов)
     const poemsDatabase = [
       {
         id: "poem-1",
         title: "Созвездие в твоих глазах",
-        date: "Август 2026",
+        date: "Для любимой кисоньки",
         text: `Сквозь километры тихих звёзд\nТвой свет струится в полумраке.\nС тобой исчез былой мороз,\nОставив искренние знаки.\n\nЗдесь нет тревоги и потерь,\nУкутает покой просторы.\nТы только в силы свои верь,\nМы вместе сдвинем эти горы.`
       },
       {
         id: "poem-2",
         title: "Шёпот тишины",
-        date: "Для любимой кисоньки",
+        date: "О самом главном",
         text: `Когда за окнами темно,\nИ город медленно стихает,\nМоё тепло через окно\nК твоим ладоням прилетает.\n\nТы улыбнись среди забот,\nВедь в этом мире бесконечном\nТебя однажды встретил тот,\nКто будет рядом в чувстве вечном.`
       },
       {
@@ -1302,6 +1460,48 @@
         title: "Стойкость сияния",
         date: "В минуты усталости",
         text: `Пусть день порою давит грузом,\nИ мир вокруг шумит упрямо,\nТы остаёшься главным чудом,\nИдёшь уверенно и прямо.\n\nВыдохни грусть, забудь сомненья,\nСозвездие хранит твой дом.\nЯ подарю тебе спасенье\nИ усыплю спокойным сном.`
+      },
+      {
+        id: "poem-4",
+        title: "Мой самый нежный свет",
+        date: "В моём сердце",
+        text: `Ты — та, с кем дышится легко,\nЧей голос лечит все печали.\nПусть мы с тобою далеко,\nНо души вместе зазвучали.\n\nВ тебе одной сошёлся свет,\nКаким весь космос озарён.\nПрекрасней чуда в мире нет,\nИ я навек в тебя влюблён.`
+      },
+      {
+        id: "poem-5",
+        title: "Убежище для сердца",
+        date: "Твоя защита",
+        text: `Когда захочешь отдохнуть\nОт суеты и взглядов лишних,\nКо мне ты мысленно прильни,\nПослушай, как дыханье слышно.\n\nЯ укрою тебя от всех ветров,\nЗащитой стану и опорой.\nВ кольце невидимых оков\nЗабудутся любые споры.`
+      },
+      {
+        id: "poem-6",
+        title: "Магия твоей улыбки",
+        date: "Самой прекрасной",
+        text: `Твоя улыбка — словно вспышка,\nЧто зажигает всё вокруг.\nМоя любимая малышка,\nМой самый близкий, верный друг.\n\nСмотрю — и сердце замирает,\nКак будто время замерло.\nТвой взгляд ладонями сжимает\nМоё безбрежное тепло.`
+      },
+      {
+        id: "poem-7",
+        title: "Кисонька",
+        date: "Моему вредному чуду",
+        text: `Ты можешь вредной быть порою,\nСмеяться звонко и шутить,\nНо я пленён одной тобою\nИ не смогу перелюбить.\n\nМоя мурлыка и загадка,\nМой самый сладкий огонёк.\nС тобой на сердце тихо, сладко,\nИ мир вокруг не одинок.`
+      },
+      {
+        id: "poem-8",
+        title: "В тишине ночной",
+        date: "Перед сном",
+        text: `Закрой глаза, забудь заботы,\nПускай уходит суета.\nЗакончились дела, работы,\nВокруг святая чистота.\n\nЯ рядом, чувствуй мои плечи,\nКак глажу волосы твои.\nПусть этот бархатный наш вечер\nНаполнится огнём любви.`
+      },
+      {
+        id: "poem-9",
+        title: "Единственная",
+        date: "Настоящее чувство",
+        text: `Среди миллиардов разных лиц\nМне не нужна была другая.\nЛюбовь не ведает границ,\nКогда со мной ты, дорогая.\n\nТы совершенна, как мечта,\nЧиста, нежна и так прекрасна.\nТвоя святая доброта\nГорит звездою ясно-ясно.`
+      },
+      {
+        id: "poem-10",
+        title: "Навсегда",
+        date: "Обещание звёзд",
+        text: `Пусть гаснут звёзды чередой,\nМеняются миры и тени,\nЯ буду следовать с тобой\nСквозь череду любых мгновений.\n\nТы — всё, о чём душа просила,\nМой берег, нежность и покой.\nМоя любовь — святая сила,\nЧто будет вечно над тобой.`
       }
     ];
 
@@ -1402,14 +1602,14 @@
       currentlyOpenPoemId = null;
     }
 
-    // 7. Шифры
+    // 9. Шифры
     const secretCodes = {
       "290805": {
         header: "Послание от Созвездия \"Аноним\"",
         body: `Любимая кисонька,\n\nЭтот код — просто ключ, а главное сокровище — это ты.\n\nЯ хочу пожелать тебе спокойствия, лёгкости и уверенности в каждом шаге. Когда кажется, что всё давит, не забывай, насколько ты стойкая и потрясающая. Никакие чужие слова или сложные дни не способны изменить того, насколько ты прекрасна.\n\nДаже сквозь любые километры — я всегда рядом с тобой. Буду твоей поддержкой в любой момент, когда тебе это нужно. Очень сильно тебя люблю.`,
         signature: "Твоё Созвездие",
         hasSecret: true,
-        secretBody: `Ты нашла самое сокровенное послание.\n\nЗнай, что для меня нет ничего важнее твоей искренней улыбки. Всякий раз, когда тебе станет грустно или тяжело — открой эту страницу и вспомни: ты самое дорогое, что у меня есть. \n\nИ этот приз — бесконечный абонемент на мою заботу, тепло и бесконечные обнимашки при нашей встрече.`
+        secretBody: `Ты нашла самое сокровенное послание.\n\nЗнай, что для меня нет ничего важнее твоей искренней улыбки. Всякий раз, когда тебе станет грустно или тяжело — открой эту страницу и вспомни: ты самое дорогое, что у меня есть. \n\nИ этот приз — бесконечный абонемент на мою заботу, тепло и бесконечные обнимашки.`
       }
     };
 
@@ -1533,8 +1733,6 @@
             letterScreen.style.transform = 'scale(1)';
           }, 50);
         }, 350);
-
-        sendTelegramNotification(`🔓 <b>Лиза расшифровала код: ${val}</b>`);
       } else {
         showError("Координаты созвездия неверны");
       }
@@ -1587,7 +1785,7 @@
       if (e.key === 'Enter') checkFinalCode();
     });
 
-    // 8. Аптечка настроения
+    // 10. Аптечка настроения (30 неповторяющихся фраз)
     const supportQuotes = [
       "Вдохни глубоко и медленно выдохни. Ты со всем справишься, а я рядом ❤️",
       "Ты не обязана быть идеальной для кого-то. Для меня ты уже самое дорогое чудо.",
@@ -1633,11 +1831,9 @@
         box.innerText = quote;
         box.style.opacity = '1';
       }, 200);
-
-      sendTelegramNotification("💊 <b>Лиза открыла аптечку настроения</b>");
     }
 
-    // 9. Купоны желаний
+    // 11. Купоны желаний
     const COOLDOWN_MS = 24 * 60 * 60 * 1000;
 
     function getCouponData() {
@@ -1653,16 +1849,6 @@
       data[couponId] = Date.now();
       setCouponData(data);
       updateCouponsUI();
-
-      const couponNames = {
-        'coupon-1': '🎬 Вечер любого кино без критики',
-        'coupon-2': '👑 Право на безоговорочную правоту',
-        'coupon-3': '🎵 Персональный трек по заказу',
-        'coupon-4': '📖 Сказка на ночь / Голосовой каприз',
-        'coupon-5': '🪄 Исполнение одного мини-желания'
-      };
-
-      sendTelegramNotification(`🎟️ <b>Активирован купон:</b> ${couponNames[couponId] || couponId}`);
     }
 
     function updateCouponsUI() {
@@ -1701,7 +1887,7 @@
     setInterval(updateCouponsUI, 1000);
     updateCouponsUI();
 
-    // 10. Живое небо по Московскому времени (МСК)
+    // 12. Живое небо по Московскому времени (МСК)
     function applyTimeOfDay() {
       const title = document.getElementById('greeting-title');
       const now = new Date();

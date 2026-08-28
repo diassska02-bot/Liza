@@ -50,14 +50,14 @@
     .top-nav {
       position: fixed;
       top: 10px;
-      left: 10px;
-      right: 10px;
-      max-width: 480px;
+      left: 12px;
+      right: 12px;
+      max-width: 940px;
       margin: 0 auto;
       z-index: 100;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     .nav-row-main {
@@ -189,22 +189,23 @@
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 480px;
+      max-width: 920px;
       margin: 0 auto;
-      padding: 85px 12px 35px;
+      padding: 118px 18px 50px;
     }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
     .card {
-      background: #0B1120;
-      border: 1px solid rgba(212, 175, 55, 0.35);
-      border-radius: 20px;
-      padding: 24px 18px;
-      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.1);
+      background: linear-gradient(145deg, rgba(11,17,32,0.97), rgba(7,11,23,0.94));
+      border: 1px solid rgba(212, 175, 55, 0.32);
+      border-radius: 26px;
+      padding: 30px 24px;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.72), 0 0 30px rgba(212, 175, 55, 0.08);
       text-align: center;
       position: relative;
+      backdrop-filter: blur(10px);
     }
 
     .back-btn {
@@ -248,16 +249,43 @@
 
     /* Сфера на главной */
     .touch-orb-card {
-      background: #060810;
-      border: 1px dashed rgba(245, 158, 11, 0.4);
-      border-radius: 16px;
-      padding: 22px 14px;
-      margin-bottom: 18px;
+      position: relative;
+      min-height: 250px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(245,158,11,0.14), transparent 32%),
+        radial-gradient(circle at 30% 70%, rgba(129,140,248,0.10), transparent 35%),
+        #060810;
+      border: 1px solid rgba(245, 158, 11, 0.34);
+      border-radius: 24px;
+      padding: 30px 20px;
+      margin: 28px 0 24px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 13px;
+      overflow: hidden;
+      box-shadow: inset 0 0 40px rgba(245,158,11,0.04), 0 12px 35px rgba(0,0,0,0.35);
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .touch-orb-card::before,
+    .touch-orb-card::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(245,158,11,0.16);
+      pointer-events: none;
+    }
+
+    .touch-orb-card::before { width: 210px; height: 210px; }
+    .touch-orb-card::after { width: 135px; height: 135px; border-color: rgba(255,255,255,0.10); }
+
+    .touch-orb-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(245,158,11,0.65);
+      box-shadow: inset 0 0 45px rgba(245,158,11,0.06), 0 16px 42px rgba(0,0,0,0.42);
     }
 
     .touch-orb-card:active {
@@ -267,34 +295,75 @@
     }
 
     .touch-orb-icon {
-      font-size: 2.2rem;
-      filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
+      position: relative;
+      z-index: 1;
+      width: 78px;
+      height: 78px;
+      display: grid;
+      place-items: center;
+      font-size: 2.7rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,0.22), rgba(245,158,11,0.03) 62%, transparent 70%);
+      filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.72));
+      animation: constellationPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes constellationPulse {
+      0%,100% { transform: scale(.96); opacity: .9; }
+      50% { transform: scale(1.06); opacity: 1; }
     }
 
     .touch-orb-text {
+      position: relative;
+      z-index: 1;
       font-family: 'Playfair Display', serif;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       color: #FEF3C7;
-      min-height: 24px;
-      line-height: 1.4;
+      min-height: 48px;
+      max-width: 290px;
+      line-height: 1.55;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: opacity 0.2s ease;
+    }
+
+    .orb-hint {
+      position: relative;
+      z-index: 1;
+      color: #64748B;
+      font-size: .72rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
     }
 
     .hub-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 10px;
+      gap: 14px;
+      margin-top: 6px;
     }
 
     .hub-item {
-      background: #060810;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 14px;
-      padding: 16px 10px;
+      min-height: 118px;
+      background: linear-gradient(145deg, rgba(6,8,16,.96), rgba(10,15,28,.9));
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 20px;
+      padding: 20px 14px;
       text-align: center;
       cursor: pointer;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform .22s ease, border-color .22s ease, background .22s ease;
+    }
+
+    .hub-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(245,158,11,.42);
+      background: linear-gradient(145deg, rgba(15,23,42,.98), rgba(10,15,28,.94));
     }
 
     .hub-item:active {
@@ -303,8 +372,9 @@
       transform: scale(0.98);
     }
 
-    .hub-icon { font-size: 1.6rem; margin-bottom: 6px; }
-    .hub-title { font-size: 0.82rem; font-weight: 600; color: #F1F5F9; }
+    .hub-icon { font-size: 1.85rem; margin-bottom: 9px; filter: drop-shadow(0 0 7px rgba(245,158,11,.18)); }
+    .hub-title { font-size: 0.88rem; font-weight: 600; color: #F1F5F9; }
+    .hub-meta { margin-top: 5px; font-size: .68rem; color: #64748B; }
 
     .gold-badge {
       position: absolute;
@@ -868,6 +938,131 @@
       width: 100%;
       margin-bottom: 8px;
     }
+
+
+    /* Новая просторная главная: телефон в приоритете */
+    .home-card {
+      overflow: hidden;
+    }
+
+    .home-kicker {
+      margin-top: 2px;
+      color: #F59E0B;
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .home-subtitle {
+      max-width: 460px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .today-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 18px 0 4px;
+    }
+
+    .today-stat {
+      background: rgba(6,8,16,.62);
+      border: 1px solid rgba(148,163,184,.14);
+      border-radius: 16px;
+      padding: 13px 12px;
+      text-align: left;
+    }
+
+    .today-stat-label {
+      display: block;
+      color: #64748B;
+      font-size: .66rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .today-stat-value {
+      color: #E2E8F0;
+      font-size: .84rem;
+      font-weight: 600;
+    }
+
+    .home-section-title {
+      margin: 28px 0 12px;
+      text-align: left;
+      color: #CBD5E1;
+      font-family: 'Cinzel', serif;
+      font-size: .88rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .home-quick-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .home-bottom-card {
+      margin-top: 14px;
+      background: rgba(6,8,16,.5);
+      border: 1px solid rgba(148,163,184,.13);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: left;
+    }
+
+    .home-bottom-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 38px;
+    }
+
+    .home-bottom-row + .home-bottom-row { margin-top: 10px; }
+    .home-bottom-icon { font-size: 1.15rem; }
+    .home-bottom-text { font-size: .76rem; color: #CBD5E1; line-height: 1.45; }
+    .home-bottom-text b { color: #F8FAFC; }
+
+    .dedovsk-bar {
+      padding: 8px 12px;
+      border-radius: 15px;
+      min-height: 48px;
+      font-size: .73rem;
+      background: rgba(11,17,32,.82);
+      backdrop-filter: blur(10px);
+    }
+
+    .weather-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .weather-icon { font-size: 1.05rem; }
+
+    @media (min-width: 700px) {
+      .container { padding-top: 128px; }
+      .card { padding: 38px 34px; }
+      .home-card { min-height: 720px; }
+      .touch-orb-card { min-height: 300px; }
+      .hub-grid { grid-template-columns: repeat(4, 1fr); }
+      .home-quick-grid { grid-template-columns: repeat(3, 1fr); }
+      .today-panel { max-width: 560px; margin-left: auto; margin-right: auto; }
+    }
+
+    @media (max-width: 420px) {
+      .container { padding-left: 11px; padding-right: 11px; padding-top: 112px; }
+      .card { border-radius: 23px; padding: 27px 16px; }
+      .status-badge { padding: 7px 10px; max-width: 190px; }
+      .status-badge span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .touch-orb-card { min-height: 225px; margin-top: 24px; }
+      .hub-item { min-height: 110px; }
+    }
+
   </style>
 </head>
 <body class="time-night">
@@ -886,8 +1081,8 @@
       </div>
     </div>
     <div class="dedovsk-bar" id="dedovsk-weather-bar">
-      <span>📍 Дедовск: <b id="dedovsk-time">--:--</b></span>
-      <span id="dedovsk-temp">Загрузка погоды... 🌙</span>
+      <span>📍 Дедовск · <b id="dedovsk-time">--:--</b></span>
+      <span class="weather-main"><span class="weather-icon" id="dedovsk-icon">🌙</span><span id="dedovsk-temp">Загрузка погоды...</span></span>
     </div>
   </div>
 
@@ -924,34 +1119,79 @@
     
     <!-- 1. ТВОЙ УГОЛОК (ГЛАВНАЯ) -->
     <div class="tab-content active" id="tab-home">
-      <div class="card">
-        <div class="protocol-tag">Личное пространство Лизы</div>
-        <h1 id="greeting-title">Добро пожаловать в Твой уголок</h1>
-        <p class="subtitle">Здесь спокойно, тепло и безопасно.</p>
+      <div class="card home-card">
+        <div class="home-kicker">Личное пространство Лизы</div>
+        <h1 id="greeting-title">Добро пожаловать, Лиза ✨</h1>
+        <p class="subtitle home-subtitle">Здесь спокойно, тепло и можно просто побыть собой.</p>
 
-        <!-- Интерактивная сфера -->
-        <div class="touch-orb-card" onclick="touchConstellation()">
-          <div class="touch-orb-icon">✨</div>
-          <div class="touch-orb-text" id="touch-text">Прикоснись к созвездию...</div>
+        <div class="today-panel">
+          <div class="today-stat">
+            <span class="today-stat-label">Сегодня</span>
+            <span class="today-stat-value" id="today-date">--</span>
+          </div>
+          <div class="today-stat">
+            <span class="today-stat-label">Созвездие рядом</span>
+            <span class="today-stat-value" id="last-visit-text">Всегда ✦</span>
+          </div>
         </div>
 
+        <div class="touch-orb-card" onclick="touchConstellation()">
+          <div class="touch-orb-icon">✦</div>
+          <div class="touch-orb-text" id="touch-text">Прикоснись к созвездию...</div>
+          <div class="orb-hint">нажми — и оно ответит</div>
+        </div>
+
+        <div class="home-section-title">Твоё пространство</div>
         <div class="hub-grid">
           <div class="hub-item" onclick="switchTab('tab-cipher')">
             <div class="hub-icon">🔑</div>
             <div class="hub-title">Шифры</div>
+            <div class="hub-meta" id="hub-cipher-meta">секреты ждут</div>
           </div>
           <div class="hub-item" onclick="switchTab('tab-letters')">
             <div class="gold-badge" id="hub-unread-badge">NEW</div>
             <div class="hub-icon">✉️</div>
             <div class="hub-title">Письма</div>
+            <div class="hub-meta" id="hub-letters-meta">тайный ящик</div>
           </div>
           <div class="hub-item" onclick="switchTab('tab-crystal')">
             <div class="hub-icon">🔮</div>
             <div class="hub-title">Оракул</div>
+            <div class="hub-meta">узнать послание</div>
           </div>
           <div class="hub-item" onclick="switchTab('tab-catcher')">
             <div class="hub-icon">⭐</div>
             <div class="hub-title">Ловец звёзд</div>
+            <div class="hub-meta" id="hub-score-meta">рекорд: 0</div>
+          </div>
+        </div>
+
+        <div class="home-quick-grid">
+          <div class="hub-item" onclick="switchTab('tab-support')">
+            <div class="hub-icon">💊</div>
+            <div class="hub-title">Аптечка тепла</div>
+            <div class="hub-meta">если нужен уют</div>
+          </div>
+          <div class="hub-item" onclick="switchTab('tab-coupons')">
+            <div class="hub-icon">🎟️</div>
+            <div class="hub-title">Купоны</div>
+            <div class="hub-meta">маленькие желания</div>
+          </div>
+          <div class="hub-item" onclick="switchTab('tab-poems')">
+            <div class="hub-icon">📜</div>
+            <div class="hub-title">Стихи</div>
+            <div class="hub-meta">личный сборник</div>
+          </div>
+        </div>
+
+        <div class="home-bottom-card">
+          <div class="home-bottom-row">
+            <span class="home-bottom-icon">🌙</span>
+            <div class="home-bottom-text" id="home-time-note">Созвездие следит за небом Дедовска.</div>
+          </div>
+          <div class="home-bottom-row">
+            <span class="home-bottom-icon">✦</span>
+            <div class="home-bottom-text">Последняя открытая страница запоминается — можно закрыть сайт и вернуться туда же.</div>
           </div>
         </div>
       </div>
@@ -1414,22 +1654,43 @@
     renderLoop();
 
     // 3. ПОГОДА И ВРЕМЯ В ДЕДОВСКЕ
+    function weatherVisual(code, hour) {
+      if (code === 0) return hour >= 20 || hour < 6 ? '🌙' : '☀️';
+      if (code <= 3) return '⛅';
+      if (code <= 48) return '🌫️';
+      if (code <= 67) return '🌧️';
+      if (code <= 77) return '❄️';
+      if (code <= 82) return '🌦️';
+      return '⛈️';
+    }
+
+    function weatherText(code) {
+      if (code === 0) return 'ясно';
+      if (code === 1) return 'преимущественно ясно';
+      if (code === 2) return 'переменная облачность';
+      if (code === 3) return 'облачно';
+      if (code >= 45 && code <= 48) return 'туман';
+      if (code >= 51 && code <= 67) return 'дождь';
+      if (code >= 71 && code <= 77) return 'снег';
+      if (code >= 80 && code <= 82) return 'ливень';
+      return 'неустойчивая погода';
+    }
+
     async function fetchDedovskWeather() {
       try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=55.8647&longitude=37.1328&current_weather=true');
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=55.8647&longitude=37.1328&current_weather=true&timezone=Europe%2FMoscow');
         const data = await res.json();
-        const temp = Math.round(data.current_weather.temperature);
-        const code = data.current_weather.weathercode;
-        
-        let condition = "ясно 🌙";
-        if (code >= 1 && code <= 3) condition = "облачно ⛅";
-        else if (code >= 45 && code <= 48) condition = "туман 🌫️";
-        else if (code >= 51 && code <= 67) condition = "дождь 🌧️";
-        else if (code >= 71) condition = "снег ❄️";
-
-        document.getElementById('dedovsk-temp').innerText = `${temp > 0 ? '+' : ''}${temp}°C, ${condition}`;
+        const current = data.current_weather;
+        const temp = Math.round(current.temperature);
+        const code = current.weathercode;
+        const hour = parseInt(new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Moscow', hour: 'numeric', hour12: false }).format(new Date()), 10);
+        document.getElementById('dedovsk-icon').innerText = weatherVisual(code, hour);
+        document.getElementById('dedovsk-temp').innerText = `${temp > 0 ? '+' : ''}${temp}°C · ${weatherText(code)}`;
+        document.getElementById('home-time-note').innerText = `Сейчас в Дедовске ${temp > 0 ? '+' : ''}${temp}°C — ${weatherText(code)}. Созвездие всё равно рядом ✦`;
       } catch (e) {
-        document.getElementById('dedovsk-temp').innerText = "Ясно и тепло ✨";
+        document.getElementById('dedovsk-icon').innerText = '✨';
+        document.getElementById('dedovsk-temp').innerText = 'Небо сегодня хранит свои тайны';
+        document.getElementById('home-time-note').innerText = 'Погода спряталась от Созвездия, но оно всё равно рядом ✦';
       }
     }
 
@@ -1477,7 +1738,42 @@
 
     updateAllScrollThemes();
 
-    // 5. НАВИГАЦИЯ
+    // 5. НАВИГАЦИЯ И СОХРАНЕНИЕ ПОСЛЕДНЕГО МЕСТА
+    const LAST_TAB_KEY = 'liza_last_tab';
+
+    function saveLastVisit() {
+      localStorage.setItem('liza_last_visit', String(Date.now()));
+    }
+
+    function updateLastVisitText() {
+      const el = document.getElementById('last-visit-text');
+      if (!el) return;
+      const previous = parseInt(localStorage.getItem('liza_last_visit') || '0', 10);
+      if (!previous) {
+        el.innerText = 'Первый визит ✦';
+        return;
+      }
+      const diff = Date.now() - previous;
+      const minutes = Math.floor(diff / 60000);
+      if (minutes < 1) el.innerText = 'Только что ✦';
+      else if (minutes < 60) el.innerText = `${minutes} мин назад`;
+      else {
+        const hours = Math.floor(minutes / 60);
+        el.innerText = hours < 24 ? `${hours} ч назад` : 'Ранее ✦';
+      }
+    }
+
+    function updateTodayDate() {
+      const el = document.getElementById('today-date');
+      if (!el) return;
+      el.innerText = new Intl.DateTimeFormat('ru-RU', {
+        timeZone: 'Europe/Moscow',
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long'
+      }).format(new Date());
+    }
+
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('active');
       document.getElementById('sidebar-overlay').classList.toggle('active');
@@ -1489,6 +1785,10 @@
       
       const target = document.getElementById(tabId);
       if (target) target.classList.add('active');
+
+      if (tabId !== 'tab-admin') {
+        localStorage.setItem(LAST_TAB_KEY, tabId);
+      }
 
       const matchingNav = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick').includes(tabId));
       if (matchingNav) matchingNav.classList.add('active');
@@ -1600,6 +1900,7 @@
     let gameTime = 30;
     let gameInterval = null;
     let spawnInterval = null;
+    let gameHighScore = parseInt(localStorage.getItem('star_high_score') || '0', 10);
 
     function startGame() {
       const box = document.getElementById('star-catcher-box');
@@ -1677,6 +1978,12 @@
       clearInterval(spawnInterval);
       const box = document.getElementById('star-catcher-box');
       box.innerHTML = `<div style="padding:40px 10px; font-family:'Playfair Display', serif; font-size:1.1rem; color:#FEF3C7; text-align:center;">Охота завершена! ✨<br>Ты поймала звёзд на <b>${gameScore}</b> очков.<br>Твой ранг: <b>Хранительница сердца</b> ❤️</div>`;
+      if (gameScore > gameHighScore) {
+        gameHighScore = gameScore;
+        localStorage.setItem('star_high_score', String(gameHighScore));
+      }
+      const homeScore = document.getElementById('hub-score-meta');
+      if (homeScore) homeScore.innerText = `рекорд: ${gameHighScore}`;
       document.getElementById('game-start-btn').style.display = 'block';
       document.getElementById('game-start-btn').innerText = 'Сыграть ещё раз 💫';
     }
@@ -2103,13 +2410,19 @@
         secretBody: `✦ Ночной шёпот ✦\n\nЯ держу тебя за руку сквозь любые расстояния. Засыпай, моё чудо. Я буду ждать тебя в наших снах ❤️`
       },
       "696969": {
-        title: "Запретный архив / Только для тебя 🔥",
-        hint: "Шесть самых горячих цифр Созвездия (18+)",
-        header: "Совершенно секретно: 18+",
-        body: `А вот сюда заглядывать было необязательно... но раз уж ты ввела этот код, значит, мысли у тебя сегодня такие же непослушные, как и у меня 😏\n\nЗнала бы ты, как сильно меня к тебе тянет. Как я хочу прижать тебя к себе так близко, чтобы между нами не осталось даже миллиметра воздуха. Чувствовать твоё прерывистое дыхание на своей шее, касаться губами твоих ключиц, целовать медленно, жадно, до мурашек по всему телу.\n\nСлышать твой шёпот, гладить твоё тело и заставлять тебя забыть обо всём на свете. Ты сводишь меня с ума одной мыслью о себе, моя ненасытная кисонька...`,
-        signature: "Твой искуситель",
+        title: "Шутливый архив Созвездия ✨",
+        hint: "Код для тех случаев, когда хочется открыть что-нибудь неожиданное",
+        header: "Секретный архив Созвездия",
+        body: `Поздравляю, ты нашла секретный архив! ✨
+
+Здесь нет сложных правил — только маленькое напоминание: ты умеешь находить даже те тайники, которые я очень старательно прячу.
+
+Пусть этот код останется твоей маленькой победой над Созвездием. А теперь улыбнись — архив успешно взломан.`,
+        signature: "Твоё Созвездие",
         hasSecret: true,
-        secretBody: `✦ Самое сокровенное ✦\n\nИ поверь, при встрече я зацелую каждый сантиметр твоей кожи и исполню все твои самые смелые фантазии. Ты от меня так просто не отвертишься 😈🔥`
+        secretBody: `✦ Секретное дополнение ✦
+
+Если ты добралась сюда, значит, любопытство снова победило. Заслуженная награда — ещё одна порция тепла, заботы и хорошего настроения. ❤️`
       }
     };
 
@@ -2491,6 +2804,21 @@
     }
 
     applyTimeOfDay();
+    updateTodayDate();
+    updateLastVisitText();
+    const homeScore = document.getElementById('hub-score-meta');
+    if (homeScore) homeScore.innerText = `рекорд: ${gameHighScore}`;
+
+    // Восстанавливаем последнюю открытую вкладку после F5/перезапуска.
+    const savedLastTab = localStorage.getItem(LAST_TAB_KEY);
+    if (savedLastTab && document.getElementById(savedLastTab) && savedLastTab !== 'tab-admin') {
+      switchTab(savedLastTab);
+    } else {
+      switchTab('tab-home');
+    }
+
+    saveLastVisit();
+    setInterval(updateLastVisitText, 60000);
   </script>
 </body>
 </html>

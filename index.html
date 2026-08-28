@@ -940,7 +940,7 @@
     }
 
 
-    /* Новая просторная главная: телефон в приоритете */
+    /* Новая просторная главная */
     .home-card {
       overflow: hidden;
     }
@@ -1064,476 +1064,7 @@
     }
 
 
-    /* ===== Финальная атмосфера: погода меняет оттенок, но космическая концепция остаётся ===== */
-
-    body.time-morning {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(255, 214, 158, .20) 0%, rgba(177, 157, 202, .12) 25%, transparent 55%),
-        linear-gradient(180deg, #30243f 0%, #171d32 48%, #0b1121 100%);
-      color: #f4efe5;
-    }
-
-    body.time-day {
-      background:
-        radial-gradient(circle at 50% -10%, rgba(255, 220, 151, .18) 0%, rgba(113, 167, 205, .12) 30%, transparent 58%),
-        linear-gradient(180deg, #28334a 0%, #111a2c 50%, #080e1c 100%);
-      color: #f4efe5;
-    }
-
-    body.time-evening {
-      background:
-        radial-gradient(circle at 50% -10%, rgba(245, 158, 11, .16) 0%, rgba(147, 91, 142, .13) 32%, transparent 60%),
-        linear-gradient(180deg, #2c203b 0%, #12172a 52%, #080d19 100%);
-    }
-
-    body.time-night {
-      background:
-        radial-gradient(circle at 50% -12%, rgba(77, 92, 154, .20) 0%, transparent 48%),
-        linear-gradient(180deg, #1b1932 0%, #0c1121 52%, #060912 100%);
-    }
-
-    /* Погода — только лёгкий оттенок поверх ночного неба, а не превращение сайта в белую страницу */
-    body.weather-clear.time-morning {
-      background:
-        radial-gradient(circle at 50% -7%, rgba(255, 219, 156, .25) 0%, rgba(196, 173, 214, .12) 27%, transparent 57%),
-        linear-gradient(180deg, #342640 0%, #182037 48%, #0b1222 100%);
-    }
-
-    body.weather-cloudy.time-morning,
-    body.weather-fog.time-morning {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(202, 213, 222, .16) 0%, rgba(135, 151, 173, .08) 30%, transparent 58%),
-        linear-gradient(180deg, #303143 0%, #182031 50%, #0b1120 100%);
-    }
-
-    body.weather-rain.time-morning {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(138, 171, 195, .13) 0%, transparent 48%),
-        linear-gradient(180deg, #273343 0%, #111a2b 52%, #080f1d 100%);
-    }
-
-    body.weather-snow.time-morning {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(225, 239, 246, .18) 0%, transparent 52%),
-        linear-gradient(180deg, #303d4e 0%, #172234 52%, #0a1120 100%);
-    }
-
-    body.weather-clear.time-day {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(255, 224, 155, .24) 0%, rgba(127, 184, 216, .10) 30%, transparent 60%),
-        linear-gradient(180deg, #2d3c51 0%, #131d30 52%, #080f1e 100%);
-    }
-
-    body.weather-cloudy.time-day,
-    body.weather-fog.time-day {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(202, 213, 222, .14) 0%, transparent 55%),
-        linear-gradient(180deg, #303847 0%, #151e2f 52%, #090f1d 100%);
-    }
-
-    body.weather-rain.time-day {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(111, 150, 177, .14) 0%, transparent 52%),
-        linear-gradient(180deg, #263546 0%, #111b2d 52%, #080e1c 100%);
-    }
-
-    body.weather-snow.time-day {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(218, 235, 244, .16) 0%, transparent 54%),
-        linear-gradient(180deg, #334250 0%, #182435 52%, #0a1120 100%);
-    }
-
-    /* Звёзды видны всегда. Утром они чуть мягче, но не исчезают. */
-    body.time-morning #stars-canvas,
-    body.time-day #stars-canvas,
-    body.time-evening #stars-canvas,
-    body.time-night #stars-canvas {
-      opacity: .95;
-      mix-blend-mode: screen;
-    }
-
-    .home-card {
-      background: linear-gradient(145deg, rgba(10, 16, 30, .82), rgba(7, 12, 24, .76));
-      border-color: rgba(212, 175, 55, .30);
-      box-shadow: 0 24px 65px rgba(0, 0, 0, .30), inset 0 1px 0 rgba(255,255,255,.035);
-      color: #f8fafc;
-    }
-
-    .home-kicker { color: #f59e0b; }
-    #greeting-title { color: #fff8e8; }
-    .home-subtitle { color: #94a3b8; }
-
-    .today-stat {
-      background: rgba(4, 8, 18, .50);
-      border-color: rgba(148,163,184,.16);
-      box-shadow: none;
-    }
-    .today-stat-label { color: #64748b; }
-    .today-stat-value { color: #e2e8f0; }
-
-    .touch-orb-card {
-      background:
-        radial-gradient(circle at 50% 42%, rgba(245,158,11,.16), transparent 28%),
-        radial-gradient(circle at 24% 78%, rgba(96,165,250,.09), transparent 34%),
-        rgba(3, 7, 16, .60);
-      border-color: rgba(212,175,55,.34);
-      box-shadow: inset 0 0 55px rgba(245,158,11,.035), 0 18px 40px rgba(0,0,0,.25);
-    }
-
-    .touch-orb-text { color: #fef3c7; }
-    .orb-hint { color: #64748b; }
-    .home-section-title { color: #cbd5e1; }
-
-    .hub-item {
-      background: linear-gradient(145deg, rgba(7, 11, 22, .78), rgba(11, 17, 31, .70));
-      border-color: rgba(148,163,184,.17);
-      box-shadow: none;
-    }
-
-    .home-bottom-card {
-      background: rgba(4, 8, 18, .48);
-      border-color: rgba(148,163,184,.14);
-    }
-
-    .activity-heading,
-    .activity-heading strong { color: #e2e8f0; }
-    .activity-heading small,
-    .activity-row { color: #94a3b8; }
-
-    .dedovsk-bar {
-      background: rgba(8, 13, 26, .78);
-      border-color: rgba(148,163,184,.20);
-      box-shadow: 0 8px 24px rgba(0,0,0,.22);
-      color: #cbd5e1;
-    }
-
-    .weather-place-name { color: #e2e8f0; }
-    .weather-date-mini,
-    .weather-live-text span { color: #64748b; }
-    .weather-live-text b { color: #f59e0b; }
-
-    .container {
-      max-width: 980px;
-      padding: 112px 14px 42px;
-    }
-
-    .home-card {
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 30px 16px 24px;
-      border-radius: 30px;
-      background: rgba(248,250,252,.76);
-      border: 1px solid rgba(126,91,35,.28);
-      box-shadow: 0 24px 65px rgba(42,51,72,.18);
-      backdrop-filter: blur(16px);
-    }
-
-    body.time-evening .home-card,
-    body.time-night .home-card {
-      background: linear-gradient(145deg, rgba(11,17,32,.90), rgba(7,11,23,.86));
-      border-color: rgba(212,175,55,.32);
-      box-shadow: 0 24px 65px rgba(0,0,0,.34);
-    }
-
-    .home-kicker {
-      margin-top: 4px;
-      color: #a56a00;
-      font-size: .68rem;
-      letter-spacing: .19em;
-    }
-
-    body.time-evening .home-kicker,
-    body.time-night .home-kicker { color: #f59e0b; }
-
-    #greeting-title {
-      background: none;
-      border: 0;
-      padding: 0;
-      color: #28354a;
-      font-size: clamp(1.35rem, 5vw, 2rem);
-      margin: 5px 0 8px;
-    }
-
-    body.time-evening #greeting-title,
-    body.time-night #greeting-title { color: #f8fafc; }
-
-    .home-subtitle {
-      color: #64748b;
-      font-size: .82rem;
-      margin-bottom: 18px;
-    }
-
-    body.time-evening .home-subtitle,
-    body.time-night .home-subtitle { color: #94a3b8; }
-
-    .today-panel {
-      max-width: 100%;
-      margin: 16px 0 20px;
-      gap: 10px;
-    }
-
-    .today-stat {
-      background: rgba(255,255,255,.52);
-      border-color: rgba(91,105,121,.16);
-      padding: 11px 12px;
-      border-radius: 15px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.4);
-    }
-
-    body.time-evening .today-stat,
-    body.time-night .today-stat {
-      background: rgba(6,8,16,.46);
-      border-color: rgba(148,163,184,.14);
-      box-shadow: none;
-    }
-
-    .today-stat-label { color: #718096; }
-    .today-stat-value { color: #344054; font-size: .79rem; }
-    body.time-evening .today-stat-value,
-    body.time-night .today-stat-value { color: #e2e8f0; }
-
-    .touch-orb-card {
-      min-height: 270px;
-      margin: 12px 0 28px;
-      border-radius: 26px;
-      background:
-        radial-gradient(circle at 50% 42%, rgba(245,158,11,.20), transparent 25%),
-        radial-gradient(circle at 25% 80%, rgba(96,165,250,.12), transparent 32%),
-        rgba(255,255,255,.42);
-      border-color: rgba(170,119,22,.34);
-      box-shadow: inset 0 0 55px rgba(255,255,255,.16), 0 18px 40px rgba(69,78,94,.12);
-    }
-
-    body.time-evening .touch-orb-card,
-    body.time-night .touch-orb-card {
-      background:
-        radial-gradient(circle at 50% 42%, rgba(245,158,11,.15), transparent 32%),
-        radial-gradient(circle at 30% 70%, rgba(129,140,248,.10), transparent 35%),
-        #060810;
-      box-shadow: inset 0 0 45px rgba(245,158,11,.05), 0 16px 42px rgba(0,0,0,.35);
-    }
-
-    .touch-orb-icon {
-      width: 92px;
-      height: 92px;
-      font-size: 3rem;
-    }
-
-    .touch-orb-text { font-size: 1.05rem; color: #5b451f; }
-    body.time-evening .touch-orb-text,
-    body.time-night .touch-orb-text { color: #fef3c7; }
-
-    .orb-hint { color: #7b8491; font-size: .67rem; }
-
-    .home-section-title {
-      margin: 8px 0 13px;
-      color: #475569;
-      font-size: .76rem;
-    }
-
-    body.time-evening .home-section-title,
-    body.time-night .home-section-title { color: #cbd5e1; }
-
-    .hub-grid,
-    .home-quick-grid {
-      gap: 10px;
-    }
-
-    .hub-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .home-quick-grid { grid-template-columns: repeat(3, minmax(0,1fr)); margin-top: 10px; }
-
-    .hub-item {
-      min-height: 108px;
-      padding: 16px 9px;
-      border-radius: 19px;
-      background: rgba(255,255,255,.42);
-      border-color: rgba(91,105,121,.17);
-      box-shadow: 0 8px 20px rgba(71,85,105,.06);
-    }
-
-    body.time-evening .hub-item,
-    body.time-night .hub-item {
-      background: linear-gradient(145deg, rgba(6,8,16,.88), rgba(10,15,28,.78));
-      border-color: rgba(148,163,184,.18);
-      box-shadow: none;
-    }
-
-    .hub-item:active { transform: scale(.975); }
-    .hub-icon { font-size: 1.8rem; margin-bottom: 7px; }
-    .hub-title { font-size: .81rem; }
-    .hub-meta { font-size: .63rem; margin-top: 4px; }
-
-    .home-bottom-card {
-      margin-top: 14px;
-      padding: 15px;
-      border-radius: 19px;
-      background: rgba(255,255,255,.34);
-      border-color: rgba(91,105,121,.15);
-    }
-
-    body.time-evening .home-bottom-card,
-    body.time-night .home-bottom-card {
-      background: rgba(6,8,16,.45);
-      border-color: rgba(148,163,184,.13);
-    }
-
-    .activity-heading {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-align: left;
-      color: #475569;
-    }
-
-    .activity-heading > span {
-      display: grid;
-      place-items: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: rgba(245,158,11,.13);
-      color: #c47b00;
-    }
-
-    .activity-heading strong {
-      display: block;
-      font-size: .78rem;
-      color: #334155;
-    }
-
-    .activity-heading small {
-      display: block;
-      margin-top: 2px;
-      font-size: .64rem;
-      color: #7b8794;
-    }
-
-    body.time-evening .activity-heading,
-    body.time-night .activity-heading,
-    body.time-evening .activity-heading strong,
-    body.time-night .activity-heading strong { color: #e2e8f0; }
-
-    body.time-evening .activity-heading small,
-    body.time-night .activity-heading small { color: #64748b; }
-
-    .activity-list { margin-top: 11px; }
-    .activity-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      padding: 9px 0;
-      border-top: 1px solid rgba(100,116,139,.10);
-      color: #64748b;
-      font-size: .67rem;
-      line-height: 1.45;
-      text-align: left;
-    }
-
-    .activity-row:first-child { border-top: 0; }
-    .activity-row > span:first-child { font-size: .95rem; }
-    body.time-evening .activity-row,
-    body.time-night .activity-row { color: #94a3b8; }
-
-    /* Погода */
-    .dedovsk-bar {
-      min-height: 54px;
-      padding: 8px 12px;
-      border-radius: 17px;
-      background: rgba(255,255,255,.58);
-      border-color: rgba(91,105,121,.18);
-      box-shadow: 0 8px 24px rgba(71,85,105,.10);
-      color: #475569;
-    }
-
-    body.time-evening .dedovsk-bar,
-    body.time-night .dedovsk-bar {
-      background: rgba(11,17,32,.82);
-      border-color: rgba(148,163,184,.25);
-      box-shadow: 0 8px 24px rgba(0,0,0,.28);
-      color: #cbd5e1;
-    }
-
-    .weather-place,
-    .weather-live {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .weather-place-name {
-      display: block;
-      font-size: .73rem;
-      font-weight: 600;
-      color: #334155;
-    }
-
-    .weather-date-mini {
-      display: block;
-      margin-top: 1px;
-      font-size: .59rem;
-      color: #7b8794;
-    }
-
-    .weather-live-text b {
-      display: block;
-      font-size: .78rem;
-      color: #a66b00;
-      line-height: 1;
-    }
-
-    .weather-live-text span {
-      display: block;
-      margin-top: 4px;
-      font-size: .60rem;
-      color: #64748b;
-      white-space: nowrap;
-    }
-
-    body.time-evening .weather-place-name,
-    body.time-night .weather-place-name,
-    body.time-evening .weather-live-text b,
-    body.time-night .weather-live-text b { color: #f8fafc; }
-
-    body.time-evening .weather-date-mini,
-    body.time-night .weather-date-mini,
-    body.time-evening .weather-live-text span,
-    body.time-night .weather-live-text span { color: #94a3b8; }
-
-    .weather-icon { font-size: 1.25rem; }
-
-    @media (min-width: 700px) {
-      .container { padding: 130px 24px 60px; }
-      .home-card { padding: 42px 42px 34px; }
-      .home-quick-grid { grid-template-columns: repeat(3, 1fr); }
-      .touch-orb-card { min-height: 320px; }
-    }
-
-    @media (max-width: 420px) {
-      .container { padding: 108px 10px 32px; }
-      .home-card { padding: 27px 13px 19px; border-radius: 25px; }
-      .touch-orb-card { min-height: 250px; }
-      .today-panel { gap: 8px; }
-      .today-stat { padding: 10px; }
-      .hub-item { min-height: 104px; }
-      .home-quick-grid .hub-item { min-height: 94px; }
-      .home-quick-grid { gap: 8px; }
-      .dedovsk-bar { padding: 8px 10px; }
-    }
-
-    @media (max-width: 360px) {
-      .home-quick-grid { grid-template-columns: 1fr; }
-      .home-quick-grid .hub-item { min-height: 82px; }
-      .weather-live-text span { max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .touch-orb-icon,
-      .status-dot { animation: none !important; }
-      *, *::before, *::after { scroll-behavior: auto !important; }
-    }
-
-
-    /* ===== ФИНАЛЬНАЯ ПАЛИТРА: меняется только небо, интерфейс остаётся единым ===== */
+    /* Атмосфера */
     body.time-morning {
       background:
         radial-gradient(circle at 50% -12%, rgba(245, 190, 115, .18) 0%, rgba(104, 77, 124, .16) 25%, transparent 58%),
@@ -1562,7 +1093,6 @@
       color: #f8fafc;
     }
 
-    /* Погода лишь немного меняет оттенок фона */
     body.weather-clear.time-morning {
       background:
         radial-gradient(circle at 50% -8%, rgba(255, 208, 126, .23) 0%, rgba(118, 87, 137, .13) 28%, transparent 60%),
@@ -1613,13 +1143,11 @@
         linear-gradient(180deg, #303e4d 0%, #182536 52%, #0a1120 100%) !important;
     }
 
-    /* Звёздное небо не исчезает ни при какой погоде */
     #stars-canvas {
       opacity: .95 !important;
       mix-blend-mode: screen !important;
     }
 
-    /* Все элементы главной остаются в той же космической гамме */
     .home-card {
       background: linear-gradient(145deg, rgba(10, 16, 30, .86), rgba(7, 12, 24, .80)) !important;
       border-color: rgba(212, 175, 55, .30) !important;
@@ -1671,7 +1199,6 @@
     .activity-heading small,
     .activity-row { color: #94a3b8 !important; }
 
-    /* Верхняя погода тоже остаётся частью космического интерфейса */
     .dedovsk-bar {
       background: rgba(8, 13, 26, .82) !important;
       border-color: rgba(148,163,184,.20) !important;
@@ -1683,9 +1210,6 @@
     .weather-date-mini,
     .weather-live-text span { color: #64748b !important; }
     .weather-live-text b { color: #f59e0b !important; }
-
-
-    /* ===== Финальная интерактивная полировка ===== */
 
     #weather-effects {
       position: fixed;
@@ -1851,9 +1375,7 @@
       font-size: .66rem;
     }
 
-    .game-stats span {
-      min-width: 0;
-    }
+    .game-stats span { min-width: 0; }
 
     .game-star {
       cursor: pointer;
@@ -1905,9 +1427,7 @@
       transform: translate(-50%, 0);
     }
 
-    .home-bottom-card {
-      position: relative;
-    }
+    .home-bottom-card { position: relative; }
 
     .activity-row {
       transition: background .2s ease;
@@ -1916,9 +1436,7 @@
       padding-right: 7px;
     }
 
-    .activity-row + .activity-row {
-      margin-top: 2px;
-    }
+    .activity-row + .activity-row { margin-top: 2px; }
 
     @media (max-width: 520px) {
       .touch-orb-card { min-height: 270px; }
@@ -1937,7 +1455,6 @@
         transition: none !important;
       }
     }
-
   </style>
 </head>
 <body class="time-night">
@@ -2743,9 +2260,6 @@
       document.getElementById('sidebar-overlay').classList.toggle('active');
     }
 
-    // Навигация внутри сайта через историю браузера.
-    // Свайп "назад" на телефоне возвращает на предыдущий раздел,
-    // а не сразу уводит Лизу со страницы.
     let isHistoryNavigation = false;
 
     function setActiveTabUI(tabId) {
@@ -2801,7 +2315,6 @@
       const savedTabRaw = localStorage.getItem(LAST_TAB_KEY) || 'tab-home';
       const savedTab = savedTabRaw === 'tab-admin' ? 'tab-home' : savedTabRaw;
 
-      // Текущий вход в сайт становится точкой навигации приложения.
       history.replaceState({ lizaTab: savedTab }, '', window.location.href);
       setActiveTabUI(savedTab);
 
@@ -3615,6 +3128,15 @@
 
     // 13. БАЗА ШИФРОВ, 30 ВОПРОСОВ И КНИГА ТАЙН
     const secretCodes = {
+      "290826": {
+        title: "Особенная глава / С Днём Рождения 🎂",
+        hint: "Шесть цифр сегодняшнего особенного дня (29.08.26)",
+        header: "С днём рождения тебя ✦",
+        body: `Любимая кисонька,\nСегодня у этой истории особенная глава.\nС днём рождения тебя. ✦\n\nЯ хочу пожелать тебе не просто счастья — я хочу, чтобы у тебя было как можно больше моментов, к которым захочется возвращаться. Чтобы среди обычных дней всегда находилось место чему-то неожиданно хорошему.\n\nПусть рядом будут люди, с которыми можно быть собой. Пусть будет больше поводов смеяться, больше вечеров, которые не хочется заканчивать, и больше маленьких чудес, которые случаются совершенно случайно.\n\nЯ хочу, чтобы ты никогда не забывала, насколько ты замечательная. Не из-за каких-то достижений, не потому что кто-то это сказал, а просто потому, что ты — это ты.\n\nИ пусть впереди будет ещё огромное количество страниц. Некоторые из них мы уже написали, некоторые только предстоит открыть, а какие-то пока даже не знают, что однажды станут частью этой истории.\n\nСозвездие продолжает наблюдение.\nИ сегодня оно особенно ярко.\n\nС днём рождения, Лиза. ❤️`,
+        signature: "Твоё Созвездие",
+        hasSecret: true,
+        secretBody: `Ты нашла то, что Созвездие спрятало специально для тебя.\n\nЗдесь уже не будет красивых формулировок и загадочных наблюдений.\nПросто несколько слов, которые мне хотелось оставить именно здесь.\n\nЯ очень дорожу тобой.\nМне нравится знать, что где-то есть человек, которому я могу написать, с которым могу разделить свои мысли, радость, глупости и самые обычные моменты дня.\n\nИ если эта страница однажды станет для тебя воспоминанием, я хочу, чтобы вместе с ней осталось главное:\nты очень важна для меня.\n\nПоэтому сегодня я хочу пожелать тебе не просто счастливого дня рождения.\nЯ хочу пожелать тебе счастливой истории.\n\nИ очень надеюсь, что в ней ещё будет много глав, которые мы прочитаем вместе. ❤️`
+      },
       "290805": {
         title: "Главное послание Созвездия",
         hint: "Твой особенный день и координаты сердца",
@@ -3646,16 +3168,10 @@
         title: "Шутливый архив Созвездия ✨",
         hint: "Код для тех случаев, когда хочется открыть что-нибудь неожиданное",
         header: "Секретный архив Созвездия",
-        body: `Поздравляю, ты нашла секретный архив! ✨
-
-Здесь нет сложных правил — только маленькое напоминание: ты умеешь находить даже те тайники, которые я очень старательно прячу.
-
-Пусть этот код останется твоей маленькой победой над Созвездием. А теперь улыбнись — архив успешно взломан.`,
+        body: `Поздравляю, ты нашла секретный архив! ✨\n\nЗдесь нет сложных правил — только маленькое напоминание: ты умеешь находить даже те тайники, которые я очень старательно прячу.\n\nПусть этот код останется твоей маленькой победой над Созвездием. А теперь улыбнись — архив успешно взломан.`,
         signature: "Твоё Созвездие",
         hasSecret: true,
-        secretBody: `✦ Секретное дополнение ✦
-
-Если ты добралась сюда, значит, любопытство снова победило. Заслуженная награда — ещё одна порция тепла, заботы и хорошего настроения. ❤️`
+        secretBody: `✦ Секретное дополнение ✦\n\nЕсли ты добралась сюда, значит, любопытство снова победило. Заслуженная награда — ещё одна порция тепла, заботы и хорошего настроения. ❤️`
       }
     };
 
@@ -4043,7 +3559,6 @@
     const homeScore = document.getElementById('hub-score-meta');
     if (homeScore) homeScore.innerText = `рекорд: ${gameHighScore}`;
 
-    // Восстановление последней вкладки выполняется через initAppHistory().
     updateGameHighScoreUI();
     saveLastVisit();
 

@@ -1063,6 +1063,414 @@
       .hub-item { min-height: 110px; }
     }
 
+
+    /* ===== Финальная полировка: светлое утро + погода + просторная мобильная главная ===== */
+
+    body.time-morning {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(255,244,214,.96) 0%, rgba(246,224,205,.78) 28%, transparent 58%),
+        linear-gradient(180deg, #eadff1 0%, #d9e6f2 48%, #c9dceb 100%);
+      color: #263244;
+    }
+
+    body.time-day {
+      background:
+        radial-gradient(circle at 50% -15%, rgba(255,250,225,.98) 0%, rgba(202,230,245,.72) 35%, transparent 65%),
+        linear-gradient(180deg, #cfe9f7 0%, #dcecf4 52%, #c4d8e7 100%);
+      color: #243244;
+    }
+
+    body.time-evening {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(255,215,168,.82) 0%, rgba(215,180,203,.48) 32%, transparent 65%),
+        linear-gradient(180deg, #8da1bc 0%, #596a89 52%, #303a58 100%);
+    }
+
+    body.time-night {
+      background:
+        radial-gradient(circle at 50% -15%, rgba(72,91,135,.36) 0%, transparent 48%),
+        linear-gradient(180deg, #20213d 0%, #101426 52%, #080b15 100%);
+    }
+
+    /* Погодные оттенки */
+    body.weather-clear.time-morning {
+      background:
+        radial-gradient(circle at 50% -5%, #fff7d7 0%, #f8e6cf 27%, transparent 60%),
+        linear-gradient(180deg, #eadff0 0%, #d9e9f3 52%, #cbddea 100%);
+    }
+
+    body.weather-cloudy.time-morning,
+    body.weather-fog.time-morning {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(246,246,244,.95) 0%, rgba(222,227,232,.9) 32%, transparent 65%),
+        linear-gradient(180deg, #d9dde1 0%, #cbd7e1 54%, #b9c8d4 100%);
+    }
+
+    body.weather-rain.time-morning {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(215,225,233,.95) 0%, rgba(183,200,214,.72) 32%, transparent 64%),
+        linear-gradient(180deg, #b7c8d5 0%, #9eafbf 52%, #8297a9 100%);
+    }
+
+    body.weather-snow.time-morning {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(255,255,255,.98) 0%, rgba(226,237,244,.92) 34%, transparent 65%),
+        linear-gradient(180deg, #dcecf4 0%, #d3e2eb 54%, #becfda 100%);
+    }
+
+    body.weather-clear.time-day {
+      background:
+        radial-gradient(circle at 50% -8%, #fff8d9 0%, #d9effa 30%, transparent 64%),
+        linear-gradient(180deg, #c5e7f7 0%, #dceff5 55%, #c8dce8 100%);
+    }
+
+    body.weather-cloudy.time-day,
+    body.weather-fog.time-day {
+      background:
+        linear-gradient(180deg, #d5dfe5 0%, #c9d6df 55%, #b7c7d2 100%);
+    }
+
+    body.weather-rain.time-day {
+      background:
+        linear-gradient(180deg, #aebfcb 0%, #9bafbd 55%, #8196a6 100%);
+    }
+
+    body.weather-snow.time-day {
+      background:
+        linear-gradient(180deg, #e6f1f6 0%, #d7e5ed 55%, #c5d5df 100%);
+    }
+
+    body.time-morning #stars-canvas,
+    body.time-day #stars-canvas {
+      opacity: .62;
+      mix-blend-mode: multiply;
+    }
+
+    body.time-evening #stars-canvas,
+    body.time-night #stars-canvas {
+      opacity: 1;
+    }
+
+    .container {
+      max-width: 980px;
+      padding: 112px 14px 42px;
+    }
+
+    .home-card {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 30px 16px 24px;
+      border-radius: 30px;
+      background: rgba(248,250,252,.76);
+      border: 1px solid rgba(126,91,35,.28);
+      box-shadow: 0 24px 65px rgba(42,51,72,.18);
+      backdrop-filter: blur(16px);
+    }
+
+    body.time-evening .home-card,
+    body.time-night .home-card {
+      background: linear-gradient(145deg, rgba(11,17,32,.90), rgba(7,11,23,.86));
+      border-color: rgba(212,175,55,.32);
+      box-shadow: 0 24px 65px rgba(0,0,0,.34);
+    }
+
+    .home-kicker {
+      margin-top: 4px;
+      color: #a56a00;
+      font-size: .68rem;
+      letter-spacing: .19em;
+    }
+
+    body.time-evening .home-kicker,
+    body.time-night .home-kicker { color: #f59e0b; }
+
+    #greeting-title {
+      background: none;
+      border: 0;
+      padding: 0;
+      color: #28354a;
+      font-size: clamp(1.35rem, 5vw, 2rem);
+      margin: 5px 0 8px;
+    }
+
+    body.time-evening #greeting-title,
+    body.time-night #greeting-title { color: #f8fafc; }
+
+    .home-subtitle {
+      color: #64748b;
+      font-size: .82rem;
+      margin-bottom: 18px;
+    }
+
+    body.time-evening .home-subtitle,
+    body.time-night .home-subtitle { color: #94a3b8; }
+
+    .today-panel {
+      max-width: 100%;
+      margin: 16px 0 20px;
+      gap: 10px;
+    }
+
+    .today-stat {
+      background: rgba(255,255,255,.52);
+      border-color: rgba(91,105,121,.16);
+      padding: 11px 12px;
+      border-radius: 15px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.4);
+    }
+
+    body.time-evening .today-stat,
+    body.time-night .today-stat {
+      background: rgba(6,8,16,.46);
+      border-color: rgba(148,163,184,.14);
+      box-shadow: none;
+    }
+
+    .today-stat-label { color: #718096; }
+    .today-stat-value { color: #344054; font-size: .79rem; }
+    body.time-evening .today-stat-value,
+    body.time-night .today-stat-value { color: #e2e8f0; }
+
+    .touch-orb-card {
+      min-height: 270px;
+      margin: 12px 0 28px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(245,158,11,.20), transparent 25%),
+        radial-gradient(circle at 25% 80%, rgba(96,165,250,.12), transparent 32%),
+        rgba(255,255,255,.42);
+      border-color: rgba(170,119,22,.34);
+      box-shadow: inset 0 0 55px rgba(255,255,255,.16), 0 18px 40px rgba(69,78,94,.12);
+    }
+
+    body.time-evening .touch-orb-card,
+    body.time-night .touch-orb-card {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(245,158,11,.15), transparent 32%),
+        radial-gradient(circle at 30% 70%, rgba(129,140,248,.10), transparent 35%),
+        #060810;
+      box-shadow: inset 0 0 45px rgba(245,158,11,.05), 0 16px 42px rgba(0,0,0,.35);
+    }
+
+    .touch-orb-icon {
+      width: 92px;
+      height: 92px;
+      font-size: 3rem;
+    }
+
+    .touch-orb-text { font-size: 1.05rem; color: #5b451f; }
+    body.time-evening .touch-orb-text,
+    body.time-night .touch-orb-text { color: #fef3c7; }
+
+    .orb-hint { color: #7b8491; font-size: .67rem; }
+
+    .home-section-title {
+      margin: 8px 0 13px;
+      color: #475569;
+      font-size: .76rem;
+    }
+
+    body.time-evening .home-section-title,
+    body.time-night .home-section-title { color: #cbd5e1; }
+
+    .hub-grid,
+    .home-quick-grid {
+      gap: 10px;
+    }
+
+    .hub-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .home-quick-grid { grid-template-columns: repeat(3, minmax(0,1fr)); margin-top: 10px; }
+
+    .hub-item {
+      min-height: 108px;
+      padding: 16px 9px;
+      border-radius: 19px;
+      background: rgba(255,255,255,.42);
+      border-color: rgba(91,105,121,.17);
+      box-shadow: 0 8px 20px rgba(71,85,105,.06);
+    }
+
+    body.time-evening .hub-item,
+    body.time-night .hub-item {
+      background: linear-gradient(145deg, rgba(6,8,16,.88), rgba(10,15,28,.78));
+      border-color: rgba(148,163,184,.18);
+      box-shadow: none;
+    }
+
+    .hub-item:active { transform: scale(.975); }
+    .hub-icon { font-size: 1.8rem; margin-bottom: 7px; }
+    .hub-title { font-size: .81rem; }
+    .hub-meta { font-size: .63rem; margin-top: 4px; }
+
+    .home-bottom-card {
+      margin-top: 14px;
+      padding: 15px;
+      border-radius: 19px;
+      background: rgba(255,255,255,.34);
+      border-color: rgba(91,105,121,.15);
+    }
+
+    body.time-evening .home-bottom-card,
+    body.time-night .home-bottom-card {
+      background: rgba(6,8,16,.45);
+      border-color: rgba(148,163,184,.13);
+    }
+
+    .activity-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      color: #475569;
+    }
+
+    .activity-heading > span {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(245,158,11,.13);
+      color: #c47b00;
+    }
+
+    .activity-heading strong {
+      display: block;
+      font-size: .78rem;
+      color: #334155;
+    }
+
+    .activity-heading small {
+      display: block;
+      margin-top: 2px;
+      font-size: .64rem;
+      color: #7b8794;
+    }
+
+    body.time-evening .activity-heading,
+    body.time-night .activity-heading,
+    body.time-evening .activity-heading strong,
+    body.time-night .activity-heading strong { color: #e2e8f0; }
+
+    body.time-evening .activity-heading small,
+    body.time-night .activity-heading small { color: #64748b; }
+
+    .activity-list { margin-top: 11px; }
+    .activity-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 0;
+      border-top: 1px solid rgba(100,116,139,.10);
+      color: #64748b;
+      font-size: .67rem;
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    .activity-row:first-child { border-top: 0; }
+    .activity-row > span:first-child { font-size: .95rem; }
+    body.time-evening .activity-row,
+    body.time-night .activity-row { color: #94a3b8; }
+
+    /* Погода */
+    .dedovsk-bar {
+      min-height: 54px;
+      padding: 8px 12px;
+      border-radius: 17px;
+      background: rgba(255,255,255,.58);
+      border-color: rgba(91,105,121,.18);
+      box-shadow: 0 8px 24px rgba(71,85,105,.10);
+      color: #475569;
+    }
+
+    body.time-evening .dedovsk-bar,
+    body.time-night .dedovsk-bar {
+      background: rgba(11,17,32,.82);
+      border-color: rgba(148,163,184,.25);
+      box-shadow: 0 8px 24px rgba(0,0,0,.28);
+      color: #cbd5e1;
+    }
+
+    .weather-place,
+    .weather-live {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .weather-place-name {
+      display: block;
+      font-size: .73rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .weather-date-mini {
+      display: block;
+      margin-top: 1px;
+      font-size: .59rem;
+      color: #7b8794;
+    }
+
+    .weather-live-text b {
+      display: block;
+      font-size: .78rem;
+      color: #a66b00;
+      line-height: 1;
+    }
+
+    .weather-live-text span {
+      display: block;
+      margin-top: 4px;
+      font-size: .60rem;
+      color: #64748b;
+      white-space: nowrap;
+    }
+
+    body.time-evening .weather-place-name,
+    body.time-night .weather-place-name,
+    body.time-evening .weather-live-text b,
+    body.time-night .weather-live-text b { color: #f8fafc; }
+
+    body.time-evening .weather-date-mini,
+    body.time-night .weather-date-mini,
+    body.time-evening .weather-live-text span,
+    body.time-night .weather-live-text span { color: #94a3b8; }
+
+    .weather-icon { font-size: 1.25rem; }
+
+    @media (min-width: 700px) {
+      .container { padding: 130px 24px 60px; }
+      .home-card { padding: 42px 42px 34px; }
+      .home-quick-grid { grid-template-columns: repeat(3, 1fr); }
+      .touch-orb-card { min-height: 320px; }
+    }
+
+    @media (max-width: 420px) {
+      .container { padding: 108px 10px 32px; }
+      .home-card { padding: 27px 13px 19px; border-radius: 25px; }
+      .touch-orb-card { min-height: 250px; }
+      .today-panel { gap: 8px; }
+      .today-stat { padding: 10px; }
+      .hub-item { min-height: 104px; }
+      .home-quick-grid .hub-item { min-height: 94px; }
+      .home-quick-grid { gap: 8px; }
+      .dedovsk-bar { padding: 8px 10px; }
+    }
+
+    @media (max-width: 360px) {
+      .home-quick-grid { grid-template-columns: 1fr; }
+      .home-quick-grid .hub-item { min-height: 82px; }
+      .weather-live-text span { max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .touch-orb-icon,
+      .status-dot { animation: none !important; }
+      *, *::before, *::after { scroll-behavior: auto !important; }
+    }
+
   </style>
 </head>
 <body class="time-night">
@@ -1081,8 +1489,20 @@
       </div>
     </div>
     <div class="dedovsk-bar" id="dedovsk-weather-bar">
-      <span>📍 Дедовск · <b id="dedovsk-time">--:--</b></span>
-      <span class="weather-main"><span class="weather-icon" id="dedovsk-icon">🌙</span><span id="dedovsk-temp">Загрузка погоды...</span></span>
+      <div class="weather-place">
+        <span class="weather-pin">📍</span>
+        <div>
+          <span class="weather-place-name">Дедовск</span>
+          <span class="weather-date-mini" id="dedovsk-date">Сегодня</span>
+        </div>
+      </div>
+      <div class="weather-live">
+        <span class="weather-icon" id="dedovsk-icon">🌤️</span>
+        <div class="weather-live-text">
+          <b id="dedovsk-time">--:--</b>
+          <span id="dedovsk-temp">Загрузка погоды...</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1184,14 +1604,23 @@
           </div>
         </div>
 
-        <div class="home-bottom-card">
-          <div class="home-bottom-row">
-            <span class="home-bottom-icon">🌙</span>
-            <div class="home-bottom-text" id="home-time-note">Созвездие следит за небом Дедовска.</div>
+        <div class="home-bottom-card home-activity-card">
+          <div class="activity-heading">
+            <span>✦</span>
+            <div>
+              <strong>Сегодня для тебя</strong>
+              <small>Небольшие вещи, которые ждут внутри</small>
+            </div>
           </div>
-          <div class="home-bottom-row">
-            <span class="home-bottom-icon">✦</span>
-            <div class="home-bottom-text">Последняя открытая страница запоминается — можно закрыть сайт и вернуться туда же.</div>
+          <div class="activity-list" id="home-activity-list">
+            <div class="activity-row">
+              <span>🌤️</span>
+              <span id="home-time-note">Созвездие следит за небом Дедовска.</span>
+            </div>
+            <div class="activity-row">
+              <span>⭐</span>
+              <span id="home-visit-note">С возвращением в твоё пространство ✦</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1676,6 +2105,26 @@
       return 'неустойчивая погода';
     }
 
+    function setWeatherTheme(code) {
+      document.body.classList.remove('weather-clear', 'weather-cloudy', 'weather-fog', 'weather-rain', 'weather-snow');
+      if (code === 0 || code === 1) document.body.classList.add('weather-clear');
+      else if (code >= 2 && code <= 3) document.body.classList.add('weather-cloudy');
+      else if (code >= 45 && code <= 48) document.body.classList.add('weather-fog');
+      else if (code >= 51 && code <= 67 || (code >= 80 && code <= 82)) document.body.classList.add('weather-rain');
+      else if (code >= 71 && code <= 77) document.body.classList.add('weather-snow');
+      else document.body.classList.add('weather-cloudy');
+    }
+
+    function updateDedovskDate() {
+      const el = document.getElementById('dedovsk-date');
+      if (!el) return;
+      el.innerText = new Intl.DateTimeFormat('ru-RU', {
+        timeZone: 'Europe/Moscow',
+        day: 'numeric',
+        month: 'long'
+      }).format(new Date());
+    }
+
     async function fetchDedovskWeather() {
       try {
         const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=55.8647&longitude=37.1328&current_weather=true&timezone=Europe%2FMoscow');
@@ -1684,14 +2133,19 @@
         const temp = Math.round(current.temperature);
         const code = current.weathercode;
         const hour = parseInt(new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Moscow', hour: 'numeric', hour12: false }).format(new Date()), 10);
+        const condition = weatherText(code);
+
         document.getElementById('dedovsk-icon').innerText = weatherVisual(code, hour);
-        document.getElementById('dedovsk-temp').innerText = `${temp > 0 ? '+' : ''}${temp}°C · ${weatherText(code)}`;
-        document.getElementById('home-time-note').innerText = `Сейчас в Дедовске ${temp > 0 ? '+' : ''}${temp}°C — ${weatherText(code)}. Созвездие всё равно рядом ✦`;
+        document.getElementById('dedovsk-temp').innerText = `${temp > 0 ? '+' : ''}${temp}°C · ${condition}`;
+        document.getElementById('home-time-note').innerText = `Сейчас в Дедовске ${temp > 0 ? '+' : ''}${temp}°C — ${condition}. Созвездие рядом ✦`;
+        setWeatherTheme(code);
       } catch (e) {
         document.getElementById('dedovsk-icon').innerText = '✨';
-        document.getElementById('dedovsk-temp').innerText = 'Небо сегодня хранит свои тайны';
+        document.getElementById('dedovsk-temp').innerText = 'небо хранит свои тайны';
         document.getElementById('home-time-note').innerText = 'Погода спряталась от Созвездия, но оно всё равно рядом ✦';
+        setWeatherTheme(2);
       }
+      updateDedovskDate();
     }
 
     function updateDedovskTime() {
@@ -1702,6 +2156,7 @@
         minute: '2-digit'
       }).format(now);
       document.getElementById('dedovsk-time').innerText = timeStr;
+      updateDedovskDate();
     }
 
     fetchDedovskWeather();
@@ -2786,7 +3241,7 @@
       }).format(now);
       
       const hour = parseInt(mskHourStr, 10);
-      document.body.className = '';
+      document.body.classList.remove('time-morning', 'time-day', 'time-evening', 'time-night');
 
       if (hour >= 5 && hour < 12) {
         document.body.classList.add('time-morning');
@@ -2805,6 +3260,7 @@
 
     applyTimeOfDay();
     updateTodayDate();
+    updateDedovskDate();
     updateLastVisitText();
     const homeScore = document.getElementById('hub-score-meta');
     if (homeScore) homeScore.innerText = `рекорд: ${gameHighScore}`;
@@ -2818,7 +3274,25 @@
     }
 
     saveLastVisit();
+
+    function updateHomeActivity() {
+      const visitNote = document.getElementById('home-visit-note');
+      if (!visitNote) return;
+      const previous = parseInt(localStorage.getItem('liza_last_visit') || '0', 10);
+      if (!previous) {
+        visitNote.innerText = 'Первый визит — добро пожаловать в своё пространство ✦';
+        return;
+      }
+      visitNote.innerText = 'Созвездие рядом, а всё твоё маленькое пространство ждёт тебя ✦';
+    }
+
+    updateHomeActivity();
     setInterval(updateLastVisitText, 60000);
+    setInterval(() => {
+      applyTimeOfDay();
+      updateTodayDate();
+      updateDedovskDate();
+    }, 60000);
   </script>
 </body>
 </html>

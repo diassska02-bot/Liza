@@ -1064,92 +1064,153 @@
     }
 
 
-    /* ===== Финальная полировка: светлое утро + погода + просторная мобильная главная ===== */
+    /* ===== Финальная атмосфера: погода меняет оттенок, но космическая концепция остаётся ===== */
 
     body.time-morning {
       background:
-        radial-gradient(circle at 50% -10%, rgba(255,244,214,.96) 0%, rgba(246,224,205,.78) 28%, transparent 58%),
-        linear-gradient(180deg, #eadff1 0%, #d9e6f2 48%, #c9dceb 100%);
-      color: #263244;
+        radial-gradient(circle at 50% -8%, rgba(255, 214, 158, .20) 0%, rgba(177, 157, 202, .12) 25%, transparent 55%),
+        linear-gradient(180deg, #30243f 0%, #171d32 48%, #0b1121 100%);
+      color: #f4efe5;
     }
 
     body.time-day {
       background:
-        radial-gradient(circle at 50% -15%, rgba(255,250,225,.98) 0%, rgba(202,230,245,.72) 35%, transparent 65%),
-        linear-gradient(180deg, #cfe9f7 0%, #dcecf4 52%, #c4d8e7 100%);
-      color: #243244;
+        radial-gradient(circle at 50% -10%, rgba(255, 220, 151, .18) 0%, rgba(113, 167, 205, .12) 30%, transparent 58%),
+        linear-gradient(180deg, #28334a 0%, #111a2c 50%, #080e1c 100%);
+      color: #f4efe5;
     }
 
     body.time-evening {
       background:
-        radial-gradient(circle at 50% -10%, rgba(255,215,168,.82) 0%, rgba(215,180,203,.48) 32%, transparent 65%),
-        linear-gradient(180deg, #8da1bc 0%, #596a89 52%, #303a58 100%);
+        radial-gradient(circle at 50% -10%, rgba(245, 158, 11, .16) 0%, rgba(147, 91, 142, .13) 32%, transparent 60%),
+        linear-gradient(180deg, #2c203b 0%, #12172a 52%, #080d19 100%);
     }
 
     body.time-night {
       background:
-        radial-gradient(circle at 50% -15%, rgba(72,91,135,.36) 0%, transparent 48%),
-        linear-gradient(180deg, #20213d 0%, #101426 52%, #080b15 100%);
+        radial-gradient(circle at 50% -12%, rgba(77, 92, 154, .20) 0%, transparent 48%),
+        linear-gradient(180deg, #1b1932 0%, #0c1121 52%, #060912 100%);
     }
 
-    /* Погодные оттенки */
+    /* Погода — только лёгкий оттенок поверх ночного неба, а не превращение сайта в белую страницу */
     body.weather-clear.time-morning {
       background:
-        radial-gradient(circle at 50% -5%, #fff7d7 0%, #f8e6cf 27%, transparent 60%),
-        linear-gradient(180deg, #eadff0 0%, #d9e9f3 52%, #cbddea 100%);
+        radial-gradient(circle at 50% -7%, rgba(255, 219, 156, .25) 0%, rgba(196, 173, 214, .12) 27%, transparent 57%),
+        linear-gradient(180deg, #342640 0%, #182037 48%, #0b1222 100%);
     }
 
     body.weather-cloudy.time-morning,
     body.weather-fog.time-morning {
       background:
-        radial-gradient(circle at 50% -10%, rgba(246,246,244,.95) 0%, rgba(222,227,232,.9) 32%, transparent 65%),
-        linear-gradient(180deg, #d9dde1 0%, #cbd7e1 54%, #b9c8d4 100%);
+        radial-gradient(circle at 50% -8%, rgba(202, 213, 222, .16) 0%, rgba(135, 151, 173, .08) 30%, transparent 58%),
+        linear-gradient(180deg, #303143 0%, #182031 50%, #0b1120 100%);
     }
 
     body.weather-rain.time-morning {
       background:
-        radial-gradient(circle at 50% -10%, rgba(215,225,233,.95) 0%, rgba(183,200,214,.72) 32%, transparent 64%),
-        linear-gradient(180deg, #b7c8d5 0%, #9eafbf 52%, #8297a9 100%);
+        radial-gradient(circle at 50% -8%, rgba(138, 171, 195, .13) 0%, transparent 48%),
+        linear-gradient(180deg, #273343 0%, #111a2b 52%, #080f1d 100%);
     }
 
     body.weather-snow.time-morning {
       background:
-        radial-gradient(circle at 50% -10%, rgba(255,255,255,.98) 0%, rgba(226,237,244,.92) 34%, transparent 65%),
-        linear-gradient(180deg, #dcecf4 0%, #d3e2eb 54%, #becfda 100%);
+        radial-gradient(circle at 50% -8%, rgba(225, 239, 246, .18) 0%, transparent 52%),
+        linear-gradient(180deg, #303d4e 0%, #172234 52%, #0a1120 100%);
     }
 
     body.weather-clear.time-day {
       background:
-        radial-gradient(circle at 50% -8%, #fff8d9 0%, #d9effa 30%, transparent 64%),
-        linear-gradient(180deg, #c5e7f7 0%, #dceff5 55%, #c8dce8 100%);
+        radial-gradient(circle at 50% -8%, rgba(255, 224, 155, .24) 0%, rgba(127, 184, 216, .10) 30%, transparent 60%),
+        linear-gradient(180deg, #2d3c51 0%, #131d30 52%, #080f1e 100%);
     }
 
     body.weather-cloudy.time-day,
     body.weather-fog.time-day {
       background:
-        linear-gradient(180deg, #d5dfe5 0%, #c9d6df 55%, #b7c7d2 100%);
+        radial-gradient(circle at 50% -8%, rgba(202, 213, 222, .14) 0%, transparent 55%),
+        linear-gradient(180deg, #303847 0%, #151e2f 52%, #090f1d 100%);
     }
 
     body.weather-rain.time-day {
       background:
-        linear-gradient(180deg, #aebfcb 0%, #9bafbd 55%, #8196a6 100%);
+        radial-gradient(circle at 50% -8%, rgba(111, 150, 177, .14) 0%, transparent 52%),
+        linear-gradient(180deg, #263546 0%, #111b2d 52%, #080e1c 100%);
     }
 
     body.weather-snow.time-day {
       background:
-        linear-gradient(180deg, #e6f1f6 0%, #d7e5ed 55%, #c5d5df 100%);
+        radial-gradient(circle at 50% -8%, rgba(218, 235, 244, .16) 0%, transparent 54%),
+        linear-gradient(180deg, #334250 0%, #182435 52%, #0a1120 100%);
     }
 
+    /* Звёзды видны всегда. Утром они чуть мягче, но не исчезают. */
     body.time-morning #stars-canvas,
-    body.time-day #stars-canvas {
-      opacity: .62;
-      mix-blend-mode: multiply;
-    }
-
+    body.time-day #stars-canvas,
     body.time-evening #stars-canvas,
     body.time-night #stars-canvas {
-      opacity: 1;
+      opacity: .95;
+      mix-blend-mode: screen;
     }
+
+    .home-card {
+      background: linear-gradient(145deg, rgba(10, 16, 30, .82), rgba(7, 12, 24, .76));
+      border-color: rgba(212, 175, 55, .30);
+      box-shadow: 0 24px 65px rgba(0, 0, 0, .30), inset 0 1px 0 rgba(255,255,255,.035);
+      color: #f8fafc;
+    }
+
+    .home-kicker { color: #f59e0b; }
+    #greeting-title { color: #fff8e8; }
+    .home-subtitle { color: #94a3b8; }
+
+    .today-stat {
+      background: rgba(4, 8, 18, .50);
+      border-color: rgba(148,163,184,.16);
+      box-shadow: none;
+    }
+    .today-stat-label { color: #64748b; }
+    .today-stat-value { color: #e2e8f0; }
+
+    .touch-orb-card {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(245,158,11,.16), transparent 28%),
+        radial-gradient(circle at 24% 78%, rgba(96,165,250,.09), transparent 34%),
+        rgba(3, 7, 16, .60);
+      border-color: rgba(212,175,55,.34);
+      box-shadow: inset 0 0 55px rgba(245,158,11,.035), 0 18px 40px rgba(0,0,0,.25);
+    }
+
+    .touch-orb-text { color: #fef3c7; }
+    .orb-hint { color: #64748b; }
+    .home-section-title { color: #cbd5e1; }
+
+    .hub-item {
+      background: linear-gradient(145deg, rgba(7, 11, 22, .78), rgba(11, 17, 31, .70));
+      border-color: rgba(148,163,184,.17);
+      box-shadow: none;
+    }
+
+    .home-bottom-card {
+      background: rgba(4, 8, 18, .48);
+      border-color: rgba(148,163,184,.14);
+    }
+
+    .activity-heading,
+    .activity-heading strong { color: #e2e8f0; }
+    .activity-heading small,
+    .activity-row { color: #94a3b8; }
+
+    .dedovsk-bar {
+      background: rgba(8, 13, 26, .78);
+      border-color: rgba(148,163,184,.20);
+      box-shadow: 0 8px 24px rgba(0,0,0,.22);
+      color: #cbd5e1;
+    }
+
+    .weather-place-name { color: #e2e8f0; }
+    .weather-date-mini,
+    .weather-live-text span { color: #64748b; }
+    .weather-live-text b { color: #f59e0b; }
 
     .container {
       max-width: 980px;

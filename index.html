@@ -1684,11 +1684,267 @@
     .weather-live-text span { color: #64748b !important; }
     .weather-live-text b { color: #f59e0b !important; }
 
+
+    /* ===== Финальная интерактивная полировка ===== */
+
+    #weather-effects {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity .5s ease;
+    }
+
+    #weather-effects.active { opacity: 1; }
+
+    .weather-particle {
+      position: absolute;
+      top: -12vh;
+      left: var(--x);
+      opacity: var(--opacity);
+      animation: weather-fall var(--duration) linear infinite;
+      animation-delay: var(--delay);
+      transform: rotate(var(--rotate));
+      filter: drop-shadow(0 0 5px rgba(255,255,255,.18));
+    }
+
+    #weather-effects.rain .weather-particle {
+      width: 1px;
+      height: 28px;
+      background: rgba(191,219,254,.34);
+      border-radius: 999px;
+    }
+
+    #weather-effects.snow .weather-particle {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.70);
+      box-shadow: 0 0 8px rgba(255,255,255,.35);
+    }
+
+    #weather-effects.fog::before,
+    #weather-effects.fog::after {
+      content: "";
+      position: absolute;
+      width: 75vw;
+      height: 18vh;
+      border-radius: 50%;
+      background: rgba(220,230,240,.08);
+      filter: blur(28px);
+      animation: fog-drift 14s ease-in-out infinite alternate;
+    }
+
+    #weather-effects.fog::before { top: 28%; left: -20%; }
+    #weather-effects.fog::after { top: 58%; right: -20%; animation-delay: -6s; }
+
+    @keyframes weather-fall {
+      to { transform: translate3d(10vw, 120vh, 0) rotate(var(--rotate)); }
+    }
+
+    @keyframes fog-drift {
+      from { transform: translateX(-8%); }
+      to { transform: translateX(14%); }
+    }
+
+    .touch-orb-card {
+      overflow: hidden;
+      isolation: isolate;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    #constellation-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .constellation-glow {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-55%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,.22), rgba(245,158,11,.07) 35%, transparent 70%);
+      filter: blur(2px);
+      z-index: 1;
+      pointer-events: none;
+      animation: constellation-breathe 3.8s ease-in-out infinite;
+    }
+
+    .constellation-core {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 25px;
+      font-family: inherit;
+    }
+
+    .constellation-core:active .touch-orb-icon {
+      transform: scale(.82);
+    }
+
+    .constellation-core .touch-orb-icon {
+      transition: transform .25s ease, filter .25s ease;
+      text-shadow: 0 0 22px rgba(245,158,11,.75);
+    }
+
+    .constellation-core .touch-orb-text,
+    .constellation-core .orb-hint {
+      position: relative;
+      z-index: 4;
+    }
+
+    .constellation-pulse {
+      position: absolute;
+      width: 35px;
+      height: 35px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%) scale(.3);
+      border: 1px solid rgba(245,158,11,.65);
+      border-radius: 50%;
+      opacity: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .constellation-pulse.active {
+      animation: constellation-pulse .8s ease-out;
+    }
+
+    @keyframes constellation-breathe {
+      0%,100% { opacity: .65; transform: translate(-50%,-55%) scale(.9); }
+      50% { opacity: 1; transform: translate(-50%,-55%) scale(1.08); }
+    }
+
+    @keyframes constellation-pulse {
+      0% { opacity: .8; transform: translate(-50%,-50%) scale(.3); }
+      100% { opacity: 0; transform: translate(-50%,-50%) scale(5.5); }
+    }
+
+    .game-achievement {
+      margin: -3px auto 13px;
+      max-width: 360px;
+      padding: 8px 11px;
+      border-radius: 12px;
+      border: 1px solid rgba(245,158,11,.16);
+      background: rgba(245,158,11,.06);
+      color: #94a3b8;
+      font-size: .66rem;
+    }
+
+    .game-stats span {
+      min-width: 0;
+    }
+
+    .game-star {
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .game-star.special-star {
+      filter: drop-shadow(0 0 12px rgba(245,158,11,.9));
+      transform: scale(1.08);
+    }
+
+    .game-star.mega-star {
+      filter: drop-shadow(0 0 16px rgba(251,191,36,1));
+      transform: scale(1.18);
+    }
+
+    .floating-score {
+      pointer-events: none;
+      z-index: 10;
+      font-weight: 700;
+    }
+
+    .liza-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translate(-50%, 18px);
+      z-index: 300;
+      width: min(92vw, 390px);
+      padding: 13px 16px;
+      border: 1px solid rgba(245,158,11,.35);
+      border-radius: 16px;
+      background: rgba(6,8,16,.94);
+      box-shadow: 0 15px 40px rgba(0,0,0,.45), 0 0 25px rgba(245,158,11,.08);
+      color: #f8fafc;
+      text-align: center;
+      font-size: .78rem;
+      line-height: 1.4;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .liza-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .home-bottom-card {
+      position: relative;
+    }
+
+    .activity-row {
+      transition: background .2s ease;
+      border-radius: 10px;
+      padding-left: 7px;
+      padding-right: 7px;
+    }
+
+    .activity-row + .activity-row {
+      margin-top: 2px;
+    }
+
+    @media (max-width: 520px) {
+      .touch-orb-card { min-height: 270px; }
+      .game-stats { gap: 6px; }
+      .game-stats span { font-size: .68rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #weather-effects,
+      .constellation-glow,
+      .constellation-pulse,
+      .weather-particle,
+      .liza-toast,
+      .game-star {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
   </style>
 </head>
 <body class="time-night">
 
   <canvas id="stars-canvas"></canvas>
+  <div id="weather-effects" aria-hidden="true"></div>
+  <div id="liza-toast" class="liza-toast" role="status" aria-live="polite"></div>
 
   <!-- Верхняя панель -->
   <div class="top-nav">
@@ -1768,10 +2024,15 @@
           </div>
         </div>
 
-        <div class="touch-orb-card" onclick="touchConstellation()">
-          <div class="touch-orb-icon">✦</div>
-          <div class="touch-orb-text" id="touch-text">Прикоснись к созвездию...</div>
-          <div class="orb-hint">нажми — и оно ответит</div>
+        <div class="touch-orb-card" id="constellation-card">
+          <canvas id="constellation-canvas" aria-hidden="true"></canvas>
+          <div class="constellation-glow"></div>
+          <button class="constellation-core" id="constellation-core" onclick="touchConstellation()" aria-label="Прикоснуться к созвездию">
+            <span class="touch-orb-icon">✦</span>
+            <span class="touch-orb-text" id="touch-text">Прикоснись к созвездию...</span>
+            <span class="orb-hint">нажми — и оно ответит</span>
+          </button>
+          <div class="constellation-pulse" id="constellation-pulse"></div>
         </div>
 
         <div class="home-section-title">Твоё пространство</div>
@@ -2046,7 +2307,9 @@
         <div class="game-stats">
           <span>Счёт: <b id="game-score">0</b></span>
           <span>Время: <b id="game-timer">30</b>с</span>
+          <span>Рекорд: <b id="game-high-score">0</b></span>
         </div>
+        <div class="game-achievement" id="game-achievement">✦ Лови звёзды — и попробуй побить свой рекорд</div>
 
         <div class="star-catcher-box" id="star-catcher-box"></div>
         <button class="submit-btn" id="game-start-btn" onclick="startGame()">Начать охоту за звёздами ⭐</button>
@@ -2318,6 +2581,33 @@
       return 'неустойчивая погода';
     }
 
+    function renderWeatherEffects(kind) {
+      const layer = document.getElementById('weather-effects');
+      if (!layer) return;
+
+      layer.className = '';
+      layer.innerHTML = '';
+
+      if (!['rain', 'snow', 'fog'].includes(kind)) return;
+
+      layer.classList.add('active', kind);
+
+      if (kind === 'fog') return;
+
+      const count = Math.min(42, Math.max(18, Math.floor(window.innerWidth / 12)));
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('span');
+        p.className = 'weather-particle';
+        p.style.setProperty('--x', `${Math.random() * 100}%`);
+        p.style.setProperty('--duration', `${3.8 + Math.random() * 4.5}s`);
+        p.style.setProperty('--delay', `${-Math.random() * 7}s`);
+        p.style.setProperty('--opacity', `${.18 + Math.random() * .35}`);
+        p.style.setProperty('--rotate', `${Math.random() * 18 - 9}deg`);
+        if (kind === 'snow') p.innerText = Math.random() > .75 ? '✦' : '';
+        layer.appendChild(p);
+      }
+    }
+
     function setWeatherTheme(code) {
       document.body.classList.remove('weather-clear', 'weather-cloudy', 'weather-fog', 'weather-rain', 'weather-snow');
       if (code === 0 || code === 1) document.body.classList.add('weather-clear');
@@ -2326,6 +2616,12 @@
       else if (code >= 51 && code <= 67 || (code >= 80 && code <= 82)) document.body.classList.add('weather-rain');
       else if (code >= 71 && code <= 77) document.body.classList.add('weather-snow');
       else document.body.classList.add('weather-cloudy');
+
+      let effect = '';
+      if (code >= 51 && code <= 67 || (code >= 80 && code <= 82)) effect = 'rain';
+      else if (code >= 71 && code <= 77) effect = 'snow';
+      else if (code >= 45 && code <= 48) effect = 'fog';
+      renderWeatherEffects(effect);
     }
 
     function updateDedovskDate() {
@@ -2447,35 +2743,79 @@
       document.getElementById('sidebar-overlay').classList.toggle('active');
     }
 
-    function switchTab(tabId) {
+    // Навигация внутри сайта через историю браузера.
+    // Свайп "назад" на телефоне возвращает на предыдущий раздел,
+    // а не сразу уводит Лизу со страницы.
+    let isHistoryNavigation = false;
+
+    function setActiveTabUI(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-      
+
       const target = document.getElementById(tabId);
       if (target) target.classList.add('active');
 
-      if (tabId !== 'tab-admin') {
-        localStorage.setItem(LAST_TAB_KEY, tabId);
-      }
-
-      const matchingNav = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      const matchingNav = Array.from(document.querySelectorAll('.nav-btn')).find(
+        b => (b.getAttribute('onclick') || '').includes(tabId)
+      );
       if (matchingNav) matchingNav.classList.add('active');
 
       const sidebar = document.getElementById('sidebar');
-      if (sidebar.classList.contains('active')) toggleSidebar();
+      if (sidebar && sidebar.classList.contains('active')) toggleSidebar();
 
       if (tabId === 'tab-cipher') {
         closeCipherLetterView();
         switchCipherSubtab('input');
       }
-      if (tabId === 'tab-poems') { closePoemScroll(); renderPoemsList(); }
+      if (tabId === 'tab-poems') {
+        closePoemScroll();
+        renderPoemsList();
+      }
       if (tabId === 'tab-crystal') closeCrystalScroll();
       if (tabId === 'tab-letters') {
         closeLetterReader();
-        document.getElementById('hub-unread-badge').style.display = 'none';
+        const badge = document.getElementById('hub-unread-badge');
+        if (badge) badge.style.display = 'none';
         localStorage.setItem('last_read_reply_time', Date.now());
       }
     }
+
+    function switchTab(tabId, fromHistory = false) {
+      if (!document.getElementById(tabId)) return;
+
+      if (!fromHistory && !isHistoryNavigation) {
+        const currentTab = history.state && history.state.lizaTab;
+        if (currentTab !== tabId) {
+          history.pushState({ lizaTab: tabId }, '', window.location.href);
+        }
+      }
+
+      if (tabId !== 'tab-admin') {
+        localStorage.setItem(LAST_TAB_KEY, tabId);
+      }
+
+      setActiveTabUI(tabId);
+    }
+
+    function initAppHistory() {
+      const savedTabRaw = localStorage.getItem(LAST_TAB_KEY) || 'tab-home';
+      const savedTab = savedTabRaw === 'tab-admin' ? 'tab-home' : savedTabRaw;
+
+      // Текущий вход в сайт становится точкой навигации приложения.
+      history.replaceState({ lizaTab: savedTab }, '', window.location.href);
+      setActiveTabUI(savedTab);
+
+      window.addEventListener('popstate', (event) => {
+        const tabId = event.state && event.state.lizaTab;
+        const targetTab = document.getElementById(tabId) ? tabId : 'tab-home';
+
+        isHistoryNavigation = true;
+        switchTab(targetTab, true);
+        isHistoryNavigation = false;
+      });
+    }
+
+    initAppHistory();
 
     // 6. ПРИКОСНОВЕНИЕ К СОЗВЕЗДИЮ (30 фраз)
     const touchPhrases = [
@@ -2493,29 +2833,162 @@
 
     let touchDeck = [];
 
+    // 6. ЖИВОЕ СОЗВЕЗДИЕ
+    const constellationCanvas = document.getElementById('constellation-canvas');
+    const constellationCtx = constellationCanvas.getContext('2d');
+    const constellationCard = document.getElementById('constellation-card');
+    let constellationStars = [];
+    let constellationPointer = { x: 0, y: 0, active: false };
+
+    function resizeConstellation() {
+      const rect = constellationCard.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      constellationCanvas.width = Math.max(1, Math.floor(rect.width * dpr));
+      constellationCanvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      constellationCanvas.style.width = rect.width + 'px';
+      constellationCanvas.style.height = rect.height + 'px';
+      constellationCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      constellationStars = Array.from({length: 15}, (_, i) => ({
+        x: 20 + Math.random() * Math.max(20, rect.width - 40),
+        y: 20 + Math.random() * Math.max(20, rect.height - 40),
+        r: i < 4 ? Math.random() * 1.6 + 1.4 : Math.random() * 1.1 + .55,
+        phase: Math.random() * Math.PI * 2,
+        speed: .006 + Math.random() * .012,
+        vx: (Math.random() - .5) * .045,
+        vy: (Math.random() - .5) * .045
+      }));
+    }
+
+    function renderConstellation() {
+      if (!constellationCard || !constellationCanvas) return;
+      const rect = constellationCard.getBoundingClientRect();
+      constellationCtx.clearRect(0, 0, rect.width, rect.height);
+
+      constellationStars.forEach(star => {
+        star.phase += star.speed;
+        star.x += star.vx;
+        star.y += star.vy;
+        if (star.x < 10 || star.x > rect.width - 10) star.vx *= -1;
+        if (star.y < 10 || star.y > rect.height - 10) star.vy *= -1;
+      });
+
+      const all = constellationStars;
+      for (let i = 0; i < all.length; i++) {
+        for (let j = i + 1; j < all.length; j++) {
+          const dx = all[i].x - all[j].x;
+          const dy = all[i].y - all[j].y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 92) {
+            const alpha = .18 * (1 - dist / 92);
+            constellationCtx.beginPath();
+            constellationCtx.moveTo(all[i].x, all[i].y);
+            constellationCtx.lineTo(all[j].x, all[j].y);
+            constellationCtx.strokeStyle = `rgba(245,158,11,${alpha})`;
+            constellationCtx.lineWidth = .55;
+            constellationCtx.stroke();
+          }
+        }
+      }
+
+      all.forEach(star => {
+        const a = .35 + Math.abs(Math.sin(star.phase)) * .55;
+        constellationCtx.beginPath();
+        constellationCtx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        constellationCtx.fillStyle = `rgba(255,255,255,${a})`;
+        constellationCtx.shadowBlur = 7;
+        constellationCtx.shadowColor = 'rgba(245,158,11,.55)';
+        constellationCtx.fill();
+        constellationCtx.shadowBlur = 0;
+      });
+
+      if (constellationPointer.active) {
+        const p = constellationPointer;
+        constellationCtx.beginPath();
+        constellationCtx.arc(p.x, p.y, 46, 0, Math.PI * 2);
+        constellationCtx.strokeStyle = 'rgba(245,158,11,.12)';
+        constellationCtx.stroke();
+
+        all.forEach(star => {
+          const dx = star.x - p.x;
+          const dy = star.y - p.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 125) {
+            constellationCtx.beginPath();
+            constellationCtx.moveTo(star.x, star.y);
+            constellationCtx.lineTo(p.x, p.y);
+            constellationCtx.strokeStyle = `rgba(255,255,255,${.12 * (1 - dist / 125)})`;
+            constellationCtx.stroke();
+          }
+        });
+      }
+
+      requestAnimationFrame(renderConstellation);
+    }
+
+    function setConstellationPointer(clientX, clientY, active = true) {
+      const rect = constellationCard.getBoundingClientRect();
+      constellationPointer.x = clientX - rect.left;
+      constellationPointer.y = clientY - rect.top;
+      constellationPointer.active = active;
+    }
+
+    constellationCard.addEventListener('pointermove', e => {
+      setConstellationPointer(e.clientX, e.clientY, true);
+    });
+    constellationCard.addEventListener('pointerleave', () => {
+      constellationPointer.active = false;
+    });
+
     function touchConstellation() {
       const el = document.getElementById('touch-text');
       if (touchDeck.length === 0) touchDeck = [...touchPhrases].sort(() => Math.random() - 0.5);
       const phrase = touchDeck.pop();
 
       el.style.opacity = '0';
-      const cx = window.innerWidth / 2;
-      const cy = window.innerHeight / 2;
-      for (let i = 0; i < 20; i++) {
+
+      const pulse = document.getElementById('constellation-pulse');
+      pulse.classList.remove('active');
+      void pulse.offsetWidth;
+      pulse.classList.add('active');
+
+      const rect = constellationCard.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+
+      for (let i = 0; i < 28; i++) {
         sparkles.push({
-          x: cx + (Math.random() - 0.5) * 80,
-          y: cy + (Math.random() - 0.5) * 80,
-          size: Math.random() * 3 + 1,
+          x: cx + (Math.random() - 0.5) * 95,
+          y: cy + (Math.random() - 0.5) * 95,
+          size: Math.random() * 3.5 + 1,
           alpha: 1,
-          color: Math.random() > 0.3 ? '#F59E0B' : '#FFFFFF'
+          color: Math.random() > 0.25 ? '#F59E0B' : '#FFFFFF'
         });
       }
+
+      constellationStars.forEach(star => {
+        const dx = star.x - rect.width / 2;
+        const dy = star.y - rect.height / 2;
+        const dist = Math.max(1, Math.hypot(dx, dy));
+        if (dist < 145) {
+          star.x += (dx / dist) * 9;
+          star.y += (dy / dist) * 9;
+        }
+      });
+
+      if (navigator.vibrate) navigator.vibrate(12);
 
       setTimeout(() => {
         el.innerText = phrase;
         el.style.opacity = '1';
-      }, 150);
+      }, 170);
     }
+
+    window.addEventListener('resize', resizeConstellation);
+    setTimeout(() => {
+      resizeConstellation();
+      renderConstellation();
+    }, 50);
 
     // 7. ОРАКУЛ ЧУВСТВ
     const crystalPredictions = [
@@ -2530,6 +3003,7 @@
     function triggerCrystalOracle() {
       const orb = document.getElementById('crystal-orb');
       orb.classList.add('charging');
+      showLizaToast('🔮 Созвездие собирает ответ...<br><span style="color:#94A3B8;">Закрой глаза на пару секунд ✦</span>');
 
       const cx = window.innerWidth / 2;
       const cy = window.innerHeight / 2;
@@ -2569,34 +3043,77 @@
     let gameInterval = null;
     let spawnInterval = null;
     let gameHighScore = parseInt(localStorage.getItem('star_high_score') || '0', 10);
+    let gameActive = false;
+    let gameSessionStartedAt = 0;
 
-    function startGame() {
+    function updateGameHighScoreUI() {
+      const homeScore = document.getElementById('hub-score-meta');
+      const gameScoreEl = document.getElementById('game-high-score');
+      if (homeScore) homeScore.innerText = `рекорд: ${gameHighScore}`;
+      if (gameScoreEl) gameScoreEl.innerText = gameHighScore;
+    }
+
+    function saveGameState() {
+      if (!gameActive) return;
+      localStorage.setItem('star_game_state', JSON.stringify({
+        score: gameScore,
+        startedAt: gameSessionStartedAt,
+        expiresAt: Date.now() + gameTime * 1000
+      }));
+    }
+
+    function clearGameState() {
+      localStorage.removeItem('star_game_state');
+    }
+
+    function startGame(resume = false) {
       const box = document.getElementById('star-catcher-box');
       box.innerHTML = '';
-      gameScore = 0;
-      gameTime = 30;
+      clearInterval(gameInterval);
+      clearInterval(spawnInterval);
+
+      const saved = resume ? JSON.parse(localStorage.getItem('star_game_state') || 'null') : null;
+      if (saved && saved.expiresAt > Date.now()) {
+        gameScore = Math.max(0, parseInt(saved.score || 0, 10));
+        gameTime = Math.ceil((saved.expiresAt - Date.now()) / 1000);
+        gameSessionStartedAt = saved.startedAt || Date.now();
+      } else {
+        gameScore = 0;
+        gameTime = 30;
+        gameSessionStartedAt = Date.now();
+      }
+
+      gameActive = true;
       document.getElementById('game-score').innerText = gameScore;
       document.getElementById('game-timer').innerText = gameTime;
       document.getElementById('game-start-btn').style.display = 'none';
-
-      clearInterval(gameInterval);
-      clearInterval(spawnInterval);
+      document.getElementById('game-achievement').innerText =
+        gameHighScore > 0 ? `✦ Твой рекорд — ${gameHighScore}. Ещё немного — и он падёт.` : '✦ Лови звёзды — и установи свой первый рекорд';
 
       gameInterval = setInterval(() => {
         gameTime--;
         document.getElementById('game-timer').innerText = gameTime;
+        saveGameState();
         if (gameTime <= 0) endGame();
       }, 1000);
 
       spawnInterval = setInterval(spawnGameStar, 550);
+      spawnGameStar();
     }
 
     function spawnGameStar() {
+      if (!gameActive) return;
       const box = document.getElementById('star-catcher-box');
+      if (!box) return;
+
       const star = document.createElement('div');
-      star.className = 'game-star';
-      star.innerText = Math.random() > 0.3 ? '⭐' : '🌟';
-      star.style.left = (Math.random() * (box.clientWidth - 45)) + 'px';
+      const roll = Math.random();
+      star.className = 'game-star' + (roll > .94 ? ' mega-star' : roll > .72 ? ' special-star' : '');
+      star.innerText = roll > .94 ? '🌟' : (roll > .72 ? '💫' : '⭐');
+      star.dataset.value = roll > .94 ? '30' : roll > .72 ? '20' : '10';
+
+      const maxLeft = Math.max(0, box.clientWidth - 45);
+      star.style.left = (Math.random() * maxLeft) + 'px';
       star.style.top = '-45px';
       box.appendChild(star);
 
@@ -2613,48 +3130,79 @@
       }, 20);
 
       star.onclick = () => {
-        gameScore += 10;
+        if (!gameActive) return;
+        const value = parseInt(star.dataset.value || '10', 10);
+        gameScore += value;
         document.getElementById('game-score').innerText = gameScore;
+        saveGameState();
         clearInterval(move);
 
         star.classList.add('caught');
         const scorePop = document.createElement('div');
         scorePop.className = 'floating-score';
-        scorePop.innerText = '+10 ⭐';
+        scorePop.innerText = `+${value} ⭐`;
         scorePop.style.left = star.style.left;
         scorePop.style.top = star.style.top;
         box.appendChild(scorePop);
         setTimeout(() => { if (box.contains(scorePop)) box.removeChild(scorePop); }, 600);
 
         const rect = star.getBoundingClientRect();
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 7; i++) {
           sparkles.push({
-            x: rect.left + rect.width / 2 + (Math.random() - 0.5) * 15,
-            y: rect.top + rect.height / 2 + (Math.random() - 0.5) * 15,
-            size: Math.random() * 2.5 + 1.5,
+            x: rect.left + rect.width / 2 + (Math.random() - 0.5) * 18,
+            y: rect.top + rect.height / 2 + (Math.random() - 0.5) * 18,
+            size: Math.random() * 3 + 1.5,
             alpha: 1,
-            color: '#F59E0B'
+            color: value >= 20 ? '#FDE68A' : '#F59E0B'
           });
         }
 
+        if (navigator.vibrate) navigator.vibrate(value >= 20 ? [8, 25, 8] : 8);
         setTimeout(() => { if (box.contains(star)) box.removeChild(star); }, 120);
       };
     }
 
     function endGame() {
+      if (!gameActive) return;
+      gameActive = false;
       clearInterval(gameInterval);
       clearInterval(spawnInterval);
+      clearGameState();
+
       const box = document.getElementById('star-catcher-box');
-      box.innerHTML = `<div style="padding:40px 10px; font-family:'Playfair Display', serif; font-size:1.1rem; color:#FEF3C7; text-align:center;">Охота завершена! ✨<br>Ты поймала звёзд на <b>${gameScore}</b> очков.<br>Твой ранг: <b>Хранительница сердца</b> ❤️</div>`;
+      const oldRecord = gameHighScore;
       if (gameScore > gameHighScore) {
         gameHighScore = gameScore;
         localStorage.setItem('star_high_score', String(gameHighScore));
       }
-      const homeScore = document.getElementById('hub-score-meta');
-      if (homeScore) homeScore.innerText = `рекорд: ${gameHighScore}`;
+      updateGameHighScoreUI();
+
+      let result = `Охота завершена! ✨<br>Ты поймала звёзд на <b>${gameScore}</b> очков.`;
+      if (gameScore > oldRecord) result += `<br><span style="color:#F59E0B;">Новый рекорд! 🏆</span>`;
+      result += `<br><span style="color:#CBD5E1;">Ранг: <b>${gameScore >= 400 ? 'Хранительница созвездий' : gameScore >= 250 ? 'Звёздная охотница' : 'Хранительница сердца'} ❤️</b></span>`;
+
+      box.innerHTML = `<div style="padding:40px 10px; font-family:'Playfair Display',serif; font-size:1.1rem; color:#FEF3C7; text-align:center;">${result}</div>`;
       document.getElementById('game-start-btn').style.display = 'block';
       document.getElementById('game-start-btn').innerText = 'Сыграть ещё раз 💫';
+      document.getElementById('game-achievement').innerText =
+        gameScore > oldRecord ? '🏆 Рекорд обновлён — Созвездие это запомнило.' : `✦ До нового рекорда: ${Math.max(0, gameHighScore - gameScore)} очков`;
     }
+
+    function restoreStarGame() {
+      updateGameHighScoreUI();
+      try {
+        const saved = JSON.parse(localStorage.getItem('star_game_state') || 'null');
+        if (saved && saved.expiresAt > Date.now()) {
+          startGame(true);
+        } else {
+          clearGameState();
+        }
+      } catch (e) {
+        clearGameState();
+      }
+    }
+
+    setTimeout(restoreStarGame, 80);
 
     // 9. ПИСЬМА И FIREBASE
     let lettersFeedMode = 'replies';
@@ -2854,6 +3402,23 @@
 
     function useCoupon(couponId) {
       db.ref(`coupons_state/${couponId}`).set(Date.now());
+      const names = {
+        'coupon-1': 'Вечер любого кино без критики',
+        'coupon-2': 'Право на безоговорочную правоту',
+        'coupon-3': 'Персональный трек по заказу',
+        'coupon-4': 'Сказка на ночь / Голосовой каприз',
+        'coupon-5': 'Исполнение одного мини-желания'
+      };
+      showLizaToast(`🎟️ Купон активирован: «${names[couponId] || 'Желание'}»<br><span style="color:#94A3B8;">Созвездие получило сигнал ✦</span>`);
+    }
+
+    function showLizaToast(message) {
+      const toast = document.getElementById('liza-toast');
+      if (!toast) return;
+      toast.innerHTML = message;
+      toast.classList.add('show');
+      clearTimeout(window.__lizaToastTimer);
+      window.__lizaToastTimer = setTimeout(() => toast.classList.remove('show'), 3600);
     }
 
     db.ref('coupons_state').on('value', (snapshot) => {
@@ -3478,14 +4043,8 @@
     const homeScore = document.getElementById('hub-score-meta');
     if (homeScore) homeScore.innerText = `рекорд: ${gameHighScore}`;
 
-    // Восстанавливаем последнюю открытую вкладку после F5/перезапуска.
-    const savedLastTab = localStorage.getItem(LAST_TAB_KEY);
-    if (savedLastTab && document.getElementById(savedLastTab) && savedLastTab !== 'tab-admin') {
-      switchTab(savedLastTab);
-    } else {
-      switchTab('tab-home');
-    }
-
+    // Восстановление последней вкладки выполняется через initAppHistory().
+    updateGameHighScoreUI();
     saveLastVisit();
 
     function updateHomeActivity() {
@@ -3500,6 +4059,7 @@
     }
 
     updateHomeActivity();
+    updateGameHighScoreUI();
     setInterval(updateLastVisitText, 60000);
     setInterval(() => {
       applyTimeOfDay();

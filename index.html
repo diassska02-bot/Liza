@@ -1064,84 +1064,75 @@
     }
 
 
-    /* Атмосфера */
+    /* Атмосфера: небо меняется по времени суток и погоде */
+    body {
+      position: relative;
+      background: #07111f;
+      transition: background 1.2s ease, color .8s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 1s ease, background 1s ease;
+    }
+
     body.time-morning {
       background:
-        radial-gradient(circle at 50% -12%, rgba(245, 190, 115, .18) 0%, rgba(104, 77, 124, .16) 25%, transparent 58%),
-        linear-gradient(180deg, #2b2038 0%, #151a30 52%, #080d1c 100%) !important;
-      color: #f8fafc;
+        radial-gradient(circle at 78% 15%, rgba(255, 214, 145, .38) 0 5%, rgba(255, 188, 112, .14) 12%, transparent 29%),
+        linear-gradient(180deg, #8eb9dc 0%, #b9d4e7 34%, #e8d6c4 67%, #7b8fa5 100%) !important;
+      color: #172033;
     }
 
     body.time-day {
       background:
-        radial-gradient(circle at 50% -12%, rgba(255, 205, 125, .15) 0%, rgba(77, 117, 161, .12) 30%, transparent 60%),
-        linear-gradient(180deg, #26344b 0%, #111a2d 52%, #080e1c 100%) !important;
-      color: #f8fafc;
+        radial-gradient(circle at 82% 14%, rgba(255, 244, 190, .95) 0 4.5%, rgba(255, 220, 130, .40) 10%, transparent 25%),
+        linear-gradient(180deg, #58a5d8 0%, #8fc7e8 42%, #c9e1ed 72%, #7899ac 100%) !important;
+      color: #172033;
     }
 
     body.time-evening {
       background:
-        radial-gradient(circle at 50% -10%, rgba(245, 158, 11, .16) 0%, rgba(115, 64, 115, .14) 32%, transparent 62%),
-        linear-gradient(180deg, #2d203a 0%, #13172a 52%, #080d19 100%) !important;
+        radial-gradient(circle at 72% 22%, rgba(255, 187, 105, .48) 0 6%, transparent 27%),
+        linear-gradient(180deg, #43577d 0%, #8b6580 38%, #d28a67 68%, #22243b 100%) !important;
       color: #f8fafc;
     }
 
     body.time-night {
       background:
-        radial-gradient(circle at 50% -12%, rgba(70, 83, 150, .18) 0%, transparent 52%),
-        linear-gradient(180deg, #1c1933 0%, #0d1222 52%, #060912 100%) !important;
+        radial-gradient(circle at 76% 16%, rgba(125, 150, 226, .14) 0 5%, transparent 25%),
+        linear-gradient(180deg, #101a35 0%, #0b1227 48%, #050914 100%) !important;
       color: #f8fafc;
     }
 
-    body.weather-clear.time-morning {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(255, 208, 126, .23) 0%, rgba(118, 87, 137, .13) 28%, transparent 60%),
-        linear-gradient(180deg, #30223c 0%, #171c31 52%, #090e1d 100%) !important;
-    }
+    /* Погода слегка перекрашивает небо, но не ломает время суток */
+    body.weather-cloudy.time-morning { background: linear-gradient(180deg, #8298ad 0%, #aebbc5 40%, #c8c0b9 72%, #667587 100%) !important; }
+    body.weather-fog.time-morning { background: linear-gradient(180deg, #a4afb6 0%, #c2c6c6 48%, #a8a9a7 100%) !important; }
+    body.weather-rain.time-morning { background: linear-gradient(180deg, #506b82 0%, #6f8190 44%, #4d5b68 100%) !important; }
+    body.weather-snow.time-morning { background: linear-gradient(180deg, #9cb8ca 0%, #c8d7df 45%, #8e9faa 100%) !important; }
 
-    body.weather-cloudy.time-morning,
-    body.weather-fog.time-morning {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(184, 196, 207, .12) 0%, rgba(99, 111, 132, .08) 30%, transparent 60%),
-        linear-gradient(180deg, #292b3b 0%, #171d30 52%, #090f1e 100%) !important;
-    }
+    body.weather-cloudy.time-day { background: linear-gradient(180deg, #7795ad 0%, #a9bac5 48%, #8e9eaa 100%) !important; }
+    body.weather-fog.time-day { background: linear-gradient(180deg, #aab6bb 0%, #c6cccb 50%, #9ea8aa 100%) !important; }
+    body.weather-rain.time-day { background: linear-gradient(180deg, #48677d 0%, #607b8b 48%, #425564 100%) !important; }
+    body.weather-snow.time-day { background: linear-gradient(180deg, #91afc0 0%, #c6d6dc 52%, #8fa0aa 100%) !important; }
 
-    body.weather-rain.time-morning {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(99, 137, 164, .12) 0%, transparent 50%),
-        linear-gradient(180deg, #242f40 0%, #111a2c 52%, #080e1c 100%) !important;
-    }
+    body.weather-cloudy.time-evening { background: linear-gradient(180deg, #4e5871 0%, #806d7a 48%, #303346 100%) !important; }
+    body.weather-rain.time-evening { background: linear-gradient(180deg, #3f5268 0%, #5f6271 48%, #242b3d 100%) !important; }
+    body.weather-snow.time-evening { background: linear-gradient(180deg, #667a8c 0%, #89959b 50%, #343b4b 100%) !important; }
 
-    body.weather-snow.time-morning {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(205, 224, 236, .14) 0%, transparent 52%),
-        linear-gradient(180deg, #2d3948 0%, #172233 52%, #0a1020 100%) !important;
-    }
+    body.weather-cloudy.time-night { background: linear-gradient(180deg, #18243b 0%, #10192d 55%, #080c18 100%) !important; }
+    body.weather-fog.time-night { background: linear-gradient(180deg, #29313b 0%, #1a202a 55%, #0d1119 100%) !important; }
+    body.weather-rain.time-night { background: linear-gradient(180deg, #111d30 0%, #0e1727 55%, #060a13 100%) !important; }
+    body.weather-snow.time-night { background: linear-gradient(180deg, #243447 0%, #172333 55%, #0b1019 100%) !important; }
 
-    body.weather-clear.time-day {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(255, 214, 139, .20) 0%, rgba(93, 148, 186, .12) 31%, transparent 61%),
-        linear-gradient(180deg, #293b52 0%, #131e31 52%, #080f1e 100%) !important;
-    }
-
-    body.weather-cloudy.time-day,
-    body.weather-fog.time-day {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(181, 195, 207, .12) 0%, transparent 55%),
-        linear-gradient(180deg, #2b3443 0%, #151e30 52%, #090f1d 100%) !important;
-    }
-
-    body.weather-rain.time-day {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(91, 130, 158, .13) 0%, transparent 54%),
-        linear-gradient(180deg, #263546 0%, #111b2d 52%, #080e1c 100%) !important;
-    }
-
-    body.weather-snow.time-day {
-      background:
-        radial-gradient(circle at 50% -8%, rgba(199, 220, 232, .14) 0%, transparent 55%),
-        linear-gradient(180deg, #303e4d 0%, #182536 52%, #0a1120 100%) !important;
-    }
+    body.time-morning #stars-canvas,
+    body.time-day #stars-canvas { opacity: .22 !important; }
+    body.time-evening #stars-canvas { opacity: .60 !important; }
+    body.time-night #stars-canvas { opacity: .95 !important; }
 
     #stars-canvas {
       opacity: .95 !important;
@@ -1469,7 +1460,7 @@
       <button class="menu-toggle-btn" onclick="toggleSidebar()">
         <span>☰</span> Меню
       </button>
-      <div class="status-badge" id="admin-trigger-badge" onclick="handleAdminBadgeClick()">
+      <div class="status-badge" id="admin-trigger-badge" onclick="handleAdminBadgeClick()" title="">
         <div class="status-dot"></div>
         <span>Созвездие любит Вас</span>
       </div>
@@ -1824,7 +1815,7 @@
         <div class="game-stats">
           <span>Счёт: <b id="game-score">0</b></span>
           <span>Время: <b id="game-timer">30</b>с</span>
-          <span>Рекорд: <b id="game-high-score">0</b></span>
+          <span>Общий рекорд: <b id="game-high-score">0</b></span>
         </div>
         <div class="game-achievement" id="game-achievement">✦ Лови звёзды — и попробуй побить свой рекорд</div>
 
@@ -2290,7 +2281,9 @@
         closeLetterReader();
         const badge = document.getElementById('hub-unread-badge');
         if (badge) badge.style.display = 'none';
-        localStorage.setItem('last_read_reply_time', Date.now());
+        const replies = Object.values(rawRepliesData || {}).filter(Boolean);
+        const latestTime = replies.reduce((max, item) => Math.max(max, Number(item.timestamp || 0)), 0);
+        if (latestTime) localStorage.setItem('last_read_reply_time', String(latestTime));
       }
     }
 
@@ -2555,15 +2548,45 @@
     let gameTime = 30;
     let gameInterval = null;
     let spawnInterval = null;
-    let gameHighScore = parseInt(localStorage.getItem('star_high_score') || '0', 10);
+    let gameHighScore = 0;
+    let gameRecordHolder = 'Созвездие';
     let gameActive = false;
+    let sharedGameRecordReady = false;
     let gameSessionStartedAt = 0;
 
     function updateGameHighScoreUI() {
       const homeScore = document.getElementById('hub-score-meta');
       const gameScoreEl = document.getElementById('game-high-score');
-      if (homeScore) homeScore.innerText = `рекорд: ${gameHighScore}`;
+      if (homeScore) homeScore.innerText = gameHighScore > 0 ? `общий рекорд: ${gameHighScore}` : 'общий рекорд: 0';
       if (gameScoreEl) gameScoreEl.innerText = gameHighScore;
+    }
+
+    // Единый рекорд для Лизы и Созвездия.
+    db.ref('shared_game/star_catcher').on('value', (snapshot) => {
+      const data = snapshot.val() || {};
+      gameHighScore = Math.max(0, parseInt(data.highScore || 0, 10));
+      gameRecordHolder = data.holder || 'Созвездие';
+      sharedGameRecordReady = true;
+      updateGameHighScoreUI();
+      const achievement = document.getElementById('game-achievement');
+      if (achievement && !gameActive) {
+        achievement.innerText = gameHighScore > 0
+          ? `✦ Общий рекорд — ${gameHighScore}. Его установил(а): ${gameRecordHolder}.`
+          : '✦ Здесь хранится общий рекорд Убежища.';
+      }
+    });
+
+    function saveSharedGameRecord(score, holder) {
+      if (score <= 0) return Promise.resolve();
+      return db.ref('shared_game/star_catcher').transaction(current => {
+        const oldScore = current && Number(current.highScore) ? Number(current.highScore) : 0;
+        if (score <= oldScore) return current;
+        return {
+          highScore: score,
+          holder: holder,
+          updatedAt: Date.now()
+        };
+      });
     }
 
     function saveGameState() {
@@ -2601,7 +2624,7 @@
       document.getElementById('game-timer').innerText = gameTime;
       document.getElementById('game-start-btn').style.display = 'none';
       document.getElementById('game-achievement').innerText =
-        gameHighScore > 0 ? `✦ Твой рекорд — ${gameHighScore}. Ещё немного — и он падёт.` : '✦ Лови звёзды — и установи свой первый рекорд';
+        gameHighScore > 0 ? `✦ Общий рекорд — ${gameHighScore}. Попробуй его превзойти.` : '✦ Лови звёзды — и установи первый общий рекорд';
 
       gameInterval = setInterval(() => {
         gameTime--;
@@ -2684,21 +2707,25 @@
 
       const box = document.getElementById('star-catcher-box');
       const oldRecord = gameHighScore;
-      if (gameScore > gameHighScore) {
+      const isNewRecord = gameScore > oldRecord;
+      const holder = 'Игрок';
+
+      if (isNewRecord) {
         gameHighScore = gameScore;
-        localStorage.setItem('star_high_score', String(gameHighScore));
+        gameRecordHolder = holder;
+        updateGameHighScoreUI();
+        saveSharedGameRecord(gameScore, holder).catch(() => {});
       }
-      updateGameHighScoreUI();
 
       let result = `Охота завершена! ✨<br>Ты поймала звёзд на <b>${gameScore}</b> очков.`;
-      if (gameScore > oldRecord) result += `<br><span style="color:#F59E0B;">Новый рекорд! 🏆</span>`;
+      if (isNewRecord) result += `<br><span style="color:#F59E0B;">Новый общий рекорд! 🏆</span>`;
       result += `<br><span style="color:#CBD5E1;">Ранг: <b>${gameScore >= 400 ? 'Хранительница созвездий' : gameScore >= 250 ? 'Звёздная охотница' : 'Хранительница сердца'} ❤️</b></span>`;
 
       box.innerHTML = `<div style="padding:40px 10px; font-family:'Playfair Display',serif; font-size:1.1rem; color:#FEF3C7; text-align:center;">${result}</div>`;
       document.getElementById('game-start-btn').style.display = 'block';
       document.getElementById('game-start-btn').innerText = 'Сыграть ещё раз 💫';
       document.getElementById('game-achievement').innerText =
-        gameScore > oldRecord ? '🏆 Рекорд обновлён — Созвездие это запомнило.' : `✦ До нового рекорда: ${Math.max(0, gameHighScore - gameScore)} очков`;
+        isNewRecord ? '🏆 Общий рекорд обновлён — Созвездие это запомнило.' : `✦ До общего рекорда: ${Math.max(0, gameHighScore - gameScore)} очков`;
     }
 
     function restoreStarGame() {
@@ -2790,16 +2817,18 @@
       });
     }
 
-    db.ref('replies_from_constellation').on('value', (snapshot) => {
+    db.ref('replies_from_constellation').orderByChild('timestamp').on('value', (snapshot) => {
       rawRepliesData = snapshot.val() || {};
       if (lettersFeedMode === 'replies') renderLettersList();
       updateAdminUI();
 
-      const list = Object.values(rawRepliesData).reverse();
+      const replies = Object.values(rawRepliesData).filter(Boolean).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+      const latest = replies[replies.length - 1];
+      const latestTime = latest ? Number(latest.timestamp || 0) : 0;
       const lastRead = parseInt(localStorage.getItem('last_read_reply_time') || '0', 10);
-      const latest = list[0];
-      if (latest && latest.timestamp > lastRead) {
-        document.getElementById('hub-unread-badge').style.display = 'block';
+      const badge = document.getElementById('hub-unread-badge');
+      if (badge) {
+        badge.style.display = latestTime > lastRead ? 'block' : 'none';
       }
     });
 
@@ -2897,15 +2926,22 @@
 
     let adminClickCount = 0;
     let adminClickTimer = null;
+    const MASTER_PANEL_CODE = '7148';
 
     function handleAdminBadgeClick() {
       adminClickCount++;
       clearTimeout(adminClickTimer);
-      adminClickTimer = setTimeout(() => { adminClickCount = 0; }, 800);
+      adminClickTimer = setTimeout(() => { adminClickCount = 0; }, 900);
 
       if (adminClickCount === 3) {
         adminClickCount = 0;
-        switchTab('tab-admin');
+        clearTimeout(adminClickTimer);
+        const entered = prompt('Панель Созвездия. Введите код доступа:');
+        if (entered === MASTER_PANEL_CODE) {
+          switchTab('tab-admin');
+        } else if (entered !== null) {
+          showLizaToast('⛔ Доступ Созвездия отклонён.');
+        }
       }
     }
 
@@ -3419,10 +3455,6 @@
 
     function checkFinalCode() {
       const val = document.getElementById('secret-code').value.trim();
-      if (val === "000000") {
-        switchTab('tab-admin');
-        return;
-      }
       if (secretCodes[val]) {
         saveUnlockedVaultCode(val);
         openCipherLetterByCode(val);

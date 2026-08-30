@@ -939,8 +939,7 @@
       margin-bottom: 8px;
     }
 
-
-    /* Новая просторная главная */
+    /* Главная */
     .home-card {
       overflow: hidden;
     }
@@ -1063,8 +1062,6 @@
       .hub-item { min-height: 110px; }
     }
 
-
-    /* Атмосфера: небо меняется по времени суток и погоде */
     body {
       position: relative;
       background: #07111f;
@@ -1109,7 +1106,6 @@
       color: #f8fafc;
     }
 
-    /* Погода слегка перекрашивает небо, но не ломает время суток */
     body.weather-cloudy.time-morning { background: linear-gradient(180deg, #8298ad 0%, #aebbc5 40%, #c8c0b9 72%, #667587 100%) !important; }
     body.weather-fog.time-morning { background: linear-gradient(180deg, #a4afb6 0%, #c2c6c6 48%, #a8a9a7 100%) !important; }
     body.weather-rain.time-morning { background: linear-gradient(180deg, #506b82 0%, #6f8190 44%, #4d5b68 100%) !important; }
@@ -1429,6 +1425,65 @@
 
     .activity-row + .activity-row { margin-top: 2px; }
 
+    /* Модальное окно для разгадки кода доступа */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: linear-gradient(145deg, #0f172a, #0b1120);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(245, 158, 11, 0.15);
+      border-radius: 24px;
+      max-width: 420px;
+      width: 100%;
+      padding: 26px 20px;
+      text-align: center;
+      transform: scale(0.92);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: #F59E0B;
+      margin-bottom: 14px;
+      letter-spacing: 1px;
+    }
+
+    .modal-body {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.96rem;
+      line-height: 1.7;
+      color: #E2E8F0;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .modal-body b {
+      color: #FEF3C7;
+    }
+
     @media (max-width: 520px) {
       .touch-orb-card { min-height: 270px; }
       .game-stats { gap: 6px; }
@@ -1453,6 +1508,20 @@
   <canvas id="stars-canvas"></canvas>
   <div id="weather-effects" aria-hidden="true"></div>
   <div id="liza-toast" class="liza-toast" role="status" aria-live="polite"></div>
+
+  <!-- Модальное окно победы над паролем админки -->
+  <div class="modal-overlay" id="admin-win-modal">
+    <div class="modal-card">
+      <div class="protocol-tag">✦ Доступ получен ✦</div>
+      <div class="modal-title">Попалась, шпионка! 🕵️‍♀️🐾</div>
+      <div class="modal-body">
+        Я знал, что ты доберёшься сюда! Твоя сообразительность снова взломала все мои защиты без шансов.<br><br>
+        За такую блестящую победу Созвездие официально объявляет: <b>с меня причитается целых два любых твоих желания ✨</b><br><br>
+        Люблю тебя безумно ❤️ Заходи за кулисы, теперь ты здесь главная!
+      </div>
+      <button class="submit-btn" onclick="confirmEnterAdmin()">Войти в командный центр 🚀</button>
+    </div>
+  </div>
 
   <!-- Верхняя панель -->
   <div class="top-nav">
@@ -1595,6 +1664,10 @@
             </div>
           </div>
           <div class="activity-list" id="home-activity-list">
+            <div class="activity-row" id="home-unread-row" onclick="switchTab('tab-letters')" style="display:none; cursor:pointer; color:#F59E0B;">
+              <span>✨</span>
+              <span>Созвездие оставило для тебя новое послание в письмах</span>
+            </div>
             <div class="activity-row">
               <span>🌤️</span>
               <span id="home-time-note">Созвездие следит за небом Дедовска.</span>
@@ -2253,6 +2326,19 @@
 
     let isHistoryNavigation = false;
 
+    function updateUnreadLettersUI() {
+      const replies = Object.values(rawRepliesData || {}).filter(Boolean);
+      const latestTime = replies.reduce((max, item) => Math.max(max, Number(item.timestamp || 0)), 0);
+      const lastRead = parseInt(localStorage.getItem('last_read_reply_time') || '0', 10);
+      const hasUnread = latestTime > lastRead;
+
+      const badge = document.getElementById('hub-unread-badge');
+      if (badge) badge.style.display = hasUnread ? 'block' : 'none';
+
+      const unreadRow = document.getElementById('home-unread-row');
+      if (unreadRow) unreadRow.style.display = hasUnread ? 'flex' : 'none';
+    }
+
     function setActiveTabUI(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
@@ -2279,11 +2365,10 @@
       if (tabId === 'tab-crystal') closeCrystalScroll();
       if (tabId === 'tab-letters') {
         closeLetterReader();
-        const badge = document.getElementById('hub-unread-badge');
-        if (badge) badge.style.display = 'none';
         const replies = Object.values(rawRepliesData || {}).filter(Boolean);
         const latestTime = replies.reduce((max, item) => Math.max(max, Number(item.timestamp || 0)), 0);
         if (latestTime) localStorage.setItem('last_read_reply_time', String(latestTime));
+        updateUnreadLettersUI();
       }
     }
 
@@ -2369,6 +2454,7 @@
     function renderConstellation() {
       if (!constellationCard || !constellationCanvas) return;
       const rect = constellationCard.getBoundingClientRect();
+      const constellationCtx = constellationCanvas.getContext('2d');
       constellationCtx.clearRect(0, 0, rect.width, rect.height);
 
       constellationStars.forEach(star => {
@@ -2561,7 +2647,6 @@
       if (gameScoreEl) gameScoreEl.innerText = gameHighScore;
     }
 
-    // Единый рекорд для Лизы и Созвездия.
     db.ref('shared_game/star_catcher').on('value', (snapshot) => {
       const data = snapshot.val() || {};
       gameHighScore = Math.max(0, parseInt(data.highScore || 0, 10));
@@ -2708,7 +2793,7 @@
       const box = document.getElementById('star-catcher-box');
       const oldRecord = gameHighScore;
       const isNewRecord = gameScore > oldRecord;
-      const holder = 'Игрок';
+      const holder = 'Лиза';
 
       if (isNewRecord) {
         gameHighScore = gameScore;
@@ -2821,15 +2906,7 @@
       rawRepliesData = snapshot.val() || {};
       if (lettersFeedMode === 'replies') renderLettersList();
       updateAdminUI();
-
-      const replies = Object.values(rawRepliesData).filter(Boolean).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-      const latest = replies[replies.length - 1];
-      const latestTime = latest ? Number(latest.timestamp || 0) : 0;
-      const lastRead = parseInt(localStorage.getItem('last_read_reply_time') || '0', 10);
-      const badge = document.getElementById('hub-unread-badge');
-      if (badge) {
-        badge.style.display = latestTime > lastRead ? 'block' : 'none';
-      }
+      updateUnreadLettersUI();
     });
 
     db.ref('letters_from_liza').on('value', (snapshot) => {
@@ -2926,7 +3003,7 @@
 
     let adminClickCount = 0;
     let adminClickTimer = null;
-    const MASTER_PANEL_CODE = '7148';
+    const MASTER_PANEL_CODE = '1228';
 
     function handleAdminBadgeClick() {
       adminClickCount++;
@@ -2938,11 +3015,16 @@
         clearTimeout(adminClickTimer);
         const entered = prompt('Панель Созвездия. Введите код доступа:');
         if (entered === MASTER_PANEL_CODE) {
-          switchTab('tab-admin');
+          document.getElementById('admin-win-modal').classList.add('active');
         } else if (entered !== null) {
           showLizaToast('⛔ Доступ Созвездия отклонён.');
         }
       }
+    }
+
+    function confirmEnterAdmin() {
+      document.getElementById('admin-win-modal').classList.remove('active');
+      switchTab('tab-admin');
     }
 
     // 11. КУПОНЫ В FIREBASE

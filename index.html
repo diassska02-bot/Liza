@@ -4,13 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Убежище Созвездия</title>
+  <meta name="theme-color" content="#060810">
+  <link rel="manifest" href="./manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
   
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * {
@@ -939,7 +940,8 @@
       margin-bottom: 8px;
     }
 
-    /* Главная */
+
+    /* Новая просторная главная: телефон в приоритете */
     .home-card {
       overflow: hidden;
     }
@@ -1062,79 +1064,563 @@
       .hub-item { min-height: 110px; }
     }
 
-    body {
-      position: relative;
-      background: #07111f;
-      transition: background 1.2s ease, color .8s ease;
-    }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0;
-      transition: opacity 1s ease, background 1s ease;
-    }
+    /* ===== Финальная атмосфера: погода меняет оттенок, но космическая концепция остаётся ===== */
 
     body.time-morning {
       background:
-        radial-gradient(circle at 78% 15%, rgba(255, 214, 145, .38) 0 5%, rgba(255, 188, 112, .14) 12%, transparent 29%),
-        linear-gradient(180deg, #8eb9dc 0%, #b9d4e7 34%, #e8d6c4 67%, #7b8fa5 100%) !important;
-      color: #172033;
+        radial-gradient(circle at 50% -8%, rgba(255, 214, 158, .20) 0%, rgba(177, 157, 202, .12) 25%, transparent 55%),
+        linear-gradient(180deg, #30243f 0%, #171d32 48%, #0b1121 100%);
+      color: #f4efe5;
     }
 
     body.time-day {
       background:
-        radial-gradient(circle at 82% 14%, rgba(255, 244, 190, .95) 0 4.5%, rgba(255, 220, 130, .40) 10%, transparent 25%),
-        linear-gradient(180deg, #58a5d8 0%, #8fc7e8 42%, #c9e1ed 72%, #7899ac 100%) !important;
-      color: #172033;
+        radial-gradient(circle at 50% -10%, rgba(255, 220, 151, .18) 0%, rgba(113, 167, 205, .12) 30%, transparent 58%),
+        linear-gradient(180deg, #28334a 0%, #111a2c 50%, #080e1c 100%);
+      color: #f4efe5;
     }
 
     body.time-evening {
       background:
-        radial-gradient(circle at 72% 22%, rgba(255, 187, 105, .48) 0 6%, transparent 27%),
-        linear-gradient(180deg, #43577d 0%, #8b6580 38%, #d28a67 68%, #22243b 100%) !important;
+        radial-gradient(circle at 50% -10%, rgba(245, 158, 11, .16) 0%, rgba(147, 91, 142, .13) 32%, transparent 60%),
+        linear-gradient(180deg, #2c203b 0%, #12172a 52%, #080d19 100%);
+    }
+
+    body.time-night {
+      background:
+        radial-gradient(circle at 50% -12%, rgba(77, 92, 154, .20) 0%, transparent 48%),
+        linear-gradient(180deg, #1b1932 0%, #0c1121 52%, #060912 100%);
+    }
+
+    /* Погода — только лёгкий оттенок поверх ночного неба, а не превращение сайта в белую страницу */
+    body.weather-clear.time-morning {
+      background:
+        radial-gradient(circle at 50% -7%, rgba(255, 219, 156, .25) 0%, rgba(196, 173, 214, .12) 27%, transparent 57%),
+        linear-gradient(180deg, #342640 0%, #182037 48%, #0b1222 100%);
+    }
+
+    body.weather-cloudy.time-morning,
+    body.weather-fog.time-morning {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(202, 213, 222, .16) 0%, rgba(135, 151, 173, .08) 30%, transparent 58%),
+        linear-gradient(180deg, #303143 0%, #182031 50%, #0b1120 100%);
+    }
+
+    body.weather-rain.time-morning {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(138, 171, 195, .13) 0%, transparent 48%),
+        linear-gradient(180deg, #273343 0%, #111a2b 52%, #080f1d 100%);
+    }
+
+    body.weather-snow.time-morning {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(225, 239, 246, .18) 0%, transparent 52%),
+        linear-gradient(180deg, #303d4e 0%, #172234 52%, #0a1120 100%);
+    }
+
+    body.weather-clear.time-day {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(255, 224, 155, .24) 0%, rgba(127, 184, 216, .10) 30%, transparent 60%),
+        linear-gradient(180deg, #2d3c51 0%, #131d30 52%, #080f1e 100%);
+    }
+
+    body.weather-cloudy.time-day,
+    body.weather-fog.time-day {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(202, 213, 222, .14) 0%, transparent 55%),
+        linear-gradient(180deg, #303847 0%, #151e2f 52%, #090f1d 100%);
+    }
+
+    body.weather-rain.time-day {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(111, 150, 177, .14) 0%, transparent 52%),
+        linear-gradient(180deg, #263546 0%, #111b2d 52%, #080e1c 100%);
+    }
+
+    body.weather-snow.time-day {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(218, 235, 244, .16) 0%, transparent 54%),
+        linear-gradient(180deg, #334250 0%, #182435 52%, #0a1120 100%);
+    }
+
+    /* Звёзды видны всегда. Утром они чуть мягче, но не исчезают. */
+    body.time-morning #stars-canvas,
+    body.time-day #stars-canvas,
+    body.time-evening #stars-canvas,
+    body.time-night #stars-canvas {
+      opacity: .95;
+      mix-blend-mode: screen;
+    }
+
+    .home-card {
+      background: linear-gradient(145deg, rgba(10, 16, 30, .82), rgba(7, 12, 24, .76));
+      border-color: rgba(212, 175, 55, .30);
+      box-shadow: 0 24px 65px rgba(0, 0, 0, .30), inset 0 1px 0 rgba(255,255,255,.035);
+      color: #f8fafc;
+    }
+
+    .home-kicker { color: #f59e0b; }
+    #greeting-title { color: #fff8e8; }
+    .home-subtitle { color: #94a3b8; }
+
+    .today-stat {
+      background: rgba(4, 8, 18, .50);
+      border-color: rgba(148,163,184,.16);
+      box-shadow: none;
+    }
+    .today-stat-label { color: #64748b; }
+    .today-stat-value { color: #e2e8f0; }
+
+    .touch-orb-card {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(245,158,11,.16), transparent 28%),
+        radial-gradient(circle at 24% 78%, rgba(96,165,250,.09), transparent 34%),
+        rgba(3, 7, 16, .60);
+      border-color: rgba(212,175,55,.34);
+      box-shadow: inset 0 0 55px rgba(245,158,11,.035), 0 18px 40px rgba(0,0,0,.25);
+    }
+
+    .touch-orb-text { color: #fef3c7; }
+    .orb-hint { color: #64748b; }
+    .home-section-title { color: #cbd5e1; }
+
+    .hub-item {
+      background: linear-gradient(145deg, rgba(7, 11, 22, .78), rgba(11, 17, 31, .70));
+      border-color: rgba(148,163,184,.17);
+      box-shadow: none;
+    }
+
+    .home-bottom-card {
+      background: rgba(4, 8, 18, .48);
+      border-color: rgba(148,163,184,.14);
+    }
+
+    .activity-heading,
+    .activity-heading strong { color: #e2e8f0; }
+    .activity-heading small,
+    .activity-row { color: #94a3b8; }
+
+    .dedovsk-bar {
+      background: rgba(8, 13, 26, .78);
+      border-color: rgba(148,163,184,.20);
+      box-shadow: 0 8px 24px rgba(0,0,0,.22);
+      color: #cbd5e1;
+    }
+
+    .weather-place-name { color: #e2e8f0; }
+    .weather-date-mini,
+    .weather-live-text span { color: #64748b; }
+    .weather-live-text b { color: #f59e0b; }
+
+    .container {
+      max-width: 980px;
+      padding: 112px 14px 42px;
+    }
+
+    .home-card {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 30px 16px 24px;
+      border-radius: 30px;
+      background: rgba(248,250,252,.76);
+      border: 1px solid rgba(126,91,35,.28);
+      box-shadow: 0 24px 65px rgba(42,51,72,.18);
+      backdrop-filter: blur(16px);
+    }
+
+    body.time-evening .home-card,
+    body.time-night .home-card {
+      background: linear-gradient(145deg, rgba(11,17,32,.90), rgba(7,11,23,.86));
+      border-color: rgba(212,175,55,.32);
+      box-shadow: 0 24px 65px rgba(0,0,0,.34);
+    }
+
+    .home-kicker {
+      margin-top: 4px;
+      color: #a56a00;
+      font-size: .68rem;
+      letter-spacing: .19em;
+    }
+
+    body.time-evening .home-kicker,
+    body.time-night .home-kicker { color: #f59e0b; }
+
+    #greeting-title {
+      background: none;
+      border: 0;
+      padding: 0;
+      color: #28354a;
+      font-size: clamp(1.35rem, 5vw, 2rem);
+      margin: 5px 0 8px;
+    }
+
+    body.time-evening #greeting-title,
+    body.time-night #greeting-title { color: #f8fafc; }
+
+    .home-subtitle {
+      color: #64748b;
+      font-size: .82rem;
+      margin-bottom: 18px;
+    }
+
+    body.time-evening .home-subtitle,
+    body.time-night .home-subtitle { color: #94a3b8; }
+
+    .today-panel {
+      max-width: 100%;
+      margin: 16px 0 20px;
+      gap: 10px;
+    }
+
+    .today-stat {
+      background: rgba(255,255,255,.52);
+      border-color: rgba(91,105,121,.16);
+      padding: 11px 12px;
+      border-radius: 15px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.4);
+    }
+
+    body.time-evening .today-stat,
+    body.time-night .today-stat {
+      background: rgba(6,8,16,.46);
+      border-color: rgba(148,163,184,.14);
+      box-shadow: none;
+    }
+
+    .today-stat-label { color: #718096; }
+    .today-stat-value { color: #344054; font-size: .79rem; }
+    body.time-evening .today-stat-value,
+    body.time-night .today-stat-value { color: #e2e8f0; }
+
+    .touch-orb-card {
+      min-height: 270px;
+      margin: 12px 0 28px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(245,158,11,.20), transparent 25%),
+        radial-gradient(circle at 25% 80%, rgba(96,165,250,.12), transparent 32%),
+        rgba(255,255,255,.42);
+      border-color: rgba(170,119,22,.34);
+      box-shadow: inset 0 0 55px rgba(255,255,255,.16), 0 18px 40px rgba(69,78,94,.12);
+    }
+
+    body.time-evening .touch-orb-card,
+    body.time-night .touch-orb-card {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(245,158,11,.15), transparent 32%),
+        radial-gradient(circle at 30% 70%, rgba(129,140,248,.10), transparent 35%),
+        #060810;
+      box-shadow: inset 0 0 45px rgba(245,158,11,.05), 0 16px 42px rgba(0,0,0,.35);
+    }
+
+    .touch-orb-icon {
+      width: 92px;
+      height: 92px;
+      font-size: 3rem;
+    }
+
+    .touch-orb-text { font-size: 1.05rem; color: #5b451f; }
+    body.time-evening .touch-orb-text,
+    body.time-night .touch-orb-text { color: #fef3c7; }
+
+    .orb-hint { color: #7b8491; font-size: .67rem; }
+
+    .home-section-title {
+      margin: 8px 0 13px;
+      color: #475569;
+      font-size: .76rem;
+    }
+
+    body.time-evening .home-section-title,
+    body.time-night .home-section-title { color: #cbd5e1; }
+
+    .hub-grid,
+    .home-quick-grid {
+      gap: 10px;
+    }
+
+    .hub-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .home-quick-grid { grid-template-columns: repeat(3, minmax(0,1fr)); margin-top: 10px; }
+
+    .hub-item {
+      min-height: 108px;
+      padding: 16px 9px;
+      border-radius: 19px;
+      background: rgba(255,255,255,.42);
+      border-color: rgba(91,105,121,.17);
+      box-shadow: 0 8px 20px rgba(71,85,105,.06);
+    }
+
+    body.time-evening .hub-item,
+    body.time-night .hub-item {
+      background: linear-gradient(145deg, rgba(6,8,16,.88), rgba(10,15,28,.78));
+      border-color: rgba(148,163,184,.18);
+      box-shadow: none;
+    }
+
+    .hub-item:active { transform: scale(.975); }
+    .hub-icon { font-size: 1.8rem; margin-bottom: 7px; }
+    .hub-title { font-size: .81rem; }
+    .hub-meta { font-size: .63rem; margin-top: 4px; }
+
+    .home-bottom-card {
+      margin-top: 14px;
+      padding: 15px;
+      border-radius: 19px;
+      background: rgba(255,255,255,.34);
+      border-color: rgba(91,105,121,.15);
+    }
+
+    body.time-evening .home-bottom-card,
+    body.time-night .home-bottom-card {
+      background: rgba(6,8,16,.45);
+      border-color: rgba(148,163,184,.13);
+    }
+
+    .activity-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      color: #475569;
+    }
+
+    .activity-heading > span {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(245,158,11,.13);
+      color: #c47b00;
+    }
+
+    .activity-heading strong {
+      display: block;
+      font-size: .78rem;
+      color: #334155;
+    }
+
+    .activity-heading small {
+      display: block;
+      margin-top: 2px;
+      font-size: .64rem;
+      color: #7b8794;
+    }
+
+    body.time-evening .activity-heading,
+    body.time-night .activity-heading,
+    body.time-evening .activity-heading strong,
+    body.time-night .activity-heading strong { color: #e2e8f0; }
+
+    body.time-evening .activity-heading small,
+    body.time-night .activity-heading small { color: #64748b; }
+
+    .activity-list { margin-top: 11px; }
+    .activity-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 0;
+      border-top: 1px solid rgba(100,116,139,.10);
+      color: #64748b;
+      font-size: .67rem;
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    .activity-row:first-child { border-top: 0; }
+    .activity-row > span:first-child { font-size: .95rem; }
+    body.time-evening .activity-row,
+    body.time-night .activity-row { color: #94a3b8; }
+
+    /* Погода */
+    .dedovsk-bar {
+      min-height: 54px;
+      padding: 8px 12px;
+      border-radius: 17px;
+      background: rgba(255,255,255,.58);
+      border-color: rgba(91,105,121,.18);
+      box-shadow: 0 8px 24px rgba(71,85,105,.10);
+      color: #475569;
+    }
+
+    body.time-evening .dedovsk-bar,
+    body.time-night .dedovsk-bar {
+      background: rgba(11,17,32,.82);
+      border-color: rgba(148,163,184,.25);
+      box-shadow: 0 8px 24px rgba(0,0,0,.28);
+      color: #cbd5e1;
+    }
+
+    .weather-place,
+    .weather-live {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .weather-place-name {
+      display: block;
+      font-size: .73rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .weather-date-mini {
+      display: block;
+      margin-top: 1px;
+      font-size: .59rem;
+      color: #7b8794;
+    }
+
+    .weather-live-text b {
+      display: block;
+      font-size: .78rem;
+      color: #a66b00;
+      line-height: 1;
+    }
+
+    .weather-live-text span {
+      display: block;
+      margin-top: 4px;
+      font-size: .60rem;
+      color: #64748b;
+      white-space: nowrap;
+    }
+
+    body.time-evening .weather-place-name,
+    body.time-night .weather-place-name,
+    body.time-evening .weather-live-text b,
+    body.time-night .weather-live-text b { color: #f8fafc; }
+
+    body.time-evening .weather-date-mini,
+    body.time-night .weather-date-mini,
+    body.time-evening .weather-live-text span,
+    body.time-night .weather-live-text span { color: #94a3b8; }
+
+    .weather-icon { font-size: 1.25rem; }
+
+    @media (min-width: 700px) {
+      .container { padding: 130px 24px 60px; }
+      .home-card { padding: 42px 42px 34px; }
+      .home-quick-grid { grid-template-columns: repeat(3, 1fr); }
+      .touch-orb-card { min-height: 320px; }
+    }
+
+    @media (max-width: 420px) {
+      .container { padding: 108px 10px 32px; }
+      .home-card { padding: 27px 13px 19px; border-radius: 25px; }
+      .touch-orb-card { min-height: 250px; }
+      .today-panel { gap: 8px; }
+      .today-stat { padding: 10px; }
+      .hub-item { min-height: 104px; }
+      .home-quick-grid .hub-item { min-height: 94px; }
+      .home-quick-grid { gap: 8px; }
+      .dedovsk-bar { padding: 8px 10px; }
+    }
+
+    @media (max-width: 360px) {
+      .home-quick-grid { grid-template-columns: 1fr; }
+      .home-quick-grid .hub-item { min-height: 82px; }
+      .weather-live-text span { max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .touch-orb-icon,
+      .status-dot { animation: none !important; }
+      *, *::before, *::after { scroll-behavior: auto !important; }
+    }
+
+
+    /* ===== ФИНАЛЬНАЯ ПАЛИТРА: меняется только небо, интерфейс остаётся единым ===== */
+    body.time-morning {
+      background:
+        radial-gradient(circle at 50% -12%, rgba(245, 190, 115, .18) 0%, rgba(104, 77, 124, .16) 25%, transparent 58%),
+        linear-gradient(180deg, #2b2038 0%, #151a30 52%, #080d1c 100%) !important;
+      color: #f8fafc;
+    }
+
+    body.time-day {
+      background:
+        radial-gradient(circle at 50% -12%, rgba(255, 205, 125, .15) 0%, rgba(77, 117, 161, .12) 30%, transparent 60%),
+        linear-gradient(180deg, #26344b 0%, #111a2d 52%, #080e1c 100%) !important;
+      color: #f8fafc;
+    }
+
+    body.time-evening {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(245, 158, 11, .16) 0%, rgba(115, 64, 115, .14) 32%, transparent 62%),
+        linear-gradient(180deg, #2d203a 0%, #13172a 52%, #080d19 100%) !important;
       color: #f8fafc;
     }
 
     body.time-night {
       background:
-        radial-gradient(circle at 76% 16%, rgba(125, 150, 226, .14) 0 5%, transparent 25%),
-        linear-gradient(180deg, #101a35 0%, #0b1227 48%, #050914 100%) !important;
+        radial-gradient(circle at 50% -12%, rgba(70, 83, 150, .18) 0%, transparent 52%),
+        linear-gradient(180deg, #1c1933 0%, #0d1222 52%, #060912 100%) !important;
       color: #f8fafc;
     }
 
-    body.weather-cloudy.time-morning { background: linear-gradient(180deg, #8298ad 0%, #aebbc5 40%, #c8c0b9 72%, #667587 100%) !important; }
-    body.weather-fog.time-morning { background: linear-gradient(180deg, #a4afb6 0%, #c2c6c6 48%, #a8a9a7 100%) !important; }
-    body.weather-rain.time-morning { background: linear-gradient(180deg, #506b82 0%, #6f8190 44%, #4d5b68 100%) !important; }
-    body.weather-snow.time-morning { background: linear-gradient(180deg, #9cb8ca 0%, #c8d7df 45%, #8e9faa 100%) !important; }
+    /* Погода лишь немного меняет оттенок фона */
+    body.weather-clear.time-morning {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(255, 208, 126, .23) 0%, rgba(118, 87, 137, .13) 28%, transparent 60%),
+        linear-gradient(180deg, #30223c 0%, #171c31 52%, #090e1d 100%) !important;
+    }
 
-    body.weather-cloudy.time-day { background: linear-gradient(180deg, #7795ad 0%, #a9bac5 48%, #8e9eaa 100%) !important; }
-    body.weather-fog.time-day { background: linear-gradient(180deg, #aab6bb 0%, #c6cccb 50%, #9ea8aa 100%) !important; }
-    body.weather-rain.time-day { background: linear-gradient(180deg, #48677d 0%, #607b8b 48%, #425564 100%) !important; }
-    body.weather-snow.time-day { background: linear-gradient(180deg, #91afc0 0%, #c6d6dc 52%, #8fa0aa 100%) !important; }
+    body.weather-cloudy.time-morning,
+    body.weather-fog.time-morning {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(184, 196, 207, .12) 0%, rgba(99, 111, 132, .08) 30%, transparent 60%),
+        linear-gradient(180deg, #292b3b 0%, #171d30 52%, #090f1e 100%) !important;
+    }
 
-    body.weather-cloudy.time-evening { background: linear-gradient(180deg, #4e5871 0%, #806d7a 48%, #303346 100%) !important; }
-    body.weather-rain.time-evening { background: linear-gradient(180deg, #3f5268 0%, #5f6271 48%, #242b3d 100%) !important; }
-    body.weather-snow.time-evening { background: linear-gradient(180deg, #667a8c 0%, #89959b 50%, #343b4b 100%) !important; }
+    body.weather-rain.time-morning {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(99, 137, 164, .12) 0%, transparent 50%),
+        linear-gradient(180deg, #242f40 0%, #111a2c 52%, #080e1c 100%) !important;
+    }
 
-    body.weather-cloudy.time-night { background: linear-gradient(180deg, #18243b 0%, #10192d 55%, #080c18 100%) !important; }
-    body.weather-fog.time-night { background: linear-gradient(180deg, #29313b 0%, #1a202a 55%, #0d1119 100%) !important; }
-    body.weather-rain.time-night { background: linear-gradient(180deg, #111d30 0%, #0e1727 55%, #060a13 100%) !important; }
-    body.weather-snow.time-night { background: linear-gradient(180deg, #243447 0%, #172333 55%, #0b1019 100%) !important; }
+    body.weather-snow.time-morning {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(205, 224, 236, .14) 0%, transparent 52%),
+        linear-gradient(180deg, #2d3948 0%, #172233 52%, #0a1020 100%) !important;
+    }
 
-    body.time-morning #stars-canvas,
-    body.time-day #stars-canvas { opacity: .22 !important; }
-    body.time-evening #stars-canvas { opacity: .60 !important; }
-    body.time-night #stars-canvas { opacity: .95 !important; }
+    body.weather-clear.time-day {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(255, 214, 139, .20) 0%, rgba(93, 148, 186, .12) 31%, transparent 61%),
+        linear-gradient(180deg, #293b52 0%, #131e31 52%, #080f1e 100%) !important;
+    }
 
+    body.weather-cloudy.time-day,
+    body.weather-fog.time-day {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(181, 195, 207, .12) 0%, transparent 55%),
+        linear-gradient(180deg, #2b3443 0%, #151e30 52%, #090f1d 100%) !important;
+    }
+
+    body.weather-rain.time-day {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(91, 130, 158, .13) 0%, transparent 54%),
+        linear-gradient(180deg, #263546 0%, #111b2d 52%, #080e1c 100%) !important;
+    }
+
+    body.weather-snow.time-day {
+      background:
+        radial-gradient(circle at 50% -8%, rgba(199, 220, 232, .14) 0%, transparent 55%),
+        linear-gradient(180deg, #303e4d 0%, #182536 52%, #0a1120 100%) !important;
+    }
+
+    /* Звёздное небо не исчезает ни при какой погоде */
     #stars-canvas {
       opacity: .95 !important;
       mix-blend-mode: screen !important;
     }
 
+    /* Все элементы главной остаются в той же космической гамме */
     .home-card {
       background: linear-gradient(145deg, rgba(10, 16, 30, .86), rgba(7, 12, 24, .80)) !important;
       border-color: rgba(212, 175, 55, .30) !important;
@@ -1186,6 +1672,7 @@
     .activity-heading small,
     .activity-row { color: #94a3b8 !important; }
 
+    /* Верхняя погода тоже остаётся частью космического интерфейса */
     .dedovsk-bar {
       background: rgba(8, 13, 26, .82) !important;
       border-color: rgba(148,163,184,.20) !important;
@@ -1197,6 +1684,9 @@
     .weather-date-mini,
     .weather-live-text span { color: #64748b !important; }
     .weather-live-text b { color: #f59e0b !important; }
+
+
+    /* ===== Финальная интерактивная полировка ===== */
 
     #weather-effects {
       position: fixed;
@@ -1362,7 +1852,9 @@
       font-size: .66rem;
     }
 
-    .game-stats span { min-width: 0; }
+    .game-stats span {
+      min-width: 0;
+    }
 
     .game-star {
       cursor: pointer;
@@ -1414,7 +1906,9 @@
       transform: translate(-50%, 0);
     }
 
-    .home-bottom-card { position: relative; }
+    .home-bottom-card {
+      position: relative;
+    }
 
     .activity-row {
       transition: background .2s ease;
@@ -1423,65 +1917,8 @@
       padding-right: 7px;
     }
 
-    .activity-row + .activity-row { margin-top: 2px; }
-
-    /* Модальное окно для разгадки кода доступа */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      z-index: 400;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-card {
-      background: linear-gradient(145deg, #0f172a, #0b1120);
-      border: 1px solid rgba(245, 158, 11, 0.5);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(245, 158, 11, 0.15);
-      border-radius: 24px;
-      max-width: 420px;
-      width: 100%;
-      padding: 26px 20px;
-      text-align: center;
-      transform: scale(0.92);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .modal-overlay.active .modal-card {
-      transform: scale(1);
-    }
-
-    .modal-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.15rem;
-      color: #F59E0B;
-      margin-bottom: 14px;
-      letter-spacing: 1px;
-    }
-
-    .modal-body {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 0.96rem;
-      line-height: 1.7;
-      color: #E2E8F0;
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .modal-body b {
-      color: #FEF3C7;
+    .activity-row + .activity-row {
+      margin-top: 2px;
     }
 
     @media (max-width: 520px) {
@@ -1501,27 +1938,91 @@
         transition: none !important;
       }
     }
+
+
+    /* ===== АККАУНТЫ И АВТОРИЗАЦИЯ ===== */
+    body.auth-pending .top-nav,
+    body.auth-pending .sidebar,
+    body.auth-pending .sidebar-overlay,
+    body.auth-pending .container { visibility: hidden; }
+
+    .auth-screen {
+      position: fixed; inset: 0; z-index: 10000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 22px;
+      background: radial-gradient(circle at 50% 12%, rgba(88,28,135,.32), #060810 58%);
+    }
+    .auth-screen.hidden { display: none; }
+    .auth-card {
+      width: min(100%, 430px); padding: 28px 22px;
+      border: 1px solid rgba(212,175,55,.35); border-radius: 22px;
+      background: rgba(10,15,28,.94); box-shadow: 0 24px 80px rgba(0,0,0,.48);
+      text-align: center; backdrop-filter: blur(14px);
+    }
+    .auth-mark { font-size: 2.3rem; margin-bottom: 8px; }
+    .auth-card h1 { font-family:'Cinzel',serif; color:#FDE68A; font-size:1.35rem; margin-bottom:8px; }
+    .auth-card p { color:#94A3B8; font-size:.84rem; line-height:1.55; margin-bottom:18px; }
+    .auth-input {
+      width:100%; margin:7px 0; padding:13px 14px; border-radius:12px;
+      border:1px solid rgba(148,163,184,.28); background:#060810; color:#F8FAFC;
+      outline:none; font:inherit;
+    }
+    .auth-input:focus { border-color:rgba(245,158,11,.75); }
+    .auth-btn {
+      width:100%; margin-top:10px; padding:13px 16px; border:0; border-radius:12px;
+      cursor:pointer; font-weight:700; color:#111827;
+      background:linear-gradient(135deg,#FDE68A,#F59E0B);
+    }
+    .auth-error { min-height:20px; margin-top:10px; color:#FCA5A5; font-size:.78rem; }
+    .account-strip {
+      display:flex; gap:7px; align-items:center; flex-wrap:wrap;
+      margin-top:7px; padding:7px 9px; border-radius:12px;
+      background:rgba(15,23,42,.78); border:1px solid rgba(148,163,184,.15);
+      font-size:.72rem; color:#CBD5E1;
+    }
+    .account-strip b { color:#FDE68A; }
+    .account-logout {
+      margin-left:auto; border:0; background:transparent; color:#94A3B8;
+      cursor:pointer; font-size:.72rem; padding:3px 5px;
+    }
+    .admin-only { display:none !important; }
+    body.role-admin .admin-only { display:flex !important; }
+    .admin-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin:10px 0 14px; }
+    .admin-stat { background:#060810; border:1px solid rgba(16,185,129,.25); border-radius:12px; padding:11px; text-align:left; }
+    .admin-stat small { color:#94A3B8; display:block; font-size:.7rem; margin-bottom:4px; }
+    .admin-stat b { color:#ECFDF5; font-size:.95rem; }
+    .admin-form-input {
+      width:100%; padding:11px 12px; margin-bottom:8px; border-radius:11px;
+      border:1px solid rgba(148,163,184,.25); background:#060810; color:#F8FAFC; font:inherit;
+    }
+    .admin-form-textarea { min-height:180px; resize:vertical; }
+    .admin-poem-item { background:#060810; border:1px solid rgba(212,175,55,.25); border-radius:11px; padding:11px; margin-bottom:8px; position:relative; }
+    .admin-poem-item .delete-x { position:absolute; top:8px; right:8px; border:0; background:transparent; color:#F87171; cursor:pointer; }
+    .presence-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#64748B; margin-right:5px; }
+    .presence-dot.online { background:#34D399; box-shadow:0 0 10px rgba(52,211,153,.7); }
+    .shared-score-line { margin-top:8px; color:#CBD5E1; font-size:.78rem; }
+    @media (max-width:520px) { .admin-grid { grid-template-columns:1fr; } }
+
   </style>
 </head>
-<body class="time-night">
+<body class="time-night auth-pending">
+
+
+  <div class="auth-screen" id="auth-screen">
+    <div class="auth-card">
+      <div class="auth-mark">✦</div>
+      <h1>Вход в Созвездие</h1>
+      <p>У каждого здесь своё место. Войди в свой аккаунт — состояние, рекорды и права больше не смешиваются.</p>
+      <input class="auth-input" id="auth-email" type="email" autocomplete="username" placeholder="Почта аккаунта">
+      <input class="auth-input" id="auth-password" type="password" autocomplete="current-password" placeholder="Пароль">
+      <button class="auth-btn" id="auth-login-btn" onclick="loginToConstellation()">Войти ✨</button>
+      <div class="auth-error" id="auth-error"></div>
+    </div>
+  </div>
 
   <canvas id="stars-canvas"></canvas>
   <div id="weather-effects" aria-hidden="true"></div>
   <div id="liza-toast" class="liza-toast" role="status" aria-live="polite"></div>
-
-  <!-- Модальное окно победы над паролем админки -->
-  <div class="modal-overlay" id="admin-win-modal">
-    <div class="modal-card">
-      <div class="protocol-tag">✦ Доступ получен ✦</div>
-      <div class="modal-title">Попалась, шпионка! 🕵️‍♀️🐾</div>
-      <div class="modal-body">
-        Я знал, что ты доберёшься сюда! Твоя сообразительность снова взломала все мои защиты без шансов.<br><br>
-        За такую блестящую победу Созвездие официально объявляет: <b>с меня причитается целых два любых твоих желания ✨</b><br><br>
-        Люблю тебя безумно ❤️ Заходи за кулисы, теперь ты здесь главная!
-      </div>
-      <button class="submit-btn" onclick="confirmEnterAdmin()">Войти в командный центр 🚀</button>
-    </div>
-  </div>
 
   <!-- Верхняя панель -->
   <div class="top-nav">
@@ -1529,9 +2030,14 @@
       <button class="menu-toggle-btn" onclick="toggleSidebar()">
         <span>☰</span> Меню
       </button>
-      <div class="status-badge" id="admin-trigger-badge" onclick="handleAdminBadgeClick()" title="">
+      <div class="status-badge" id="admin-trigger-badge">
         <div class="status-dot"></div>
         <span>Созвездие любит Вас</span>
+      </div>
+      <div class="account-strip" id="account-strip">
+        <span>✦ Аккаунт: <b id="account-name">—</b></span>
+        <span id="account-role"></span>
+        <button class="account-logout" onclick="logoutFromConstellation()">Выйти</button>
       </div>
     </div>
     <div class="dedovsk-bar" id="dedovsk-weather-bar">
@@ -1578,6 +2084,9 @@
     </button>
     <button class="nav-btn" onclick="switchTab('tab-poems')">
       <span>📜</span> Свиток стихов
+    </button>
+    <button class="nav-btn admin-only" id="admin-nav-btn" onclick="switchTab('tab-admin')">
+      <span>⚙️</span> Панель Созвездия
     </button>
   </div>
 
@@ -1664,10 +2173,6 @@
             </div>
           </div>
           <div class="activity-list" id="home-activity-list">
-            <div class="activity-row" id="home-unread-row" onclick="switchTab('tab-letters')" style="display:none; cursor:pointer; color:#F59E0B;">
-              <span>✨</span>
-              <span>Созвездие оставило для тебя новое послание в письмах</span>
-            </div>
             <div class="activity-row">
               <span>🌤️</span>
               <span id="home-time-note">Созвездие следит за небом Дедовска.</span>
@@ -1888,9 +2393,10 @@
         <div class="game-stats">
           <span>Счёт: <b id="game-score">0</b></span>
           <span>Время: <b id="game-timer">30</b>с</span>
-          <span>Общий рекорд: <b id="game-high-score">0</b></span>
+          <span>Рекорд: <b id="game-high-score">0</b></span>
         </div>
         <div class="game-achievement" id="game-achievement">✦ Лови звёзды — и попробуй побить свой рекорд</div>
+        <div class="shared-score-line" id="shared-score-line">Общий рекорд загружается…</div>
 
         <div class="star-catcher-box" id="star-catcher-box"></div>
         <button class="submit-btn" id="game-start-btn" onclick="startGame()">Начать охоту за звёздами ⭐</button>
@@ -1903,7 +2409,7 @@
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
         
         <div class="poem-filter-bar">
-          <div class="protocol-tag" style="margin-bottom:0;">Сборник стихов (10)</div>
+          <div class="protocol-tag" style="margin-bottom:0;"><span id="poem-count-label">Сборник стихов</span></div>
           <button class="fav-filter-btn" id="fav-toggle-btn" onclick="toggleFavFilter()">
             <span>❤️</span> Только любимые
           </button>
@@ -1917,7 +2423,9 @@
           <button class="back-btn" style="margin-bottom:0;" onclick="closePoemScroll()">← К списку стихов</button>
           <div style="display:flex; align-items:center; gap:8px;">
             <button class="theme-toggle-btn" onclick="toggleGlobalScrollTheme()">🌙 Тёмная</button>
-            <button class="heart-btn" id="scroll-heart-btn" onclick="toggleFavoriteFromScroll()">🤍</button>
+            <button class="heart-btn" title="Реакция ✨" onclick="reactCurrentPoem('✨')">✨</button>
+            <button class="heart-btn" title="Реакция 🥺" onclick="reactCurrentPoem('🥺')">🥺</button>
+            <button class="heart-btn" id="scroll-heart-btn" title="В избранное" onclick="toggleFavoriteFromScroll()">🤍</button>
           </div>
         </div>
         <div class="scroll-view-title" id="scroll-title"></div>
@@ -1937,13 +2445,18 @@
           <button class="admin-tab-btn active" id="atab-btn-dash" onclick="switchAdminTab('dash')">⚡ Дашборд</button>
           <button class="admin-tab-btn" id="atab-btn-inbox" onclick="switchAdminTab('inbox')">💌 Письма Лизы</button>
           <button class="admin-tab-btn" id="atab-btn-reply" onclick="switchAdminTab('reply')">✍️ Ответить</button>
+          <button class="admin-tab-btn" id="atab-btn-poems" onclick="switchAdminTab('poems')">📜 Стихи</button>
         </div>
 
         <!-- 1. Дашборд -->
         <div id="admin-sec-dash">
-          <div style="background:#060810; border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:12px; margin-bottom:12px; text-align:left; font-size:0.85rem;">
-            <div>💌 Входящих от Лизы: <b id="adm-count-inbox">0</b></div>
-            <div style="margin-top:4px;">✨ Опубликовано ответов: <b id="adm-count-replies">0</b></div>
+          <div class="admin-grid">
+            <div class="admin-stat"><small>💌 Входящих от Лизы</small><b id="adm-count-inbox">0</b></div>
+            <div class="admin-stat"><small>✨ Ответов опубликовано</small><b id="adm-count-replies">0</b></div>
+            <div class="admin-stat"><small>👤 Лиза</small><b id="adm-liza-presence"><span class="presence-dot"></span>не в сети</b></div>
+            <div class="admin-stat"><small>⭐ Рекорд Лизы</small><b id="adm-liza-score">0</b></div>
+            <div class="admin-stat"><small>❤️ Реакций</small><b id="adm-reactions-count">0</b></div>
+            <div class="admin-stat"><small>📜 Стихов из панели</small><b id="adm-poems-count">0</b></div>
           </div>
 
           <button class="admin-action-btn" style="border-color:#F59E0B; color:#FDE68A; background:rgba(245,158,11,0.15);" onclick="adminResetCoupons()">⚡ Сбросить кулдаун всех купонов</button>
@@ -1963,25 +2476,139 @@
           <div class="protocol-tag" style="font-size:0.7rem; color:#10B981;">Твои опубликованные ответы:</div>
           <div id="admin-my-replies-list" style="max-height:160px; overflow-y:auto;"></div>
         </div>
+
+        <!-- 4. Управление стихами -->
+        <div id="admin-sec-poems" style="display:none; text-align:left;">
+          <input class="admin-form-input" id="admin-poem-title" placeholder="Название стиха">
+          <input class="admin-form-input" id="admin-poem-subtitle" placeholder="Подпись / повод, например: Перед сном">
+          <textarea class="admin-form-input admin-form-textarea" id="admin-poem-body" placeholder="Текст стиха..."></textarea>
+          <button class="submit-btn" style="background:linear-gradient(135deg,#10B981,#059669); margin-bottom:16px;" onclick="adminPublishPoem()">Опубликовать стих 📜</button>
+          <div class="protocol-tag" style="font-size:.7rem;color:#10B981;">Добавленные через панель:</div>
+          <div id="admin-poems-list"></div>
+        </div>
       </div>
     </div>
 
   </div>
 
   <script>
-    // 1. FIREBASE ИНИЦИАЛИЗАЦИЯ
-    const firebaseConfig = {
-      apiKey: "AIzaSyBIr0vRsNn_g3fR7sPu2032t_pz4W4Nl4o",
-      authDomain: "liza-space.firebaseapp.com",
-      databaseURL: "https://liza-space-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "liza-space",
-      storageBucket: "liza-space.firebasestorage.app",
-      messagingSenderId: "506176308056",
-      appId: "1:506176308056:web:4cbece69bb1242e4569b2d"
-    };
-    
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    // ===== ВСТАВЬ ДВЕ СТРОКИ ИЗ SUPABASE → Project Settings → API =====
+    const SUPABASE_URL = "https://etpgsduknslmocyvdist.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_GDqeQlkJLs5Gv883Fz0fXw_fyIIsEUM";
+
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let currentUser = null;
+    let currentProfile = null;
+    let currentRole = 'user';
+    let realtimeChannel = null;
+    let presenceTimer = null;
+    let appHistoryInitialized = false;
+
+    function storagePrefix() {
+      return currentUser?.id ? `constellation:${currentUser.id}:` : 'constellation:guest:';
+    }
+    function uGet(key) { return localStorage.getItem(storagePrefix() + key); }
+    function uSet(key, value) { localStorage.setItem(storagePrefix() + key, value); }
+    function uRemove(key) { localStorage.removeItem(storagePrefix() + key); }
+    function escapeHtml(v='') { return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c])); }
+
+    function authConfigured() {
+      return !SUPABASE_URL.includes('PASTE_YOUR_') && !SUPABASE_ANON_KEY.includes('PASTE_YOUR_');
+    }
+
+    function setAuthError(message='') {
+      const el = document.getElementById('auth-error');
+      if (el) el.textContent = message;
+    }
+
+    async function loginToConstellation() {
+      if (!authConfigured()) {
+        setAuthError('Сначала вставь SUPABASE_URL и SUPABASE_ANON_KEY в код.');
+        return;
+      }
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value;
+      if (!email || !password) return setAuthError('Введи почту и пароль.');
+      const btn = document.getElementById('auth-login-btn');
+      btn.disabled = true; btn.textContent = 'Проверяю координаты…';
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      btn.disabled = false; btn.textContent = 'Войти ✨';
+      if (error) setAuthError('Не удалось войти: ' + error.message);
+    }
+
+    async function logoutFromConstellation() {
+      await markPresence(false);
+      if (realtimeChannel) { await sb.removeChannel(realtimeChannel); realtimeChannel = null; }
+      clearInterval(presenceTimer);
+      await sb.auth.signOut();
+    }
+
+    async function loadOwnProfile(user) {
+      const { data, error } = await sb.from('profiles').select('*').eq('id', user.id).single();
+      if (error) throw error;
+      currentProfile = data;
+      currentRole = data.role || 'user';
+      document.body.classList.toggle('role-admin', currentRole === 'admin');
+      document.getElementById('account-name').textContent = data.display_name || user.email || 'Пользователь';
+      document.getElementById('account-role').textContent = currentRole === 'admin' ? '• Созвездие' : '• Личный профиль';
+      const kicker=document.querySelector('.home-kicker'); if(kicker) kicker.textContent=currentRole==='admin'?'Командный режим Созвездия':'Личное пространство Лизы';
+    }
+
+    async function bootAuthenticatedApp(session) {
+      currentUser = session.user;
+      await loadOwnProfile(currentUser);
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.body.classList.remove('auth-pending');
+      setAuthError('');
+
+      if (!appHistoryInitialized) initAppHistory();
+      else setActiveTabUI('tab-home');
+
+      gameHighScore = parseInt(uGet('star_high_score') || '0', 10);
+      await loadSharedHighScores();
+      await loadMessages();
+      await loadCouponsState();
+      await loadRemotePoems();
+      await loadRemoteFavorites();
+      await loadAdminDashboardExtras();
+      await markPresence(true);
+      subscribeRealtime();
+      clearInterval(presenceTimer);
+      presenceTimer = setInterval(() => markPresence(true), 45000);
+      updateGameHighScoreUI();
+      updateLastVisitText();
+      updateHomeActivity();
+      saveLastVisit();
+    }
+
+    async function showAuthScreen() {
+      currentUser = null; currentProfile = null; currentRole = 'user';
+      document.body.classList.remove('role-admin');
+      document.body.classList.add('auth-pending');
+      document.getElementById('auth-screen').classList.remove('hidden');
+    }
+
+    async function markPresence(online=true) {
+      if (!currentUser) return;
+      await sb.from('profiles').update({ online, last_seen: new Date().toISOString() }).eq('id', currentUser.id);
+    }
+
+    window.addEventListener('pagehide', () => { if (currentUser) markPresence(false); });
+    document.getElementById('auth-password').addEventListener('keyup', e => { if (e.key === 'Enter') loginToConstellation(); });
+
+    sb.auth.onAuthStateChange((_event, session) => {
+      setTimeout(async () => {
+        try {
+          if (!authConfigured()) { await showAuthScreen(); setAuthError('Вставь настройки Supabase в две строки в коде.'); return; }
+          if (session?.user) await bootAuthenticatedApp(session);
+          else await showAuthScreen();
+        } catch (e) {
+          console.error(e);
+          setAuthError('Ошибка загрузки профиля. Проверь SQL-настройку Supabase.');
+          await showAuthScreen();
+        }
+      }, 0);
+    });
 
     // 2. ЗВЁЗДНЫЙ ХОЛСТ И ШЛЕЙФ
     const canvas = document.getElementById('stars-canvas');
@@ -2255,7 +2882,7 @@
     updateDedovskTime();
 
     // 4. ГЛОБАЛЬНЫЙ НОЧНОЙ РЕЖИМ
-    let globalScrollTheme = localStorage.getItem('scroll_theme') || 'dark';
+    let globalScrollTheme = uGet('scroll_theme') || 'dark';
 
     function updateAllScrollThemes() {
       const isDark = globalScrollTheme === 'dark';
@@ -2277,23 +2904,23 @@
 
     function toggleGlobalScrollTheme() {
       globalScrollTheme = (globalScrollTheme === 'dark') ? 'light' : 'dark';
-      localStorage.setItem('scroll_theme', globalScrollTheme);
+      uSet('scroll_theme', globalScrollTheme);
       updateAllScrollThemes();
     }
 
     updateAllScrollThemes();
 
     // 5. НАВИГАЦИЯ И СОХРАНЕНИЕ ПОСЛЕДНЕГО МЕСТА
-    const LAST_TAB_KEY = 'liza_last_tab';
+    const LAST_TAB_KEY = 'last_tab';
 
     function saveLastVisit() {
-      localStorage.setItem('liza_last_visit', String(Date.now()));
+      uSet('last_visit', String(Date.now()));
     }
 
     function updateLastVisitText() {
       const el = document.getElementById('last-visit-text');
       if (!el) return;
-      const previous = parseInt(localStorage.getItem('liza_last_visit') || '0', 10);
+      const previous = parseInt(uGet('last_visit') || '0', 10);
       if (!previous) {
         el.innerText = 'Первый визит ✦';
         return;
@@ -2324,20 +2951,10 @@
       document.getElementById('sidebar-overlay').classList.toggle('active');
     }
 
+    // Навигация внутри сайта через историю браузера.
+    // Свайп "назад" на телефоне возвращает на предыдущий раздел,
+    // а не сразу уводит Лизу со страницы.
     let isHistoryNavigation = false;
-
-    function updateUnreadLettersUI() {
-      const replies = Object.values(rawRepliesData || {}).filter(Boolean);
-      const latestTime = replies.reduce((max, item) => Math.max(max, Number(item.timestamp || 0)), 0);
-      const lastRead = parseInt(localStorage.getItem('last_read_reply_time') || '0', 10);
-      const hasUnread = latestTime > lastRead;
-
-      const badge = document.getElementById('hub-unread-badge');
-      if (badge) badge.style.display = hasUnread ? 'block' : 'none';
-
-      const unreadRow = document.getElementById('home-unread-row');
-      if (unreadRow) unreadRow.style.display = hasUnread ? 'flex' : 'none';
-    }
 
     function setActiveTabUI(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -2365,15 +2982,19 @@
       if (tabId === 'tab-crystal') closeCrystalScroll();
       if (tabId === 'tab-letters') {
         closeLetterReader();
-        const replies = Object.values(rawRepliesData || {}).filter(Boolean);
-        const latestTime = replies.reduce((max, item) => Math.max(max, Number(item.timestamp || 0)), 0);
-        if (latestTime) localStorage.setItem('last_read_reply_time', String(latestTime));
-        updateUnreadLettersUI();
+        const badge = document.getElementById('hub-unread-badge');
+        if (badge) badge.style.display = 'none';
+        uSet('last_read_reply_time', Date.now());
+        markIncomingMessagesRead();
       }
     }
 
     function switchTab(tabId, fromHistory = false) {
       if (!document.getElementById(tabId)) return;
+      if (tabId === 'tab-admin' && currentRole !== 'admin') {
+        showLizaToast('⛔ Этот раздел доступен только Созвездию.');
+        tabId = 'tab-home';
+      }
 
       if (!fromHistory && !isHistoryNavigation) {
         const currentTab = history.state && history.state.lizaTab;
@@ -2383,16 +3004,19 @@
       }
 
       if (tabId !== 'tab-admin') {
-        localStorage.setItem(LAST_TAB_KEY, tabId);
+        uSet(LAST_TAB_KEY, tabId);
       }
 
       setActiveTabUI(tabId);
     }
 
     function initAppHistory() {
-      const savedTabRaw = localStorage.getItem(LAST_TAB_KEY) || 'tab-home';
+      if (appHistoryInitialized) return;
+      appHistoryInitialized = true;
+      const savedTabRaw = uGet(LAST_TAB_KEY) || 'tab-home';
       const savedTab = savedTabRaw === 'tab-admin' ? 'tab-home' : savedTabRaw;
 
+      // Текущий вход в сайт становится точкой навигации приложения.
       history.replaceState({ lizaTab: savedTab }, '', window.location.href);
       setActiveTabUI(savedTab);
 
@@ -2406,7 +3030,7 @@
       });
     }
 
-    initAppHistory();
+    // initAppHistory() запускается после успешной авторизации.
 
     // 6. ПРИКОСНОВЕНИЕ К СОЗВЕЗДИЮ (30 фраз)
     const touchPhrases = [
@@ -2454,7 +3078,6 @@
     function renderConstellation() {
       if (!constellationCard || !constellationCanvas) return;
       const rect = constellationCard.getBoundingClientRect();
-      const constellationCtx = constellationCanvas.getContext('2d');
       constellationCtx.clearRect(0, 0, rect.width, rect.height);
 
       constellationStars.forEach(star => {
@@ -2629,54 +3252,43 @@
       mainCard.style.display = 'block';
     }
 
+    async function saveRemoteHighScore(score) {
+      if(!currentUser)return;
+      const {data}=await sb.from('game_scores').select('high_score').eq('user_id',currentUser.id).maybeSingle();
+      if(!data || score>(data.high_score||0)) await sb.from('game_scores').upsert({user_id:currentUser.id,high_score:score,updated_at:new Date().toISOString()});
+      await loadSharedHighScores();
+    }
+
+    async function loadSharedHighScores() {
+      if(!currentUser)return;
+      const {data:scores}=await sb.from('game_scores').select('user_id,high_score');
+      const {data:profiles}=await sb.from('profiles').select('id,display_name');
+      const names=Object.fromEntries((profiles||[]).map(p=>[p.id,p.display_name||'Игрок']));
+      const mine=(scores||[]).find(s=>s.user_id===currentUser.id)?.high_score||0;
+      if(mine>gameHighScore){gameHighScore=mine;uSet('star_high_score',String(mine));updateGameHighScoreUI();}
+      const line=document.getElementById('shared-score-line');
+      if(line) line.textContent=(scores||[]).length ? '✦ '+(scores||[]).sort((a,b)=>b.high_score-a.high_score).map(s=>`${names[s.user_id]||'Игрок'} — ${s.high_score}`).join(' • ') : '✦ Общих рекордов пока нет';
+    }
+
     // 8. ЛОВЕЦ ЗВЁЗД
     let gameScore = 0;
     let gameTime = 30;
     let gameInterval = null;
     let spawnInterval = null;
     let gameHighScore = 0;
-    let gameRecordHolder = 'Созвездие';
     let gameActive = false;
-    let sharedGameRecordReady = false;
     let gameSessionStartedAt = 0;
 
     function updateGameHighScoreUI() {
       const homeScore = document.getElementById('hub-score-meta');
       const gameScoreEl = document.getElementById('game-high-score');
-      if (homeScore) homeScore.innerText = gameHighScore > 0 ? `общий рекорд: ${gameHighScore}` : 'общий рекорд: 0';
+      if (homeScore) homeScore.innerText = `рекорд: ${gameHighScore}`;
       if (gameScoreEl) gameScoreEl.innerText = gameHighScore;
-    }
-
-    db.ref('shared_game/star_catcher').on('value', (snapshot) => {
-      const data = snapshot.val() || {};
-      gameHighScore = Math.max(0, parseInt(data.highScore || 0, 10));
-      gameRecordHolder = data.holder || 'Созвездие';
-      sharedGameRecordReady = true;
-      updateGameHighScoreUI();
-      const achievement = document.getElementById('game-achievement');
-      if (achievement && !gameActive) {
-        achievement.innerText = gameHighScore > 0
-          ? `✦ Общий рекорд — ${gameHighScore}. Его установил(а): ${gameRecordHolder}.`
-          : '✦ Здесь хранится общий рекорд Убежища.';
-      }
-    });
-
-    function saveSharedGameRecord(score, holder) {
-      if (score <= 0) return Promise.resolve();
-      return db.ref('shared_game/star_catcher').transaction(current => {
-        const oldScore = current && Number(current.highScore) ? Number(current.highScore) : 0;
-        if (score <= oldScore) return current;
-        return {
-          highScore: score,
-          holder: holder,
-          updatedAt: Date.now()
-        };
-      });
     }
 
     function saveGameState() {
       if (!gameActive) return;
-      localStorage.setItem('star_game_state', JSON.stringify({
+      uSet('star_game_state', JSON.stringify({
         score: gameScore,
         startedAt: gameSessionStartedAt,
         expiresAt: Date.now() + gameTime * 1000
@@ -2684,7 +3296,7 @@
     }
 
     function clearGameState() {
-      localStorage.removeItem('star_game_state');
+      uRemove('star_game_state');
     }
 
     function startGame(resume = false) {
@@ -2693,7 +3305,7 @@
       clearInterval(gameInterval);
       clearInterval(spawnInterval);
 
-      const saved = resume ? JSON.parse(localStorage.getItem('star_game_state') || 'null') : null;
+      const saved = resume ? JSON.parse(uGet('star_game_state') || 'null') : null;
       if (saved && saved.expiresAt > Date.now()) {
         gameScore = Math.max(0, parseInt(saved.score || 0, 10));
         gameTime = Math.ceil((saved.expiresAt - Date.now()) / 1000);
@@ -2709,7 +3321,7 @@
       document.getElementById('game-timer').innerText = gameTime;
       document.getElementById('game-start-btn').style.display = 'none';
       document.getElementById('game-achievement').innerText =
-        gameHighScore > 0 ? `✦ Общий рекорд — ${gameHighScore}. Попробуй его превзойти.` : '✦ Лови звёзды — и установи первый общий рекорд';
+        gameHighScore > 0 ? `✦ Твой рекорд — ${gameHighScore}. Ещё немного — и он падёт.` : '✦ Лови звёзды — и установи свой первый рекорд';
 
       gameInterval = setInterval(() => {
         gameTime--;
@@ -2792,31 +3404,28 @@
 
       const box = document.getElementById('star-catcher-box');
       const oldRecord = gameHighScore;
-      const isNewRecord = gameScore > oldRecord;
-      const holder = 'Лиза';
-
-      if (isNewRecord) {
+      if (gameScore > gameHighScore) {
         gameHighScore = gameScore;
-        gameRecordHolder = holder;
-        updateGameHighScoreUI();
-        saveSharedGameRecord(gameScore, holder).catch(() => {});
+        uSet('star_high_score', String(gameHighScore));
+        saveRemoteHighScore(gameHighScore);
       }
+      updateGameHighScoreUI();
 
       let result = `Охота завершена! ✨<br>Ты поймала звёзд на <b>${gameScore}</b> очков.`;
-      if (isNewRecord) result += `<br><span style="color:#F59E0B;">Новый общий рекорд! 🏆</span>`;
+      if (gameScore > oldRecord) result += `<br><span style="color:#F59E0B;">Новый рекорд! 🏆</span>`;
       result += `<br><span style="color:#CBD5E1;">Ранг: <b>${gameScore >= 400 ? 'Хранительница созвездий' : gameScore >= 250 ? 'Звёздная охотница' : 'Хранительница сердца'} ❤️</b></span>`;
 
       box.innerHTML = `<div style="padding:40px 10px; font-family:'Playfair Display',serif; font-size:1.1rem; color:#FEF3C7; text-align:center;">${result}</div>`;
       document.getElementById('game-start-btn').style.display = 'block';
       document.getElementById('game-start-btn').innerText = 'Сыграть ещё раз 💫';
       document.getElementById('game-achievement').innerText =
-        isNewRecord ? '🏆 Общий рекорд обновлён — Созвездие это запомнило.' : `✦ До общего рекорда: ${Math.max(0, gameHighScore - gameScore)} очков`;
+        gameScore > oldRecord ? '🏆 Рекорд обновлён — Созвездие это запомнило.' : `✦ До нового рекорда: ${Math.max(0, gameHighScore - gameScore)} очков`;
     }
 
     function restoreStarGame() {
       updateGameHighScoreUI();
       try {
-        const saved = JSON.parse(localStorage.getItem('star_game_state') || 'null');
+        const saved = JSON.parse(uGet('star_game_state') || 'null');
         if (saved && saved.expiresAt > Date.now()) {
           startGame(true);
         } else {
@@ -2827,12 +3436,17 @@
       }
     }
 
-    setTimeout(restoreStarGame, 80);
+    // Игра восстанавливается после входа; локальное состояние теперь раздельное по аккаунтам.
 
-    // 9. ПИСЬМА И FIREBASE
+    // 9. ПИСЬМА В SUPABASE
     let lettersFeedMode = 'replies';
     let rawRepliesData = {};
     let rawOutboxData = {};
+
+    function formatDbDate(iso) {
+      try { return new Date(iso).toLocaleString('ru-RU', { timeZone:'Europe/Moscow' }); }
+      catch { return ''; }
+    }
 
     function switchLettersFeed(mode) {
       lettersFeedMode = mode;
@@ -2844,255 +3458,206 @@
     function renderLettersList() {
       const container = document.getElementById('letters-feed-container');
       const data = lettersFeedMode === 'replies' ? rawRepliesData : rawOutboxData;
-      const entries = Object.entries(data || {}).reverse();
-
-      if (entries.length === 0) {
-        container.innerHTML = `<div style="padding:16px; color:#94A3B8; font-size:0.85rem;">Здесь пока нет писем.</div>`;
+      const entries = Object.entries(data || {}).sort((a,b) => (b[1].timestamp||0) - (a[1].timestamp||0));
+      if (!entries.length) {
+        container.innerHTML = `<div style="padding:16px;color:#94A3B8;font-size:.85rem;">Здесь пока нет писем.</div>`;
         return;
       }
-
-      container.innerHTML = entries.map(([key, item]) => `
-        <div class="letter-list-item" onclick="openLetterReader('${lettersFeedMode}', '${key}')">
-          <div class="letter-item-header">
-            <span>${lettersFeedMode === 'replies' ? '✦ Созвездие' : '💌 Вы'}</span>
-            <span>${item.date}</span>
-          </div>
-          <div class="letter-item-preview">${item.text}</div>
-        </div>
-      `).join('');
+      container.innerHTML = entries.map(([key,item]) => `
+        <div class="letter-list-item" onclick="openLetterReader('${lettersFeedMode}','${key}')">
+          <div class="letter-item-header"><span>${lettersFeedMode === 'replies' ? '✦ Получено' : '💌 Отправлено'}</span><span>${escapeHtml(item.date)}</span></div>
+          <div class="letter-item-preview">${escapeHtml(item.text)}</div>
+        </div>`).join('');
     }
 
     function openLetterReader(mode, key) {
       const data = mode === 'replies' ? rawRepliesData : rawOutboxData;
-      const item = data[key];
-      if (!item) return;
-
-      const mainCard = document.getElementById('letters-main-card');
-      const reader = document.getElementById('letter-scroll-reader');
-
-      document.getElementById('reader-author-tag').innerText = mode === 'replies' ? 'Ответ Созвездия' : 'Ваше письмо';
-      document.getElementById('reader-title').innerText = mode === 'replies' ? 'Послание от Созвездия' : 'Письмо в Созвездие';
+      const item = data[key]; if (!item) return;
+      document.getElementById('reader-author-tag').innerText = mode === 'replies' ? 'Входящее послание' : 'Ваше письмо';
+      document.getElementById('reader-title').innerText = mode === 'replies' ? 'Послание из Созвездия' : 'Письмо в Созвездие';
       document.getElementById('reader-body').innerText = item.text;
       document.getElementById('reader-date').innerText = item.date;
-
       updateAllScrollThemes();
-      mainCard.style.display = 'none';
-      reader.style.display = 'block';
+      document.getElementById('letters-main-card').style.display = 'none';
+      document.getElementById('letter-scroll-reader').style.display = 'block';
+      if (mode === 'replies') markIncomingMessagesRead();
     }
 
     function closeLetterReader() {
-      const mainCard = document.getElementById('letters-main-card');
-      const reader = document.getElementById('letter-scroll-reader');
-      reader.style.display = 'none';
-      mainCard.style.display = 'block';
+      document.getElementById('letter-scroll-reader').style.display = 'none';
+      document.getElementById('letters-main-card').style.display = 'block';
     }
 
-    function sendLetterToConstellation() {
+    async function sendLetterToConstellation() {
       const text = document.getElementById('liza-letter-text').value.trim();
-      if (!text) return;
-
-      const dateStr = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
-      db.ref('letters_from_liza').push({
-        text: text,
-        date: dateStr,
-        timestamp: Date.now()
-      }).then(() => {
-        alert("Письмо успешно доставлено в самое сердце Созвездия ✨");
-        document.getElementById('liza-letter-text').value = '';
+      if (!text || !currentUser) return;
+      const recipientRole = currentRole === 'admin' ? 'user' : 'admin';
+      const { error } = await sb.from('messages').insert({
+        sender_id: currentUser.id, sender_role: currentRole, recipient_role: recipientRole, body:text
       });
+      if (error) return alert('Не удалось отправить письмо: ' + error.message);
+      document.getElementById('liza-letter-text').value = '';
+      showLizaToast('💌 Письмо доставлено в Созвездие ✦');
+      await loadMessages();
     }
 
-    db.ref('replies_from_constellation').orderByChild('timestamp').on('value', (snapshot) => {
-      rawRepliesData = snapshot.val() || {};
-      if (lettersFeedMode === 'replies') renderLettersList();
+    async function loadMessages() {
+      if (!currentUser) return;
+      const { data, error } = await sb.from('messages').select('*').order('created_at', { ascending:true });
+      if (error) { console.error(error); return; }
+      rawRepliesData = {}; rawOutboxData = {};
+      for (const m of data || []) {
+        const item = { id:m.id, text:m.body, date:formatDbDate(m.created_at), timestamp:new Date(m.created_at).getTime(), is_read:m.is_read };
+        if (m.sender_id === currentUser.id) rawOutboxData[m.id] = item;
+        else if (m.recipient_role === currentRole) rawRepliesData[m.id] = item;
+      }
+      renderLettersList();
       updateAdminUI();
-      updateUnreadLettersUI();
-    });
+      const unread = Object.values(rawRepliesData).filter(x => !x.is_read).length;
+      const badge = document.getElementById('hub-unread-badge');
+      if (badge) badge.style.display = unread ? 'block' : 'none';
+    }
 
-    db.ref('letters_from_liza').on('value', (snapshot) => {
-      rawOutboxData = snapshot.val() || {};
-      if (lettersFeedMode === 'outbox') renderLettersList();
-      updateAdminUI();
-    });
+    async function markIncomingMessagesRead() {
+      if (!currentUser) return;
+      await sb.from('messages').update({is_read:true}).eq('recipient_role', currentRole).neq('sender_id', currentUser.id).eq('is_read',false);
+      Object.values(rawRepliesData).forEach(x => x.is_read = true);
+      const badge = document.getElementById('hub-unread-badge'); if (badge) badge.style.display='none';
+    }
 
-    // 10. АДМИНКА
+    // 10. АДМИНКА — роль проверяется также политиками RLS в Supabase
     function switchAdminTab(tab) {
-      document.getElementById('atab-btn-dash').classList.toggle('active', tab === 'dash');
-      document.getElementById('atab-btn-inbox').classList.toggle('active', tab === 'inbox');
-      document.getElementById('atab-btn-reply').classList.toggle('active', tab === 'reply');
-
-      document.getElementById('admin-sec-dash').style.display = tab === 'dash' ? 'block' : 'none';
-      document.getElementById('admin-sec-inbox').style.display = tab === 'inbox' ? 'block' : 'none';
-      document.getElementById('admin-sec-reply').style.display = tab === 'reply' ? 'block' : 'none';
+      if (currentRole !== 'admin') return switchTab('tab-home');
+      for (const name of ['dash','inbox','reply','poems']) {
+        document.getElementById(`atab-btn-${name}`)?.classList.toggle('active', tab === name);
+        const sec = document.getElementById(`admin-sec-${name}`); if (sec) sec.style.display = tab === name ? 'block' : 'none';
+      }
+      if (tab === 'poems') renderAdminPoems();
     }
 
     function updateAdminUI() {
-      const inboxEntries = Object.entries(rawOutboxData || {});
-      const replyEntries = Object.entries(rawRepliesData || {});
-
+      if (currentRole !== 'admin') return;
+      const inboxEntries = Object.entries(rawRepliesData || {});
+      const replyEntries = Object.entries(rawOutboxData || {});
       document.getElementById('adm-count-inbox').innerText = inboxEntries.length;
       document.getElementById('adm-count-replies').innerText = replyEntries.length;
-
       const inboxList = document.getElementById('admin-liza-inbox-list');
-      if (inboxEntries.length === 0) {
-        inboxList.innerHTML = `<p style="color:#94A3B8; font-size:0.85rem;">Писем от Лизы пока нет.</p>`;
-      } else {
-        inboxList.innerHTML = inboxEntries.reverse().map(([key, m]) => `
-          <div style="background:#060810; border:1px solid #10B981; border-radius:12px; padding:12px; margin-bottom:8px; position:relative;">
-            <button onclick="adminDeleteLizaLetter('${key}')" style="position:absolute; top:8px; right:8px; background:none; border:none; color:#EF4444; font-size:1.1rem; cursor:pointer;" title="Удалить">🗑️</button>
-            <div style="font-size:0.74rem; color:#10B981; margin-bottom:4px;">${m.date}</div>
-            <div style="font-size:0.86rem; color:#F8FAFC; white-space:pre-line; overflow-wrap:anywhere; word-break:break-word; padding-right:24px;">${m.text}</div>
-          </div>
-        `).join('');
+      inboxList.innerHTML = inboxEntries.length ? inboxEntries.sort((a,b)=>b[1].timestamp-a[1].timestamp).map(([key,m]) => `
+        <div style="background:#060810;border:1px solid #10B981;border-radius:12px;padding:12px;margin-bottom:8px;position:relative;">
+          <button onclick="adminDeleteMessage('${key}')" style="position:absolute;top:8px;right:8px;background:none;border:none;color:#EF4444;font-size:1.1rem;cursor:pointer;">🗑️</button>
+          <div style="font-size:.74rem;color:#10B981;margin-bottom:4px;">${escapeHtml(m.date)}</div>
+          <div style="font-size:.86rem;color:#F8FAFC;white-space:pre-line;padding-right:24px;">${escapeHtml(m.text)}</div>
+        </div>`).join('') : '<p style="color:#94A3B8;font-size:.85rem;">Писем от Лизы пока нет.</p>';
+
+      const mine = document.getElementById('admin-my-replies-list');
+      mine.innerHTML = replyEntries.length ? replyEntries.sort((a,b)=>b[1].timestamp-a[1].timestamp).map(([key,r]) => `
+        <div style="background:#060810;border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:10px;margin-bottom:8px;position:relative;">
+          <button onclick="adminDeleteMessage('${key}')" style="position:absolute;top:6px;right:6px;background:none;border:none;color:#EF4444;cursor:pointer;">🗑️</button>
+          <div style="font-size:.72rem;color:#F59E0B;">${escapeHtml(r.date)}</div>
+          <div style="font-size:.84rem;color:#E2E8F0;white-space:pre-line;padding-right:20px;">${escapeHtml(r.text)}</div>
+        </div>`).join('') : '<p style="color:#94A3B8;font-size:.82rem;">Ответов пока нет.</p>';
+    }
+
+    async function postAdminReply() {
+      if (currentRole !== 'admin') return;
+      const text = document.getElementById('admin-reply-text').value.trim(); if (!text) return;
+      const { error } = await sb.from('messages').insert({ sender_id:currentUser.id, sender_role:'admin', recipient_role:'user', body:text });
+      if (error) return alert(error.message);
+      document.getElementById('admin-reply-text').value='';
+      showLizaToast('✨ Послание опубликовано');
+      await loadMessages();
+    }
+
+    async function adminDeleteMessage(id) {
+      if (currentRole !== 'admin' || !confirm('Удалить это письмо?')) return;
+      await sb.from('messages').delete().eq('id',id); await loadMessages();
+    }
+
+    async function adminResetCoupons() {
+      if (currentRole !== 'admin') return;
+      await sb.from('coupons').delete().neq('coupon_id','__never__');
+      liveCouponsData = {}; updateCouponsUI();
+      showLizaToast('⚡ Кулдауны купонов сброшены');
+    }
+
+    async function adminClearTestData() {
+      if (currentRole !== 'admin' || !confirm('Удалить ВСЕ письма?')) return;
+      await sb.from('messages').delete().gte('created_at','1970-01-01T00:00:00Z');
+      await loadMessages();
+    }
+
+    async function loadAdminDashboardExtras() {
+      if (currentRole !== 'admin') return;
+      const [{data:users},{data:scores},{count:reactCount},{count:poemCount}] = await Promise.all([
+        sb.from('profiles').select('id,display_name,role,online,last_seen').eq('role','user'),
+        sb.from('game_scores').select('user_id,high_score'),
+        sb.from('reactions').select('*',{count:'exact',head:true}),
+        sb.from('poems').select('*',{count:'exact',head:true})
+      ]);
+      const liza = (users||[]).find(x => (x.display_name||'').toLowerCase().includes('лиз')) || (users||[])[0];
+      const p = document.getElementById('adm-liza-presence');
+      if (p && liza) {
+        const recent = liza.last_seen && Date.now()-new Date(liza.last_seen).getTime()<90000;
+        p.innerHTML = `<span class="presence-dot ${recent && liza.online ? 'online':''}"></span>${recent && liza.online ? 'в Созвездии' : 'не в сети'}`;
+        const sc=(scores||[]).find(s=>s.user_id===liza.id); document.getElementById('adm-liza-score').textContent=sc?.high_score||0;
       }
-
-      const myRepliesList = document.getElementById('admin-my-replies-list');
-      if (replyEntries.length === 0) {
-        myRepliesList.innerHTML = `<p style="color:#94A3B8; font-size:0.82rem;">Ответов пока нет.</p>`;
-      } else {
-        myRepliesList.innerHTML = replyEntries.reverse().map(([key, r]) => `
-          <div style="background:#060810; border:1px solid rgba(212,175,55,0.3); border-radius:10px; padding:10px; margin-bottom:8px; position:relative;">
-            <button onclick="adminDeleteMyReply('${key}')" style="position:absolute; top:6px; right:6px; background:none; border:none; color:#EF4444; font-size:1rem; cursor:pointer;" title="Удалить">🗑️</button>
-            <div style="font-size:0.72rem; color:#F59E0B; margin-bottom:2px;">${r.date}</div>
-            <div style="font-size:0.84rem; color:#E2E8F0; white-space:pre-line; overflow-wrap:anywhere; word-break:break-word; padding-right:20px;">${r.text}</div>
-          </div>
-        `).join('');
-      }
+      document.getElementById('adm-reactions-count').textContent=reactCount||0;
+      document.getElementById('adm-poems-count').textContent=poemCount||0;
     }
 
-    function postAdminReply() {
-      const text = document.getElementById('admin-reply-text').value.trim();
-      if (!text) return;
-
-      const dateStr = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
-      db.ref('replies_from_constellation').push({
-        text: text,
-        date: dateStr,
-        timestamp: Date.now()
-      }).then(() => {
-        alert("Ответ успешно опубликован в Убежище ✨");
-        document.getElementById('admin-reply-text').value = '';
-      });
+    function subscribeRealtime() {
+      if (realtimeChannel) sb.removeChannel(realtimeChannel);
+      realtimeChannel = sb.channel('constellation-live')
+        .on('postgres_changes',{event:'*',schema:'public',table:'messages'},()=>loadMessages())
+        .on('postgres_changes',{event:'*',schema:'public',table:'poems'},()=>loadRemotePoems())
+        .on('postgres_changes',{event:'*',schema:'public',table:'game_scores'},()=>loadSharedHighScores())
+        .on('postgres_changes',{event:'*',schema:'public',table:'profiles'},()=>loadAdminDashboardExtras())
+        .subscribe();
     }
 
-    function adminDeleteLizaLetter(key) {
-      if (confirm("Удалить это письмо Лизы?")) {
-        db.ref(`letters_from_liza/${key}`).remove();
-      }
-    }
-
-    function adminDeleteMyReply(key) {
-      if (confirm("Удалить этот ответ Созвездия?")) {
-        db.ref(`replies_from_constellation/${key}`).remove();
-      }
-    }
-
-    function adminResetCoupons() {
-      db.ref('coupons_state').remove().then(() => {
-        alert("Кулдаун всех купонов успешно сброшен!");
-      });
-    }
-
-    function adminClearTestData() {
-      if (confirm("ВНИМАНИЕ: Это удалит ВСЕ входящие письма Лизы и ВСЕ твои ответы из базы. Очистить?")) {
-        db.ref('letters_from_liza').remove();
-        db.ref('replies_from_constellation').remove();
-        alert("Все тестовые письма успешно удалены!");
-      }
-    }
-
-    let adminClickCount = 0;
-    let adminClickTimer = null;
-    const MASTER_PANEL_CODE = '1228';
-
-    function handleAdminBadgeClick() {
-      adminClickCount++;
-      clearTimeout(adminClickTimer);
-      adminClickTimer = setTimeout(() => { adminClickCount = 0; }, 900);
-
-      if (adminClickCount === 3) {
-        adminClickCount = 0;
-        clearTimeout(adminClickTimer);
-        const entered = prompt('Панель Созвездия. Введите код доступа:');
-        if (entered === MASTER_PANEL_CODE) {
-          document.getElementById('admin-win-modal').classList.add('active');
-        } else if (entered !== null) {
-          showLizaToast('⛔ Доступ Созвездия отклонён.');
-        }
-      }
-    }
-
-    function confirmEnterAdmin() {
-      document.getElementById('admin-win-modal').classList.remove('active');
-      switchTab('tab-admin');
-    }
-
-    // 11. КУПОНЫ В FIREBASE
+    // 11. КУПОНЫ В SUPABASE
     const COOLDOWN_MS = 24 * 60 * 60 * 1000;
     let liveCouponsData = {};
 
-    function useCoupon(couponId) {
-      db.ref(`coupons_state/${couponId}`).set(Date.now());
-      const names = {
-        'coupon-1': 'Вечер любого кино без критики',
-        'coupon-2': 'Право на безоговорочную правоту',
-        'coupon-3': 'Персональный трек по заказу',
-        'coupon-4': 'Сказка на ночь / Голосовой каприз',
-        'coupon-5': 'Исполнение одного мини-желания'
-      };
-      showLizaToast(`🎟️ Купон активирован: «${names[couponId] || 'Желание'}»<br><span style="color:#94A3B8;">Созвездие получило сигнал ✦</span>`);
+    async function useCoupon(couponId) {
+      if (!currentUser || currentRole === 'admin') return;
+      const usedAt = new Date().toISOString();
+      const { error } = await sb.from('coupons').upsert({coupon_id:couponId, used_at:usedAt, used_by:currentUser.id});
+      if (error) return alert('Не удалось активировать купон: '+error.message);
+      liveCouponsData[couponId] = Date.now(); updateCouponsUI();
+      const names = {'coupon-1':'Вечер любого кино без критики','coupon-2':'Право на безоговорочную правоту','coupon-3':'Персональный трек по заказу','coupon-4':'Сказка на ночь / Голосовой каприз','coupon-5':'Исполнение одного мини-желания'};
+      showLizaToast(`🎟️ Купон активирован: «${names[couponId]||'Желание'}»<br><span style="color:#94A3B8;">Созвездие получило сигнал ✦</span>`);
     }
 
     function showLizaToast(message) {
-      const toast = document.getElementById('liza-toast');
-      if (!toast) return;
-      toast.innerHTML = message;
-      toast.classList.add('show');
-      clearTimeout(window.__lizaToastTimer);
-      window.__lizaToastTimer = setTimeout(() => toast.classList.remove('show'), 3600);
+      const toast=document.getElementById('liza-toast'); if(!toast)return;
+      toast.innerHTML=message; toast.classList.add('show'); clearTimeout(window.__lizaToastTimer);
+      window.__lizaToastTimer=setTimeout(()=>toast.classList.remove('show'),3600);
     }
 
-    db.ref('coupons_state').on('value', (snapshot) => {
-      liveCouponsData = snapshot.val() || {};
+    async function loadCouponsState() {
+      const {data}=await sb.from('coupons').select('*'); liveCouponsData={};
+      for(const row of data||[]) liveCouponsData[row.coupon_id]=new Date(row.used_at).getTime();
       updateCouponsUI();
-    });
+    }
 
     function updateCouponsUI() {
-      const now = Date.now();
-      const coupons = ['coupon-1', 'coupon-2', 'coupon-3', 'coupon-4', 'coupon-5'];
-
-      coupons.forEach(id => {
-        const card = document.getElementById(id);
-        if (!card) return;
-        const btn = card.querySelector('.coupon-btn');
-        const timer = document.getElementById(`timer-${id}`);
-        const usedTime = liveCouponsData[id];
-
-        if (usedTime && (now - usedTime < COOLDOWN_MS)) {
-          const remaining = COOLDOWN_MS - (now - usedTime);
-          const hours = Math.floor(remaining / (1000 * 60 * 60));
-          const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-
-          card.classList.add('used');
-          btn.classList.add('disabled');
-          btn.disabled = true;
-          btn.innerText = "Погашен";
-          timer.innerText = `⏳ Восстановится через: ${hours}ч ${minutes}м ${seconds}с`;
+      const now=Date.now();
+      for(const id of ['coupon-1','coupon-2','coupon-3','coupon-4','coupon-5']) {
+        const card=document.getElementById(id); if(!card)continue;
+        const btn=card.querySelector('.coupon-btn'); const timer=document.getElementById(`timer-${id}`); const usedTime=liveCouponsData[id];
+        if(usedTime && now-usedTime<COOLDOWN_MS) {
+          const remaining=COOLDOWN_MS-(now-usedTime); const hours=Math.floor(remaining/3600000); const minutes=Math.floor((remaining%3600000)/60000); const seconds=Math.floor((remaining%60000)/1000);
+          card.classList.add('used'); btn.classList.add('disabled'); btn.disabled=true; btn.innerText='Погашен'; timer.innerText=`⏳ Восстановится через: ${hours}ч ${minutes}м ${seconds}с`;
         } else {
-          card.classList.remove('used');
-          btn.classList.remove('disabled');
-          btn.disabled = false;
-          btn.innerText = "Погасить";
-          timer.innerText = "";
+          card.classList.remove('used'); btn.classList.remove('disabled'); btn.disabled=currentRole==='admin'; btn.innerText=currentRole==='admin'?'Доступен Лизе':'Погасить'; timer.innerText='';
         }
-      });
+      }
     }
-
-    setInterval(updateCouponsUI, 1000);
+    setInterval(updateCouponsUI,1000);
 
     // 12. 10 СТИХОТВОРЕНИЙ
-    const poemsDatabase = [
+    let poemsDatabase = [
       {
         id: "poem-1",
         title: "Созвездие в твоих глазах",
@@ -3155,11 +3720,52 @@
       }
     ];
 
+    const builtInPoemIds = new Set(poemsDatabase.map(p => p.id));
+    let remotePoemIds = new Set();
+
+    async function loadRemotePoems() {
+      if (!currentUser) return;
+      const { data, error } = await sb.from('poems').select('*').eq('published',true).order('created_at',{ascending:false});
+      if (error) { console.error(error); return; }
+      poemsDatabase = poemsDatabase.filter(p => builtInPoemIds.has(p.id));
+      remotePoemIds = new Set();
+      for (const p of data || []) {
+        const item={id:p.id,title:p.title,date:p.subtitle||formatDbDate(p.created_at),text:p.body,remote:true};
+        poemsDatabase.unshift(item); remotePoemIds.add(p.id);
+      }
+      document.getElementById('poem-count-label').textContent=`Сборник стихов (${poemsDatabase.length})`;
+      renderPoemsList(); renderAdminPoems();
+      const c=document.getElementById('adm-poems-count'); if(c)c.textContent=(data||[]).length;
+    }
+
+    async function adminPublishPoem() {
+      if (currentRole !== 'admin') return;
+      const title=document.getElementById('admin-poem-title').value.trim();
+      const subtitle=document.getElementById('admin-poem-subtitle').value.trim();
+      const body=document.getElementById('admin-poem-body').value.trim();
+      if(!title||!body) return alert('Нужны название и текст стиха.');
+      const {error}=await sb.from('poems').insert({title,subtitle,body,created_by:currentUser.id,published:true});
+      if(error) return alert('Не удалось добавить стих: '+error.message);
+      document.getElementById('admin-poem-title').value=''; document.getElementById('admin-poem-subtitle').value=''; document.getElementById('admin-poem-body').value='';
+      showLizaToast('📜 Новый стих появился в Свитке'); await loadRemotePoems();
+    }
+
+    function renderAdminPoems() {
+      const box=document.getElementById('admin-poems-list'); if(!box||currentRole!=='admin')return;
+      const list=poemsDatabase.filter(p=>p.remote);
+      box.innerHTML=list.length?list.map(p=>`<div class="admin-poem-item"><button class="delete-x" onclick="adminDeletePoem('${p.id}')">🗑️</button><b>${escapeHtml(p.title)}</b><div style="font-size:.72rem;color:#94A3B8;margin-top:3px;">${escapeHtml(p.date||'')}</div></div>`).join(''):'<div style="color:#94A3B8;font-size:.82rem;">Пока ничего не добавлено.</div>';
+    }
+
+    async function adminDeletePoem(id) {
+      if(currentRole!=='admin'||!confirm('Удалить этот стих?'))return;
+      const {error}=await sb.from('poems').delete().eq('id',id); if(error)return alert(error.message); await loadRemotePoems();
+    }
+
     let showOnlyFavorites = false;
     let currentlyOpenPoemId = null;
 
     function getFavoritePoems() {
-      try { return JSON.parse(localStorage.getItem('fav_poems')) || []; } catch (e) { return []; }
+      try { return JSON.parse(uGet('fav_poems')) || []; } catch (e) { return []; }
     }
 
     function toggleFavoritePoem(e, id) {
@@ -3167,9 +3773,40 @@
       let favs = getFavoritePoems();
       if (favs.includes(id)) favs = favs.filter(item => item !== id);
       else favs.push(id);
-      localStorage.setItem('fav_poems', JSON.stringify(favs));
+      uSet('fav_poems', JSON.stringify(favs));
+      syncPoemFavorite(id, favs.includes(id));
       renderPoemsList();
       if (currentlyOpenPoemId === id) updateScrollHeart(id);
+    }
+
+    async function loadRemoteFavorites() {
+      if(!currentUser)return;
+      const {data}=await sb.from('favorites').select('poem_id').eq('user_id',currentUser.id);
+      const remote=(data||[]).map(x=>x.poem_id);
+      let local=getFavoritePoems();
+      local=[...new Set([...local.filter(id=>!remotePoemIds.has(id)),...remote])];
+      uSet('fav_poems',JSON.stringify(local));
+      renderPoemsList();
+      if(currentlyOpenPoemId) updateScrollHeart(currentlyOpenPoemId);
+    }
+
+    async function reactCurrentPoem(emoji) {
+      if(!currentlyOpenPoemId)return;
+      await addReaction('poem',currentlyOpenPoemId,emoji);
+      showLizaToast(`${emoji} Реакция отправлена Созвездию`);
+    }
+
+    async function syncPoemFavorite(id, active) {
+      if(!currentUser || !remotePoemIds.has(id)) return;
+      if(active) await sb.from('favorites').upsert({user_id:currentUser.id,poem_id:id});
+      else await sb.from('favorites').delete().eq('user_id',currentUser.id).eq('poem_id',id);
+      if(active) await addReaction('poem',id,'❤️');
+    }
+
+    async function addReaction(targetType,targetId,emoji) {
+      if(!currentUser)return;
+      await sb.from('reactions').upsert({user_id:currentUser.id,target_type:targetType,target_id:String(targetId),emoji},{onConflict:'user_id,target_type,target_id,emoji'});
+      loadAdminDashboardExtras();
     }
 
     function toggleFavFilter() {
@@ -3246,15 +3883,6 @@
 
     // 13. БАЗА ШИФРОВ, 30 ВОПРОСОВ И КНИГА ТАЙН
     const secretCodes = {
-      "290826": {
-        title: "Особенная глава / С Днём Рождения 🎂",
-        hint: "Шесть цифр сегодняшнего особенного дня (29.08.26)",
-        header: "С днём рождения тебя ✦",
-        body: `Любимая кисонька,\nСегодня у этой истории особенная глава.\nС днём рождения тебя. ✦\n\nЯ хочу пожелать тебе не просто счастья — я хочу, чтобы у тебя было как можно больше моментов, к которым захочется возвращаться. Чтобы среди обычных дней всегда находилось место чему-то неожиданно хорошему.\n\nПусть рядом будут люди, с которыми можно быть собой. Пусть будет больше поводов смеяться, больше вечеров, которые не хочется заканчивать, и больше маленьких чудес, которые случаются совершенно случайно.\n\nЯ хочу, чтобы ты никогда не забывала, насколько ты замечательная. Не из-за каких-то достижений, не потому что кто-то это сказал, а просто потому, что ты — это ты.\n\nИ пусть впереди будет ещё огромное количество страниц. Некоторые из них мы уже написали, некоторые только предстоит открыть, а какие-то пока даже не знают, что однажды станут частью этой истории.\n\nСозвездие продолжает наблюдение.\nИ сегодня оно особенно ярко.\n\nС днём рождения, Лиза. ❤️`,
-        signature: "Твоё Созвездие",
-        hasSecret: true,
-        secretBody: `Ты нашла то, что Созвездие спрятало специально для тебя.\n\nЗдесь уже не будет красивых формулировок и загадочных наблюдений.\nПросто несколько слов, которые мне хотелось оставить именно здесь.\n\nЯ очень дорожу тобой.\nМне нравится знать, что где-то есть человек, которому я могу написать, с которым могу разделить свои мысли, радость, глупости и самые обычные моменты дня.\n\nИ если эта страница однажды станет для тебя воспоминанием, я хочу, чтобы вместе с ней осталось главное:\nты очень важна для меня.\n\nПоэтому сегодня я хочу пожелать тебе не просто счастливого дня рождения.\nЯ хочу пожелать тебе счастливой истории.\n\nИ очень надеюсь, что в ней ещё будет много глав, которые мы прочитаем вместе. ❤️`
-      },
       "290805": {
         title: "Главное послание Созвездия",
         hint: "Твой особенный день и координаты сердца",
@@ -3286,10 +3914,16 @@
         title: "Шутливый архив Созвездия ✨",
         hint: "Код для тех случаев, когда хочется открыть что-нибудь неожиданное",
         header: "Секретный архив Созвездия",
-        body: `Поздравляю, ты нашла секретный архив! ✨\n\nЗдесь нет сложных правил — только маленькое напоминание: ты умеешь находить даже те тайники, которые я очень старательно прячу.\n\nПусть этот код останется твоей маленькой победой над Созвездием. А теперь улыбнись — архив успешно взломан.`,
+        body: `Поздравляю, ты нашла секретный архив! ✨
+
+Здесь нет сложных правил — только маленькое напоминание: ты умеешь находить даже те тайники, которые я очень старательно прячу.
+
+Пусть этот код останется твоей маленькой победой над Созвездием. А теперь улыбнись — архив успешно взломан.`,
         signature: "Твоё Созвездие",
         hasSecret: true,
-        secretBody: `✦ Секретное дополнение ✦\n\nЕсли ты добралась сюда, значит, любопытство снова победило. Заслуженная награда — ещё одна порция тепла, заботы и хорошего настроения. ❤️`
+        secretBody: `✦ Секретное дополнение ✦
+
+Если ты добралась сюда, значит, любопытство снова победило. Заслуженная награда — ещё одна порция тепла, заботы и хорошего настроения. ❤️`
       }
     };
 
@@ -3422,14 +4056,14 @@
     let currentActiveCodeData = null;
 
     function getUnlockedVaultCodes() {
-      try { return JSON.parse(localStorage.getItem('unlocked_vault_codes')) || []; } catch (e) { return []; }
+      try { return JSON.parse(uGet('unlocked_vault_codes')) || []; } catch (e) { return []; }
     }
 
     function saveUnlockedVaultCode(code) {
       let list = getUnlockedVaultCodes();
       if (!list.includes(code)) {
         list.push(code);
-        localStorage.setItem('unlocked_vault_codes', JSON.stringify(list));
+        uSet('unlocked_vault_codes', JSON.stringify(list));
       }
     }
 
@@ -3653,33 +4287,28 @@
 
       if (hour >= 5 && hour < 12) {
         document.body.classList.add('time-morning');
-        title.innerText = "Доброе утро, кисонька ✨";
+        title.innerText = currentRole === 'admin' ? 'Доброе утро, Созвездие ✦' : 'Доброе утро, Лиза ✨';
       } else if (hour >= 12 && hour < 18) {
         document.body.classList.add('time-day');
-        title.innerText = "Прекрасного дня, Лиза 🌟";
+        title.innerText = currentRole === 'admin' ? 'Командный центр активен ✦' : 'Прекрасного дня, Лиза 🌟';
       } else if (hour >= 18 && hour < 23) {
         document.body.classList.add('time-evening');
-        title.innerText = "Уютного вечера, любимая 🌙";
+        title.innerText = currentRole === 'admin' ? 'Добрый вечер, Созвездие ✦' : 'Уютного вечера, Лиза 🌙';
       } else {
         document.body.classList.add('time-night');
-        title.innerText = "Доброй и спокойной ночи ✨";
+        title.innerText = currentRole === 'admin' ? 'Ночной режим Созвездия ✦' : 'Доброй и спокойной ночи ✨';
       }
     }
 
     applyTimeOfDay();
     updateTodayDate();
     updateDedovskDate();
-    updateLastVisitText();
-    const homeScore = document.getElementById('hub-score-meta');
-    if (homeScore) homeScore.innerText = `рекорд: ${gameHighScore}`;
-
-    updateGameHighScoreUI();
-    saveLastVisit();
+    // Пользовательские данные загружаются после успешного входа.
 
     function updateHomeActivity() {
       const visitNote = document.getElementById('home-visit-note');
       if (!visitNote) return;
-      const previous = parseInt(localStorage.getItem('liza_last_visit') || '0', 10);
+      const previous = parseInt(uGet('last_visit') || '0', 10);
       if (!previous) {
         visitNote.innerText = 'Первый визит — добро пожаловать в своё пространство ✦';
         return;
@@ -3687,14 +4316,17 @@
       visitNote.innerText = 'Созвездие рядом, а всё твоё маленькое пространство ждёт тебя ✦';
     }
 
-    updateHomeActivity();
-    updateGameHighScoreUI();
+    // updateHomeActivity и рекорды запускаются после авторизации.
     setInterval(updateLastVisitText, 60000);
     setInterval(() => {
       applyTimeOfDay();
       updateTodayDate();
       updateDedovskDate();
     }, 60000);
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.warn));
+    }
   </script>
 </body>
 </html>

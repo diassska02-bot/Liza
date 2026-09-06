@@ -2003,12 +2003,49 @@
     .shared-score-line { margin-top:8px; color:#CBD5E1; font-size:.78rem; }
     @media (max-width:520px) { .admin-grid { grid-template-columns:1fr; } }
 
+  
+    /* ===== v3: песни, уведомления, купоны, редактор ===== */
+    .boot-screen{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:#060810;color:#F59E0B;font-family:'Cinzel',serif;letter-spacing:.08em;transition:opacity .2s ease}
+    .boot-screen.hidden{display:none}
+    .nav-badge{display:none;margin-left:auto;background:#F59E0B;color:#060810;border-radius:999px;padding:2px 7px;font-size:.62rem;font-weight:800}
+    .nav-badge.show{display:inline-block}
+    .poem-admin-actions{display:none;gap:8px;margin-top:18px;border-top:1px solid rgba(16,185,129,.22);padding-top:14px}
+    body.role-admin .poem-admin-actions{display:flex}
+    .mini-action{border:1px solid rgba(16,185,129,.45);background:rgba(16,185,129,.10);color:#A7F3D0;border-radius:10px;padding:8px 11px;cursor:pointer;font-size:.76rem}
+    .mini-action.danger{border-color:rgba(239,68,68,.45);background:rgba(239,68,68,.10);color:#FCA5A5}
+    .song-grid{display:grid;gap:12px;margin-top:14px}
+    .song-card{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid rgba(212,175,55,.22);background:rgba(15,23,42,.72);border-radius:15px;cursor:pointer;text-align:left}
+    .song-cover-thumb{width:62px;height:62px;flex:0 0 62px;border-radius:12px;object-fit:cover;background:linear-gradient(135deg,#111827,#312e81);display:flex;align-items:center;justify-content:center;font-size:1.5rem;overflow:hidden}
+    .song-cover-thumb img{width:100%;height:100%;object-fit:cover}
+    .song-main-title{font-family:'Playfair Display',serif;font-size:1rem;color:#F8FAFC}
+    .song-subtitle{font-size:.72rem;color:#94A3B8;margin-top:4px}
+    .player-card{text-align:center}
+    .player-cover{width:min(290px,78vw);aspect-ratio:1;border-radius:22px;object-fit:cover;margin:8px auto 16px;background:linear-gradient(135deg,#111827,#312e81);box-shadow:0 18px 50px rgba(0,0,0,.35)}
+    .player-cover.placeholder{display:flex;align-items:center;justify-content:center;font-size:4rem}
+    .player-title{font-family:'Playfair Display',serif;font-size:1.35rem;color:#F8FAFC;margin-bottom:5px}
+    .player-caption{font-size:.78rem;color:#94A3B8;margin-bottom:18px}
+    .player-controls{display:flex;justify-content:center;align-items:center;gap:11px;margin:12px 0}
+    .player-circle{width:46px;height:46px;border-radius:50%;border:1px solid rgba(245,158,11,.45);background:rgba(245,158,11,.10);color:#FDE68A;font-size:1.15rem;cursor:pointer}
+    .player-circle.primary{width:58px;height:58px;background:linear-gradient(135deg,#F59E0B,#D97706);color:#060810;border:none;font-size:1.35rem}
+    .player-circle.active{box-shadow:0 0 0 2px rgba(245,158,11,.22) inset;background:rgba(245,158,11,.24)}
+    .player-progress{width:100%;accent-color:#F59E0B}
+    .player-time{display:flex;justify-content:space-between;font-size:.7rem;color:#94A3B8;margin-top:3px}
+    .volume-row{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.75rem;color:#94A3B8}.volume-row input{flex:1;accent-color:#F59E0B}
+    .coupon-owner-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0 14px}.coupon-counter{font-size:.76rem;color:#F59E0B}
+    .coupon-card.used-once{opacity:.54;filter:saturate(.7)}
+    .coupon-card.used-once .coupon-btn{pointer-events:none;background:#334155;color:#94A3B8}
+    .coupon-stamp{font-size:.68rem;color:#10B981;margin-top:6px}
+    .upload-note{font-size:.72rem;color:#94A3B8;margin:-4px 0 10px}
+    .admin-song-row{display:grid;gap:8px}
+    @media(max-width:640px){.poem-admin-actions{flex-wrap:wrap}.player-cover{width:min(250px,75vw)}}
+
   </style>
 </head>
 <body class="time-night auth-pending">
+  <div class="boot-screen" id="boot-screen">✦ СОЗВЕЗДИЕ ЗАГРУЖАЕТСЯ</div>
 
 
-  <div class="auth-screen" id="auth-screen">
+  <div class="auth-screen hidden" id="auth-screen">
     <div class="auth-card">
       <div class="auth-mark">✦</div>
       <h1>Вход в Созвездие</h1>
@@ -2083,7 +2120,10 @@
       <span>⭐</span> Ловец звёзд
     </button>
     <button class="nav-btn" onclick="switchTab('tab-poems')">
-      <span>📜</span> Свиток стихов
+      <span>📜</span> Свиток стихов <span class="nav-badge" id="poems-nav-new">NEW</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-songs')">
+      <span>🎵</span> Архив песен <span class="nav-badge" id="songs-nav-new">NEW</span>
     </button>
     <button class="nav-btn admin-only" id="admin-nav-btn" onclick="switchTab('tab-admin')">
       <span>⚙️</span> Панель Созвездия
@@ -2271,54 +2311,11 @@
     <div class="tab-content" id="tab-coupons">
       <div class="card">
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
-        <div class="protocol-tag">Интерактивные призы</div>
-        <h1>Купоны и желания</h1>
-        <p class="subtitle">Синхронизировано: после использования купон перезаряжается 24 часа:</p>
-
-        <div class="coupon-card" id="coupon-1">
-          <div class="coupon-info">
-            <h3>Вечер любого кино без критики</h3>
-            <p>Выбор любого фильма или мультфильма для совместного сеанса 🎬</p>
-            <div class="coupon-timer" id="timer-coupon-1"></div>
-          </div>
-          <button class="coupon-btn" onclick="useCoupon('coupon-1')">Погасить</button>
-        </div>
-
-        <div class="coupon-card" id="coupon-2">
-          <div class="coupon-info">
-            <h3>Право на безоговорочную правоту</h3>
-            <p>Победа в любом споре или обсуждении в один клик 👑</p>
-            <div class="coupon-timer" id="timer-coupon-2"></div>
-          </div>
-          <button class="coupon-btn" onclick="useCoupon('coupon-2')">Погасить</button>
-        </div>
-
-        <div class="coupon-card" id="coupon-3">
-          <div class="coupon-info">
-            <h3>Персональный трек по заказу</h3>
-            <p>Создание трека или стиха на любую твою тему 🎵</p>
-            <div class="coupon-timer" id="timer-coupon-3"></div>
-          </div>
-          <button class="coupon-btn" onclick="useCoupon('coupon-3')">Погасить</button>
-        </div>
-
-        <div class="coupon-card" id="coupon-4">
-          <div class="coupon-info">
-            <h3>Сказка на ночь / Голосовой каприз</h3>
-            <p>Чтение книги перед сном или войс по твоему сценарию 📖</p>
-            <div class="coupon-timer" id="timer-coupon-4"></div>
-          </div>
-          <button class="coupon-btn" onclick="useCoupon('coupon-4')">Погасить</button>
-        </div>
-
-        <div class="coupon-card" id="coupon-5">
-          <div class="coupon-info">
-            <h3>Исполнение одного мини-желания</h3>
-            <p>Любой выполнимый каприз на расстоянии по требованию 🪄</p>
-            <div class="coupon-timer" id="timer-coupon-5"></div>
-          </div>
-          <button class="coupon-btn" onclick="useCoupon('coupon-5')">Погасить</button>
-        </div>
+        <div class="protocol-tag">8 личных желаний</div>
+        <h1>Купоны желаний</h1>
+        <p class="subtitle" id="coupon-intro">У каждого свой набор из восьми купонов. Использованный купон погашается один раз.</p>
+        <div class="coupon-owner-head"><b id="coupon-owner-title">Мои купоны</b><span class="coupon-counter" id="coupon-counter">8 из 8</span></div>
+        <div id="coupons-container"></div>
       </div>
     </div>
 
@@ -2431,10 +2428,45 @@
         <div class="scroll-view-title" id="scroll-title"></div>
         <div class="scroll-view-body" id="scroll-body"></div>
         <div class="scroll-view-footer" id="scroll-date"></div>
+        <div class="poem-admin-actions" id="poem-admin-actions">
+          <button class="mini-action" onclick="adminEditCurrentPoem()">✏️ Редактировать</button>
+          <button class="mini-action danger" onclick="adminDeleteCurrentPoem()">🗑️ Удалить</button>
+        </div>
       </div>
     </div>
 
-    <!-- 9. ПАНЕЛЬ СОЗВЕЗДИЯ (АДМИНКА) -->
+    <!-- 9. АРХИВ ПЕСЕН -->
+    <div class="tab-content" id="tab-songs">
+      <div class="card" id="songs-list-card">
+        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
+        <div class="protocol-tag">Музыкальный архив</div>
+        <h1>Архив песен</h1>
+        <p class="subtitle">Песни Созвездия — с обложками и отдельным плеером.</p>
+        <div class="song-grid" id="songs-list-container"></div>
+      </div>
+      <div class="card player-card" id="song-player-card" style="display:none;">
+        <button class="back-btn" onclick="closeSongPlayer()">← К архиву песен</button>
+        <div id="player-cover-wrap"></div>
+        <div class="player-title" id="player-title">—</div>
+        <div class="player-caption" id="player-caption"></div>
+        <audio id="song-audio" preload="metadata"></audio>
+        <input class="player-progress" id="player-progress" type="range" min="0" max="1000" value="0">
+        <div class="player-time"><span id="player-current">0:00</span><span id="player-duration">0:00</span></div>
+        <div class="player-controls">
+          <button class="player-circle" onclick="seekSong(-10)" title="Назад 10 секунд">↶</button>
+          <button class="player-circle primary" id="player-play" onclick="toggleSongPlayback()">▶</button>
+          <button class="player-circle" onclick="seekSong(10)" title="Вперёд 10 секунд">↷</button>
+          <button class="player-circle" id="player-loop" onclick="toggleSongLoop()" title="Зациклить">↻</button>
+        </div>
+        <div class="volume-row"><span>🔈</span><input id="player-volume" type="range" min="0" max="1" step="0.05" value="1"><span>🔊</span></div>
+        <div class="poem-admin-actions" id="song-admin-actions">
+          <button class="mini-action" onclick="adminEditCurrentSong()">✏️ Редактировать</button>
+          <button class="mini-action danger" onclick="adminDeleteCurrentSong()">🗑️ Удалить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. ПАНЕЛЬ СОЗВЕЗДИЯ (АДМИНКА) -->
     <div class="tab-content" id="tab-admin">
       <div class="card">
         <button class="back-btn" onclick="switchTab('tab-home')">← Выйти из режима Созвездия</button>
@@ -2446,6 +2478,7 @@
           <button class="admin-tab-btn" id="atab-btn-inbox" onclick="switchAdminTab('inbox')">💌 Письма Лизы</button>
           <button class="admin-tab-btn" id="atab-btn-reply" onclick="switchAdminTab('reply')">✍️ Ответить</button>
           <button class="admin-tab-btn" id="atab-btn-poems" onclick="switchAdminTab('poems')">📜 Стихи</button>
+          <button class="admin-tab-btn" id="atab-btn-songs" onclick="switchAdminTab('songs')">🎵 Песни</button>
         </div>
 
         <!-- 1. Дашборд -->
@@ -2459,7 +2492,7 @@
             <div class="admin-stat"><small>📜 Стихов из панели</small><b id="adm-poems-count">0</b></div>
           </div>
 
-          <button class="admin-action-btn" style="border-color:#F59E0B; color:#FDE68A; background:rgba(245,158,11,0.15);" onclick="adminResetCoupons()">⚡ Сбросить кулдаун всех купонов</button>
+          <button class="admin-action-btn" style="border-color:#F59E0B; color:#FDE68A; background:rgba(245,158,11,0.15);" onclick="adminResetCoupons()">🎟️ Восстановить все 16 купонов</button>
           <button class="admin-action-btn" onclick="adminClearTestData()">🧹 Очистить все тестовые письма</button>
         </div>
 
@@ -2482,9 +2515,19 @@
           <input class="admin-form-input" id="admin-poem-title" placeholder="Название стиха">
           <input class="admin-form-input" id="admin-poem-subtitle" placeholder="Подпись / повод, например: Перед сном">
           <textarea class="admin-form-input admin-form-textarea" id="admin-poem-body" placeholder="Текст стиха..."></textarea>
-          <button class="submit-btn" style="background:linear-gradient(135deg,#10B981,#059669); margin-bottom:16px;" onclick="adminPublishPoem()">Опубликовать стих 📜</button>
-          <div class="protocol-tag" style="font-size:.7rem;color:#10B981;">Добавленные через панель:</div>
-          <div id="admin-poems-list"></div>
+          <button class="submit-btn" style="background:linear-gradient(135deg,#10B981,#059669); margin-bottom:8px;" onclick="adminPublishPoem()">Опубликовать стих 📜</button>
+          <div class="upload-note">Редактирование и удаление — прямо внутри открытого стиха в «Свитке».</div>
+        </div>
+
+        <div id="admin-sec-songs" style="display:none; text-align:left;">
+          <input class="admin-form-input" id="admin-song-title" placeholder="Название песни">
+          <input class="admin-form-input" id="admin-song-subtitle" placeholder="Подпись / повод">
+          <label class="upload-note">Аудиофайл (MP3/M4A/OGG и т.п.)</label>
+          <input class="admin-form-input" id="admin-song-audio" type="file" accept="audio/*">
+          <label class="upload-note">Обложка — необязательно</label>
+          <input class="admin-form-input" id="admin-song-cover" type="file" accept="image/*">
+          <button class="submit-btn" style="background:linear-gradient(135deg,#10B981,#059669); margin-bottom:8px;" onclick="adminPublishSong()">Добавить песню 🎵</button>
+          <div class="upload-note">После публикации у Лизы появится NEW. Управление песней — прямо в её плеере.</div>
         </div>
       </div>
     </div>
@@ -2539,6 +2582,7 @@
     async function logoutFromConstellation() {
       await markPresence(false);
       if (realtimeChannel) { await sb.removeChannel(realtimeChannel); realtimeChannel = null; }
+      if (realtimeV3) { await sb.removeChannel(realtimeV3); realtimeV3 = null; }
       clearInterval(presenceTimer);
       await sb.auth.signOut();
     }
@@ -2554,37 +2598,41 @@
       const kicker=document.querySelector('.home-kicker'); if(kicker) kicker.textContent=currentRole==='admin'?'Командный режим Созвездия':'Личное пространство Лизы';
     }
 
+    let appBootedUserId = null;
     async function bootAuthenticatedApp(session) {
+      if (appBootedUserId === session.user.id && currentUser?.id === session.user.id) {
+        document.getElementById('boot-screen')?.classList.add('hidden');
+        document.getElementById('auth-screen')?.classList.add('hidden');
+        return;
+      }
       currentUser = session.user;
       await loadOwnProfile(currentUser);
       document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('boot-screen')?.classList.add('hidden');
       document.body.classList.remove('auth-pending');
       setAuthError('');
 
       if (!appHistoryInitialized) initAppHistory();
-      else setActiveTabUI('tab-home');
+      else restoreSavedPlace();
 
       gameHighScore = parseInt(uGet('star_high_score') || '0', 10);
-      await loadSharedHighScores();
-      await loadMessages();
-      await loadCouponsState();
-      await loadRemotePoems();
+      await Promise.all([loadSharedHighScores(), loadMessages(), loadCouponsState(), loadRemotePoems(), loadSongs(), loadNotifications(), loadAdminDashboardExtras()]);
       await loadRemoteFavorites();
-      await loadAdminDashboardExtras();
       await markPresence(true);
       subscribeRealtime();
+      subscribeRealtimeV3();
       clearInterval(presenceTimer);
       presenceTimer = setInterval(() => markPresence(true), 45000);
-      updateGameHighScoreUI();
-      updateLastVisitText();
-      updateHomeActivity();
-      saveLastVisit();
+      updateGameHighScoreUI(); updateLastVisitText(); updateHomeActivity(); saveLastVisit();
+      appBootedUserId = currentUser.id;
+      restoreSavedPlace();
     }
 
     async function showAuthScreen() {
       currentUser = null; currentProfile = null; currentRole = 'user';
       document.body.classList.remove('role-admin');
       document.body.classList.add('auth-pending');
+      document.getElementById('boot-screen')?.classList.add('hidden');
       document.getElementById('auth-screen').classList.remove('hidden');
     }
 
@@ -2890,7 +2938,8 @@
         document.getElementById('main-letter-card'),
         document.getElementById('letter-scroll-reader'),
         document.getElementById('crystal-scroll-view'),
-        document.getElementById('poem-scroll-view')
+        document.getElementById('poem-scroll-view'),
+        document.getElementById('song-player-card')
       ];
 
       scrollCards.forEach(card => {
@@ -2956,78 +3005,53 @@
     // а не сразу уводит Лизу со страницы.
     let isHistoryNavigation = false;
 
-    function setActiveTabUI(tabId) {
+    function setActiveTabUI(tabId, opts={}) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-
-      const target = document.getElementById(tabId);
-      if (target) target.classList.add('active');
-
-      const matchingNav = Array.from(document.querySelectorAll('.nav-btn')).find(
-        b => (b.getAttribute('onclick') || '').includes(tabId)
-      );
+      const target = document.getElementById(tabId); if (target) target.classList.add('active');
+      const matchingNav = Array.from(document.querySelectorAll('.nav-btn')).find(b => (b.getAttribute('onclick') || '').includes(tabId));
       if (matchingNav) matchingNav.classList.add('active');
+      const sidebar = document.getElementById('sidebar'); if (sidebar?.classList.contains('active')) toggleSidebar();
+      if (tabId === 'tab-cipher' && !opts.restoreNested) { closeCipherLetterView(); switchCipherSubtab('input'); }
+      if (tabId === 'tab-poems') { renderPoemsList(); if(!opts.restoreNested) closePoemScroll(false); markNotificationsRead('poem'); }
+      if (tabId === 'tab-songs') { renderSongsList(); if(!opts.restoreNested) closeSongPlayer(false); markNotificationsRead('song'); }
+      if (tabId === 'tab-crystal' && !opts.restoreNested) closeCrystalScroll();
+      if (tabId === 'tab-letters') { if(!opts.restoreNested) closeLetterReader(); markIncomingMessagesRead(); }
+    }
 
-      const sidebar = document.getElementById('sidebar');
-      if (sidebar && sidebar.classList.contains('active')) toggleSidebar();
+    function savePlace(tabId, nested=null) {
+      if (!currentUser || tabId === 'tab-admin') return;
+      uSet(LAST_TAB_KEY, tabId);
+      uSet('place_state', JSON.stringify({tab:tabId,nested:nested||null}));
+    }
 
-      if (tabId === 'tab-cipher') {
-        closeCipherLetterView();
-        switchCipherSubtab('input');
-      }
-      if (tabId === 'tab-poems') {
-        closePoemScroll();
-        renderPoemsList();
-      }
-      if (tabId === 'tab-crystal') closeCrystalScroll();
-      if (tabId === 'tab-letters') {
-        closeLetterReader();
-        const badge = document.getElementById('hub-unread-badge');
-        if (badge) badge.style.display = 'none';
-        uSet('last_read_reply_time', Date.now());
-        markIncomingMessagesRead();
-      }
+    function restoreSavedPlace() {
+      let state=null; try{state=JSON.parse(uGet('place_state')||'null')}catch(e){}
+      let tab=state?.tab || uGet(LAST_TAB_KEY) || 'tab-home';
+      if(tab==='tab-admin' || !document.getElementById(tab)) tab='tab-home';
+      setActiveTabUI(tab,{restoreNested:true});
+      if(state?.nested?.type==='poem' && tab==='tab-poems') setTimeout(()=>openPoemScroll(state.nested.id,false),0);
+      if(state?.nested?.type==='song' && tab==='tab-songs') setTimeout(()=>openSongPlayer(state.nested.id,false),0);
+      history.replaceState({lizaTab:tab},'',window.location.href);
     }
 
     function switchTab(tabId, fromHistory = false) {
       if (!document.getElementById(tabId)) return;
-      if (tabId === 'tab-admin' && currentRole !== 'admin') {
-        showLizaToast('⛔ Этот раздел доступен только Созвездию.');
-        tabId = 'tab-home';
-      }
-
+      if (tabId === 'tab-admin' && currentRole !== 'admin') { showLizaToast('⛔ Этот раздел доступен только Созвездию.'); tabId='tab-home'; }
       if (!fromHistory && !isHistoryNavigation) {
-        const currentTab = history.state && history.state.lizaTab;
-        if (currentTab !== tabId) {
-          history.pushState({ lizaTab: tabId }, '', window.location.href);
-        }
+        const currentTab=history.state?.lizaTab; if(currentTab!==tabId) history.pushState({lizaTab:tabId},'',window.location.href);
       }
-
-      if (tabId !== 'tab-admin') {
-        uSet(LAST_TAB_KEY, tabId);
-      }
-
+      if(tabId!=='tab-admin') savePlace(tabId,null);
       setActiveTabUI(tabId);
     }
 
     function initAppHistory() {
-      if (appHistoryInitialized) return;
-      appHistoryInitialized = true;
-      const savedTabRaw = uGet(LAST_TAB_KEY) || 'tab-home';
-      const savedTab = savedTabRaw === 'tab-admin' ? 'tab-home' : savedTabRaw;
-
-      // Текущий вход в сайт становится точкой навигации приложения.
-      history.replaceState({ lizaTab: savedTab }, '', window.location.href);
-      setActiveTabUI(savedTab);
-
-      window.addEventListener('popstate', (event) => {
-        const tabId = event.state && event.state.lizaTab;
-        const targetTab = document.getElementById(tabId) ? tabId : 'tab-home';
-
-        isHistoryNavigation = true;
-        switchTab(targetTab, true);
-        isHistoryNavigation = false;
-      });
+      if (appHistoryInitialized) return; appHistoryInitialized=true;
+      let state=null; try{state=JSON.parse(uGet('place_state')||'null')}catch(e){}
+      let savedTab=state?.tab || uGet(LAST_TAB_KEY) || 'tab-home'; if(savedTab==='tab-admin'||!document.getElementById(savedTab))savedTab='tab-home';
+      history.replaceState({lizaTab:savedTab},'',window.location.href);
+      setActiveTabUI(savedTab,{restoreNested:true});
+      window.addEventListener('popstate',(event)=>{const tabId=event.state?.lizaTab;const targetTab=document.getElementById(tabId)?tabId:'tab-home';isHistoryNavigation=true;switchTab(targetTab,true);isHistoryNavigation=false;});
     }
 
     // initAppHistory() запускается после успешной авторизации.
@@ -3528,11 +3552,10 @@
     // 10. АДМИНКА — роль проверяется также политиками RLS в Supabase
     function switchAdminTab(tab) {
       if (currentRole !== 'admin') return switchTab('tab-home');
-      for (const name of ['dash','inbox','reply','poems']) {
+      for (const name of ['dash','inbox','reply','poems','songs']) {
         document.getElementById(`atab-btn-${name}`)?.classList.toggle('active', tab === name);
         const sec = document.getElementById(`admin-sec-${name}`); if (sec) sec.style.display = tab === name ? 'block' : 'none';
       }
-      if (tab === 'poems') renderAdminPoems();
     }
 
     function updateAdminUI() {
@@ -3573,12 +3596,6 @@
       await sb.from('messages').delete().eq('id',id); await loadMessages();
     }
 
-    async function adminResetCoupons() {
-      if (currentRole !== 'admin') return;
-      await sb.from('coupons').delete().neq('coupon_id','__never__');
-      liveCouponsData = {}; updateCouponsUI();
-      showLizaToast('⚡ Кулдауны купонов сброшены');
-    }
 
     async function adminClearTestData() {
       if (currentRole !== 'admin' || !confirm('Удалить ВСЕ письма?')) return;
@@ -3615,151 +3632,54 @@
         .subscribe();
     }
 
-    // 11. КУПОНЫ В SUPABASE
-    const COOLDOWN_MS = 24 * 60 * 60 * 1000;
-    let liveCouponsData = {};
-
-    async function useCoupon(couponId) {
-      if (!currentUser || currentRole === 'admin') return;
-      const usedAt = new Date().toISOString();
-      const { error } = await sb.from('coupons').upsert({coupon_id:couponId, used_at:usedAt, used_by:currentUser.id});
-      if (error) return alert('Не удалось активировать купон: '+error.message);
-      liveCouponsData[couponId] = Date.now(); updateCouponsUI();
-      const names = {'coupon-1':'Вечер любого кино без критики','coupon-2':'Право на безоговорочную правоту','coupon-3':'Персональный трек по заказу','coupon-4':'Сказка на ночь / Голосовой каприз','coupon-5':'Исполнение одного мини-желания'};
-      showLizaToast(`🎟️ Купон активирован: «${names[couponId]||'Желание'}»<br><span style="color:#94A3B8;">Созвездие получило сигнал ✦</span>`);
-    }
-
-    function showLizaToast(message) {
-      const toast=document.getElementById('liza-toast'); if(!toast)return;
-      toast.innerHTML=message; toast.classList.add('show'); clearTimeout(window.__lizaToastTimer);
-      window.__lizaToastTimer=setTimeout(()=>toast.classList.remove('show'),3600);
-    }
-
-    async function loadCouponsState() {
-      const {data}=await sb.from('coupons').select('*'); liveCouponsData={};
-      for(const row of data||[]) liveCouponsData[row.coupon_id]=new Date(row.used_at).getTime();
+    // 11. КУПОНЫ — по 8 каждому, одноразовое погашение
+    let couponCatalog=[]; let couponRedemptions={};
+    async function loadCouponsState(){
+      if(!currentUser)return;
+      const [{data:catalog,error:e1},{data:reds,error:e2}]=await Promise.all([
+        sb.from('coupon_catalog').select('*').eq('holder_role',currentRole).order('sort_order'),
+        sb.from('coupon_redemptions').select('*')
+      ]);
+      if(e1||e2){console.error(e1||e2);return}
+      couponCatalog=catalog||[]; couponRedemptions={}; for(const r of reds||[])couponRedemptions[r.coupon_id]=r;
       updateCouponsUI();
     }
-
-    function updateCouponsUI() {
-      const now=Date.now();
-      for(const id of ['coupon-1','coupon-2','coupon-3','coupon-4','coupon-5']) {
-        const card=document.getElementById(id); if(!card)continue;
-        const btn=card.querySelector('.coupon-btn'); const timer=document.getElementById(`timer-${id}`); const usedTime=liveCouponsData[id];
-        if(usedTime && now-usedTime<COOLDOWN_MS) {
-          const remaining=COOLDOWN_MS-(now-usedTime); const hours=Math.floor(remaining/3600000); const minutes=Math.floor((remaining%3600000)/60000); const seconds=Math.floor((remaining%60000)/1000);
-          card.classList.add('used'); btn.classList.add('disabled'); btn.disabled=true; btn.innerText='Погашен'; timer.innerText=`⏳ Восстановится через: ${hours}ч ${minutes}м ${seconds}с`;
-        } else {
-          card.classList.remove('used'); btn.classList.remove('disabled'); btn.disabled=currentRole==='admin'; btn.innerText=currentRole==='admin'?'Доступен Лизе':'Погасить'; timer.innerText='';
-        }
-      }
+    function updateCouponsUI(){
+      const box=document.getElementById('coupons-container'); if(!box)return;
+      const available=couponCatalog.filter(c=>!couponRedemptions[c.id]).length;
+      const owner=document.getElementById('coupon-owner-title'); if(owner)owner.textContent=currentRole==='admin'?'8 желаний Диаса':'8 желаний Лизы';
+      const counter=document.getElementById('coupon-counter'); if(counter)counter.textContent=`Осталось ${available} из ${couponCatalog.length||8}`;
+      box.innerHTML=couponCatalog.map(c=>{const used=couponRedemptions[c.id];return `<div class="coupon-card ${used?'used-once':''}"><div class="coupon-info"><h3>${escapeHtml(c.icon||'🎟️')} ${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p>${used?`<div class="coupon-stamp">✓ ИСПОЛЬЗОВАНО · ${escapeHtml(formatDbDate(used.used_at))}</div>`:''}</div><button class="coupon-btn" ${used?'disabled':''} onclick="useCoupon('${c.id}')">${used?'Погашен':'Использовать'}</button></div>`}).join('');
     }
-    setInterval(updateCouponsUI,1000);
-
-    // 12. 10 СТИХОТВОРЕНИЙ
-    let poemsDatabase = [
-      {
-        id: "poem-1",
-        title: "Созвездие в твоих глазах",
-        date: "Для любимой кисоньки",
-        text: `Сквозь километры тихих звёзд\nТвой свет струится в полумраке.\nС тобой исчез былой мороз,\nОставив искренние знаки.\n\nЗдесь нет тревоги и потерь,\nУкутает покой просторы.\nТы только в силы свои верь,\nМы вместе сдвинем эти горы.`
-      },
-      {
-        id: "poem-2",
-        title: "Шёпот тишины",
-        date: "О самом главном",
-        text: `Когда за окнами темно,\nИ город медленно стихает,\nМоё тепло через окно\nК твоим ладоням прилетает.\n\nТы улыбнись среди забот,\nВедь в этом мире бесконечном\nТебя однажды встретил тот,\nКто будет рядом в чувстве вечном.`
-      },
-      {
-        id: "poem-3",
-        title: "Стойкость сияния",
-        date: "В минуты усталости",
-        text: `Пусть день порою давит грузом,\nИ мир вокруг шумит упрямо,\nТы остаёшься главным чудом,\nИдёшь уверенно и прямо.\n\nВыдохни грусть, забудь сомненья,\nСозвездие хранит твой дом.\nЯ подарю тебе спасенье\nИ усыплю спокойным сном.`
-      },
-      {
-        id: "poem-4",
-        title: "Мой самый нежный свет",
-        date: "В моём сердце",
-        text: `Ты — та, с кем дышится легко,\nЧей голос лечит все печали.\nПусть мы с тобою далеко,\nНо души вместе зазвучали.\n\nВ тебе одной сошёлся свет,\nКаким весь космос озарён.\nПрекрасней чуда в мире нет,\nИ я навек в тебя влюблён.`
-      },
-      {
-        id: "poem-5",
-        title: "Убежище для сердца",
-        date: "Твоя защита",
-        text: `Когда захочешь отдохнуть\nОт суеты и взглядов лишних,\nКо мне ты мысленно прильни,\nПослушай, как дыханье слышно.\n\nЯ укрою тебя от всех ветров,\nЗащитой стану и опорой.\nВ кольце невидимых оков\nЗабудутся любые споры.`
-      },
-      {
-        id: "poem-6",
-        title: "Магия твоей улыбки",
-        date: "Самой прекрасной",
-        text: `Твоя улыбка — словно вспышка,\nЧто зажигает всё вокруг.\nМоя любимая малышка,\nМой самый близкий, верный друг.\n\nСмотрю — и сердце замирает,\nКак будто время замерло.\nТвой взгляд ладонями сжимает\nМоё безбрежное тепло.`
-      },
-      {
-        id: "poem-7",
-        title: "Кисонька",
-        date: "Моему вредному чуду",
-        text: `Ты можешь вредной быть порою,\nСмеяться звонко и шутить,\nНо я пленён одной тобою\nИ не смогу перелюбить.\n\nМоя мурлыка и загадка,\nМой самый сладкий огонёк.\nС тобой на сердце тихо, сладко,\nИ мир вокруг не одинок.`
-      },
-      {
-        id: "poem-8",
-        title: "В тишине ночной",
-        date: "Перед сном",
-        text: `Закрой глаза, забудь заботы,\nПускай уходит суета.\nЗакончились дела, работы,\nВокруг святая чистота.\n\nЯ рядом, чувствуй мои плечи,\nКак глажу волосы твои.\nПусть этот бархатный наш вечер\nНаполнится огнём любви.`
-      },
-      {
-        id: "poem-9",
-        title: "Единственная",
-        date: "Настоящее чувство",
-        text: `Среди миллиардов разных лиц\nМне не нужна была другая.\nЛюбовь не ведает границ,\nКогда со мной ты, дорогая.\n\nТы совершенна, как мечта,\nЧиста, нежна и так прекрасна.\nТвоя святая доброта\nГорит звездою ясно-ясно.`
-      },
-      {
-        id: "poem-10",
-        title: "Навсегда",
-        date: "Обещание звёзд",
-        text: `Пусть гаснут звёзды чередой,\nМеняются миры и тени,\nЯ буду следовать с тобой\nСквозь череду любых мгновений.\n\nТы — всё, о чём душа просила,\nМой берег, нежность и покой.\nМоя любовь — святая сила,\nЧто будет вечно над тобой.`
-      }
-    ];
-
-    const builtInPoemIds = new Set(poemsDatabase.map(p => p.id));
-    let remotePoemIds = new Set();
-
-    async function loadRemotePoems() {
-      if (!currentUser) return;
-      const { data, error } = await sb.from('poems').select('*').eq('published',true).order('created_at',{ascending:false});
-      if (error) { console.error(error); return; }
-      poemsDatabase = poemsDatabase.filter(p => builtInPoemIds.has(p.id));
-      remotePoemIds = new Set();
-      for (const p of data || []) {
-        const item={id:p.id,title:p.title,date:p.subtitle||formatDbDate(p.created_at),text:p.body,remote:true};
-        poemsDatabase.unshift(item); remotePoemIds.add(p.id);
-      }
-      document.getElementById('poem-count-label').textContent=`Сборник стихов (${poemsDatabase.length})`;
-      renderPoemsList(); renderAdminPoems();
-      const c=document.getElementById('adm-poems-count'); if(c)c.textContent=(data||[]).length;
+    async function useCoupon(couponId){
+      if(!currentUser||couponRedemptions[couponId])return;
+      const c=couponCatalog.find(x=>x.id===couponId); if(!c)return;
+      if(!confirm(`Использовать купон «${c.title}»?`))return;
+      const {error}=await sb.from('coupon_redemptions').insert({coupon_id:couponId,used_by:currentUser.id});
+      if(error)return alert('Не удалось погасить купон: '+error.message);
+      await createNotification(currentRole==='admin'?'user':'admin','coupon',couponId,`${currentProfile?.display_name||'Пользователь'} использовал(а) купон «${c.title}»`);
+      showLizaToast('🎟️ Купон погашен'); await loadCouponsState();
     }
+    async function adminResetCoupons(){if(currentRole!=='admin'||!confirm('Восстановить все 16 купонов?'))return;const {error}=await sb.from('coupon_redemptions').delete().neq('coupon_id','00000000-0000-0000-0000-000000000000');if(error)return alert(error.message);showLizaToast('🎟️ Все купоны снова доступны');await loadCouponsState();}
 
-    async function adminPublishPoem() {
-      if (currentRole !== 'admin') return;
-      const title=document.getElementById('admin-poem-title').value.trim();
-      const subtitle=document.getElementById('admin-poem-subtitle').value.trim();
-      const body=document.getElementById('admin-poem-body').value.trim();
-      if(!title||!body) return alert('Нужны название и текст стиха.');
-      const {error}=await sb.from('poems').insert({title,subtitle,body,created_by:currentUser.id,published:true});
-      if(error) return alert('Не удалось добавить стих: '+error.message);
-      document.getElementById('admin-poem-title').value=''; document.getElementById('admin-poem-subtitle').value=''; document.getElementById('admin-poem-body').value='';
-      showLizaToast('📜 Новый стих появился в Свитке'); await loadRemotePoems();
+    // 12. СТИХИ — все стихи теперь живут в Supabase и редактируются из Свитка
+    let poemsDatabase=[]; let remotePoemIds=new Set();
+    async function loadRemotePoems(){
+      if(!currentUser)return; const {data,error}=await sb.from('poems').select('*').eq('published',true).order('created_at',{ascending:false}); if(error){console.error(error);return}
+      poemsDatabase=(data||[]).map(p=>({id:p.id,title:p.title,date:p.subtitle||formatDbDate(p.created_at),text:p.body,remote:true,created_at:p.created_at})); remotePoemIds=new Set(poemsDatabase.map(p=>p.id));
+      document.getElementById('poem-count-label').textContent=`Сборник стихов (${poemsDatabase.length})`; renderPoemsList(); const c=document.getElementById('adm-poems-count');if(c)c.textContent=poemsDatabase.length;
     }
-
-    function renderAdminPoems() {
-      const box=document.getElementById('admin-poems-list'); if(!box||currentRole!=='admin')return;
-      const list=poemsDatabase.filter(p=>p.remote);
-      box.innerHTML=list.length?list.map(p=>`<div class="admin-poem-item"><button class="delete-x" onclick="adminDeletePoem('${p.id}')">🗑️</button><b>${escapeHtml(p.title)}</b><div style="font-size:.72rem;color:#94A3B8;margin-top:3px;">${escapeHtml(p.date||'')}</div></div>`).join(''):'<div style="color:#94A3B8;font-size:.82rem;">Пока ничего не добавлено.</div>';
+    async function adminPublishPoem(){
+      if(currentRole!=='admin')return; const title=document.getElementById('admin-poem-title').value.trim(),subtitle=document.getElementById('admin-poem-subtitle').value.trim(),body=document.getElementById('admin-poem-body').value.trim(); if(!title||!body)return alert('Нужны название и текст стиха.');
+      const {data,error}=await sb.from('poems').insert({title,subtitle,body,created_by:currentUser.id,published:true}).select().single(); if(error)return alert('Не удалось добавить стих: '+error.message);
+      document.getElementById('admin-poem-title').value='';document.getElementById('admin-poem-subtitle').value='';document.getElementById('admin-poem-body').value=''; await createNotification('user','poem',data.id,`Новый стих: «${title}»`);showLizaToast('📜 Новый стих появился в Свитке');await loadRemotePoems();
     }
-
-    async function adminDeletePoem(id) {
-      if(currentRole!=='admin'||!confirm('Удалить этот стих?'))return;
-      const {error}=await sb.from('poems').delete().eq('id',id); if(error)return alert(error.message); await loadRemotePoems();
+    async function adminEditCurrentPoem(){
+      if(currentRole!=='admin'||!currentlyOpenPoemId)return;const p=poemsDatabase.find(x=>x.id===currentlyOpenPoemId);if(!p)return;
+      const title=prompt('Название стиха:',p.title);if(title===null||!title.trim())return;const subtitle=prompt('Подпись / повод:',p.date||'');if(subtitle===null)return;const body=prompt('Текст стиха:',p.text);if(body===null||!body.trim())return;
+      const {error}=await sb.from('poems').update({title:title.trim(),subtitle:subtitle.trim(),body:body.trim()}).eq('id',p.id);if(error)return alert(error.message);await loadRemotePoems();openPoemScroll(p.id,false);showLizaToast('✏️ Стих обновлён');
     }
+    async function adminDeleteCurrentPoem(){if(currentRole!=='admin'||!currentlyOpenPoemId||!confirm('Удалить этот стих?'))return;const id=currentlyOpenPoemId;const {error}=await sb.from('poems').delete().eq('id',id);if(error)return alert(error.message);closePoemScroll();await loadRemotePoems();showLizaToast('🗑️ Стих удалён');}
 
     let showOnlyFavorites = false;
     let currentlyOpenPoemId = null;
@@ -3845,7 +3765,7 @@
       }).join('');
     }
 
-    function openPoemScroll(id) {
+    function openPoemScroll(id, saveState=true) {
       const poem = poemsDatabase.find(p => p.id === id);
       if (!poem) return;
       currentlyOpenPoemId = id;
@@ -3861,6 +3781,7 @@
 
       listCard.style.display = 'none';
       scrollView.style.display = 'block';
+      if(saveState) savePlace('tab-poems',{type:'poem',id});
     }
 
     function updateScrollHeart(id) {
@@ -3873,13 +3794,42 @@
       if (currentlyOpenPoemId) toggleFavoritePoem(null, currentlyOpenPoemId);
     }
 
-    function closePoemScroll() {
+    function closePoemScroll(saveState=true) {
       const listCard = document.getElementById('poems-list-card');
       const scrollView = document.getElementById('poem-scroll-view');
       scrollView.style.display = 'none';
       listCard.style.display = 'block';
       currentlyOpenPoemId = null;
+      if(saveState && document.getElementById('tab-poems')?.classList.contains('active')) savePlace('tab-poems',null);
     }
+
+    let realtimeV3=null;
+    function subscribeRealtimeV3(){if(!currentUser)return;if(realtimeV3)sb.removeChannel(realtimeV3);realtimeV3=sb.channel('constellation-v3').on('postgres_changes',{event:'*',schema:'public',table:'notifications'},()=>loadNotifications()).on('postgres_changes',{event:'*',schema:'public',table:'songs'},()=>loadSongs()).on('postgres_changes',{event:'*',schema:'public',table:'coupon_redemptions'},()=>loadCouponsState()).subscribe();}
+
+    // ===== УВЕДОМЛЕНИЯ =====
+    let notifications=[];
+    async function createNotification(recipientRole,type,targetId,text){if(!currentUser)return;await sb.from('notifications').insert({recipient_role:recipientRole,type,target_id:String(targetId),text,created_by:currentUser.id});}
+    async function loadNotifications(){if(!currentUser)return;const {data}=await sb.from('notifications').select('*').eq('recipient_role',currentRole).order('created_at',{ascending:false});notifications=data||[];renderNotificationBadges();}
+    function renderNotificationBadges(){const unread=notifications.filter(n=>!n.is_read);const p=unread.some(n=>n.type==='poem'),m=unread.some(n=>n.type==='song');document.getElementById('poems-nav-new')?.classList.toggle('show',p);document.getElementById('songs-nav-new')?.classList.toggle('show',m);const h=document.getElementById('hub-song-new');if(h)h.style.display=m?'block':'none';}
+    async function markNotificationsRead(type){if(!currentUser)return;const ids=notifications.filter(n=>!n.is_read&&n.type===type).map(n=>n.id);if(!ids.length)return;await sb.from('notifications').update({is_read:true}).in('id',ids);notifications.forEach(n=>{if(ids.includes(n.id))n.is_read=true});renderNotificationBadges();}
+
+    // ===== ПЕСНИ / ПЛЕЕР =====
+    let songsDatabase=[];let currentlyOpenSongId=null;let songSignedCache={};
+    async function signedMedia(path){if(!path)return null;if(songSignedCache[path]&&songSignedCache[path].exp>Date.now())return songSignedCache[path].url;const {data,error}=await sb.storage.from('constellation-media').createSignedUrl(path,86400);if(error){console.error(error);return null}songSignedCache[path]={url:data.signedUrl,exp:Date.now()+23*3600000};return data.signedUrl;}
+    async function loadSongs(){if(!currentUser)return;const {data,error}=await sb.from('songs').select('*').eq('published',true).order('created_at',{ascending:false});if(error){console.error(error);return}songsDatabase=data||[];await renderSongsList();}
+    async function renderSongsList(){const box=document.getElementById('songs-list-container');if(!box)return;if(!songsDatabase.length){box.innerHTML='<div style="color:#94A3B8;font-size:.85rem;padding:14px;">Песен пока нет 🎵</div>';return}const rows=[];for(const x of songsDatabase){const cover=x.cover_path?await signedMedia(x.cover_path):null;rows.push(`<div class="song-card" onclick="openSongPlayer('${x.id}')"><div class="song-cover-thumb">${cover?`<img src="${cover}" alt="">`:'🎵'}</div><div><div class="song-main-title">${escapeHtml(x.title)}</div><div class="song-subtitle">${escapeHtml(x.subtitle||'Песня Созвездия')}</div></div></div>`)}box.innerHTML=rows.join('');}
+    async function openSongPlayer(id,saveState=true){const song=songsDatabase.find(x=>x.id===id);if(!song)return;currentlyOpenSongId=id;const audio=document.getElementById('song-audio');const audioUrl=await signedMedia(song.audio_path);if(!audioUrl)return alert('Не удалось открыть аудиофайл.');const cover=await signedMedia(song.cover_path);document.getElementById('player-title').textContent=song.title;document.getElementById('player-caption').textContent=song.subtitle||'';document.getElementById('player-cover-wrap').innerHTML=cover?`<img class="player-cover" src="${cover}" alt="Обложка">`:'<div class="player-cover placeholder">🎵</div>';if(audio.dataset.songId!==id){audio.pause();audio.src=audioUrl;audio.dataset.songId=id;audio.load();}document.getElementById('songs-list-card').style.display='none';document.getElementById('song-player-card').style.display='block';setupMediaSession(song,cover);if(saveState)savePlace('tab-songs',{type:'song',id});}
+    function closeSongPlayer(saveState=true){document.getElementById('song-player-card').style.display='none';document.getElementById('songs-list-card').style.display='block';currentlyOpenSongId=null;if(saveState&&document.getElementById('tab-songs')?.classList.contains('active'))savePlace('tab-songs',null);}
+    function fmtTime(v){if(!Number.isFinite(v))return'0:00';const m=Math.floor(v/60),s=Math.floor(v%60);return`${m}:${String(s).padStart(2,'0')}`}
+    function toggleSongPlayback(){const a=document.getElementById('song-audio');if(a.paused)a.play();else a.pause();}
+    function seekSong(delta){const a=document.getElementById('song-audio');a.currentTime=Math.max(0,Math.min(a.duration||0,a.currentTime+delta));}
+    function toggleSongLoop(){const a=document.getElementById('song-audio');a.loop=!a.loop;document.getElementById('player-loop').classList.toggle('active',a.loop);}
+    function setupMediaSession(song,cover){if(!('mediaSession'in navigator))return;navigator.mediaSession.metadata=new MediaMetadata({title:song.title,artist:'Созвездие',album:song.subtitle||'Архив песен',artwork:cover?[{src:cover}]:[]});try{navigator.mediaSession.setActionHandler('play',()=>document.getElementById('song-audio').play());navigator.mediaSession.setActionHandler('pause',()=>document.getElementById('song-audio').pause());navigator.mediaSession.setActionHandler('seekbackward',()=>seekSong(-10));navigator.mediaSession.setActionHandler('seekforward',()=>seekSong(10));}catch(e){}}
+    const playerAudio=document.getElementById('song-audio');playerAudio.addEventListener('play',()=>document.getElementById('player-play').textContent='⏸');playerAudio.addEventListener('pause',()=>document.getElementById('player-play').textContent='▶');playerAudio.addEventListener('timeupdate',()=>{const p=document.getElementById('player-progress');if(playerAudio.duration)p.value=Math.round(playerAudio.currentTime/playerAudio.duration*1000);document.getElementById('player-current').textContent=fmtTime(playerAudio.currentTime);document.getElementById('player-duration').textContent=fmtTime(playerAudio.duration)});document.getElementById('player-progress').addEventListener('input',e=>{if(playerAudio.duration)playerAudio.currentTime=playerAudio.duration*(+e.target.value/1000)});document.getElementById('player-volume').addEventListener('input',e=>playerAudio.volume=+e.target.value);
+    async function uploadMediaFile(file,folder){if(!file)return null;const safe=(file.name||'file').replace(/[^a-zA-Z0-9._-]/g,'_');const path=`${folder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safe}`;const {error}=await sb.storage.from('constellation-media').upload(path,file,{upsert:false});if(error)throw error;return path;}
+    async function adminPublishSong(){if(currentRole!=='admin')return;const title=document.getElementById('admin-song-title').value.trim(),subtitle=document.getElementById('admin-song-subtitle').value.trim(),audio=document.getElementById('admin-song-audio').files[0],cover=document.getElementById('admin-song-cover').files[0];if(!title||!audio)return alert('Нужны название и аудиофайл.');try{const audio_path=await uploadMediaFile(audio,'audio'),cover_path=cover?await uploadMediaFile(cover,'covers'):null;const {data,error}=await sb.from('songs').insert({title,subtitle,audio_path,cover_path,created_by:currentUser.id,published:true}).select().single();if(error)throw error;await createNotification('user','song',data.id,`Новая песня: «${title}»`);document.getElementById('admin-song-title').value='';document.getElementById('admin-song-subtitle').value='';document.getElementById('admin-song-audio').value='';document.getElementById('admin-song-cover').value='';showLizaToast('🎵 Песня добавлена');await loadSongs();}catch(e){alert('Не удалось добавить песню: '+e.message)}}
+    async function adminEditCurrentSong(){if(currentRole!=='admin'||!currentlyOpenSongId)return;const song=songsDatabase.find(x=>x.id===currentlyOpenSongId);const title=prompt('Название песни:',song.title);if(title===null||!title.trim())return;const subtitle=prompt('Подпись / повод:',song.subtitle||'');if(subtitle===null)return;const {error}=await sb.from('songs').update({title:title.trim(),subtitle:subtitle.trim()}).eq('id',song.id);if(error)return alert(error.message);await loadSongs();openSongPlayer(song.id,false);showLizaToast('✏️ Песня обновлена');}
+    async function adminDeleteCurrentSong(){if(currentRole!=='admin'||!currentlyOpenSongId||!confirm('Удалить песню?'))return;const song=songsDatabase.find(x=>x.id===currentlyOpenSongId);if(song?.audio_path)await sb.storage.from('constellation-media').remove([song.audio_path]);if(song?.cover_path)await sb.storage.from('constellation-media').remove([song.cover_path]);const {error}=await sb.from('songs').delete().eq('id',currentlyOpenSongId);if(error)return alert(error.message);closeSongPlayer();await loadSongs();showLizaToast('🗑️ Песня удалена');}
 
     // 13. БАЗА ШИФРОВ, 30 ВОПРОСОВ И КНИГА ТАЙН
     const secretCodes = {

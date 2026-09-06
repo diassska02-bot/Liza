@@ -2283,7 +2283,295 @@
     body.role-admin .admin-only { display:flex !important; }
     .admin-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin:10px 0 14px; }
 
-  </style>
+  
+
+    /* ===== MOBILE POLISH v6: нормальная компоновка без перекрытий ===== */
+    @media (max-width: 640px) {
+      html, body { overflow-x: hidden; }
+
+      /* На телефоне верхняя панель участвует в потоке страницы, поэтому ничего не перекрывает */
+      .top-nav {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        width: calc(100% - 20px) !important;
+        max-width: none !important;
+        margin: 10px auto 0 !important;
+        gap: 9px !important;
+      }
+      .nav-row-main {
+        display: grid !important;
+        grid-template-columns: auto minmax(0, 1fr) !important;
+        grid-template-areas:
+          "menu status"
+          "account account" !important;
+        gap: 8px !important;
+        align-items: stretch !important;
+      }
+      .menu-toggle-btn {
+        grid-area: menu;
+        min-height: 42px;
+        padding: 8px 12px !important;
+        border-radius: 13px !important;
+        justify-content: center;
+      }
+      .status-badge {
+        grid-area: status;
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0;
+        min-height: 42px;
+        justify-content: center;
+        padding: 8px 10px !important;
+        border-radius: 13px !important;
+      }
+      .status-badge span {
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .account-strip {
+        grid-area: account;
+        width: 100%;
+        min-height: 40px;
+        margin: 0 !important;
+        padding: 7px 10px !important;
+        border-radius: 13px !important;
+        flex-wrap: nowrap !important;
+        gap: 5px !important;
+        font-size: .68rem !important;
+      }
+      .account-strip > span { white-space: nowrap; }
+      .account-logout {
+        margin-left: auto !important;
+        flex: 0 0 auto;
+        padding: 5px 7px !important;
+        border-radius: 8px;
+      }
+
+      /* Две погоды остаются рядом, но становятся компактными */
+      .dual-weather-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 7px !important;
+        margin: 0 !important;
+      }
+      .dual-weather-grid .dedovsk-bar {
+        min-width: 0 !important;
+        min-height: 62px !important;
+        padding: 8px 9px !important;
+        border-radius: 15px !important;
+        gap: 6px;
+      }
+      .weather-place { min-width: 0; gap: 5px !important; }
+      .weather-pin { font-size: .76rem; }
+      .weather-place-name { font-size: .72rem !important; }
+      .weather-date-mini { font-size: .56rem !important; }
+      .weather-live { gap: 5px !important; min-width: 0; }
+      .weather-icon { font-size: 1rem !important; flex: 0 0 auto; }
+      .weather-live-text { min-width: 0; text-align: right; }
+      .weather-live-text b { font-size: .72rem !important; }
+      .dual-weather-grid .weather-live-text span {
+        display: block;
+        max-width: 68px !important;
+        font-size: .52rem !important;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      /* Контент начинается ПОСЛЕ шапки, а не под ней */
+      .container {
+        width: 100% !important;
+        max-width: none !important;
+        padding: 12px 10px 34px !important;
+      }
+      .card {
+        border-radius: 22px !important;
+        padding: 23px 14px 20px !important;
+      }
+
+      /* Главная Диаса */
+      body.role-admin #tab-home .home-card {
+        padding: 24px 14px 20px !important;
+        border-radius: 24px !important;
+      }
+      body.role-admin #tab-home .home-kicker {
+        font-size: .61rem !important;
+        letter-spacing: .15em !important;
+        margin-bottom: 7px !important;
+      }
+      body.role-admin #tab-home #greeting-title {
+        font-size: clamp(1.65rem, 8vw, 2.05rem) !important;
+        line-height: 1.08 !important;
+      }
+      body.role-admin #tab-home .home-subtitle {
+        font-size: .74rem !important;
+        line-height: 1.5 !important;
+        margin: 9px auto 18px !important;
+      }
+      body.role-admin #tab-home .today-panel {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        margin-bottom: 20px !important;
+      }
+      body.role-admin #tab-home .today-stat {
+        min-width: 0;
+        min-height: 72px !important;
+        padding: 11px 12px !important;
+        border-radius: 15px !important;
+      }
+      body.role-admin #tab-home .today-stat-label { font-size: .58rem !important; }
+      body.role-admin #tab-home .today-stat-value {
+        font-size: .78rem !important;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+      }
+      body.role-admin #tab-home .home-section-title {
+        margin: 0 0 10px !important;
+        font-size: .62rem !important;
+      }
+
+      /* 2×3 вместо шести гигантских карточек столбиком */
+      .admin-command-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+      }
+      .admin-command-card {
+        min-width: 0;
+        min-height: 96px !important;
+        padding: 11px 10px !important;
+        border-radius: 16px !important;
+        grid-template-columns: 34px minmax(0,1fr) !important;
+        gap: 8px !important;
+      }
+      .admin-command-icon {
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 11px !important;
+        font-size: 1.15rem !important;
+      }
+      .admin-command-copy { gap: 3px !important; }
+      .admin-command-copy b {
+        font-size: .73rem !important;
+        white-space: normal !important;
+        line-height: 1.2 !important;
+      }
+      .admin-command-copy small {
+        font-size: .56rem !important;
+        line-height: 1.3 !important;
+        color: #718096 !important;
+      }
+      .admin-command-arrow { display: none !important; }
+
+      body.role-admin #tab-home .home-activity-card {
+        padding: 13px !important;
+        border-radius: 16px !important;
+      }
+      body.role-admin #tab-home .activity-heading { margin-bottom: 9px !important; }
+      body.role-admin #tab-home .activity-heading > span { width: 30px !important; height: 30px !important; }
+      .activity-heading strong { font-size: .78rem; }
+      .activity-heading small { font-size: .61rem; }
+      body.role-admin #tab-home .activity-row {
+        padding: 9px !important;
+        font-size: .67rem !important;
+      }
+
+      /* Панель: вкладки не сжимаются до нечитаемых квадратиков */
+      #tab-admin > .card { padding-left: 13px !important; padding-right: 13px !important; }
+      #tab-admin h1 { font-size: 1.45rem !important; }
+      .admin-tab-bar {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        gap: 7px !important;
+        margin: 12px -3px 14px !important;
+        padding: 2px 3px 6px !important;
+        scroll-snap-type: x proximity;
+      }
+      .admin-tab-bar::-webkit-scrollbar { display:none; }
+      .admin-tab-btn {
+        flex: 0 0 auto !important;
+        min-width: 108px !important;
+        min-height: 42px;
+        padding: 9px 10px !important;
+        border-radius: 11px !important;
+        font-size: .68rem !important;
+        scroll-snap-align: start;
+        white-space: nowrap;
+      }
+      .admin-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+        gap: 8px !important;
+      }
+      .admin-stat {
+        min-width: 0;
+        min-height: 78px;
+        padding: 11px !important;
+        border-radius: 13px !important;
+      }
+      .admin-stat small { font-size: .61rem !important; line-height: 1.3; }
+      .admin-stat b { font-size: .86rem !important; overflow-wrap:anywhere; }
+      .admin-action-btn { min-height: 46px; border-radius: 12px !important; }
+
+      /* Шифры: действия внизу карточки и не ломают ширину */
+      .cipher-admin-item {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 12px !important;
+        border-radius: 13px !important;
+      }
+      .cipher-admin-actions {
+        width: 100%;
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 6px !important;
+      }
+      .cipher-small-btn, .cipher-delete-btn {
+        width: 100%;
+        min-width: 0;
+        padding: 8px 5px !important;
+        font-size: .62rem !important;
+      }
+
+      /* Формы/плеер/модалки */
+      .admin-form-input, .letter-input-box { font-size: 16px !important; }
+      .player-cover { width: min(220px, 68vw) !important; }
+      .player-controls { gap: 8px !important; }
+      .player-circle { width: 42px !important; height: 42px !important; }
+      .player-circle.primary { width: 54px !important; height: 54px !important; }
+      .site-modal-card { width: calc(100% - 24px) !important; max-height: 86vh; overflow-y:auto; border-radius:18px !important; }
+
+      /* Мини-плеер не перекрывает низ экрана */
+      body.player-docked { padding-bottom: 82px !important; }
+      .global-mini-player {
+        width: calc(100% - 14px) !important;
+        bottom: 7px !important;
+        border-radius: 15px !important;
+        padding: 8px 9px 6px !important;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .top-nav { width: calc(100% - 14px) !important; }
+      .container { padding-left: 7px !important; padding-right: 7px !important; }
+      .menu-toggle-btn { padding-left: 10px !important; padding-right: 10px !important; }
+      .status-badge { font-size: .69rem !important; }
+      .account-strip { font-size: .63rem !important; }
+      .dual-weather-grid .dedovsk-bar { padding: 7px !important; }
+      .weather-place-name { font-size: .67rem !important; }
+      .weather-live-text b { font-size: .67rem !important; }
+      .admin-command-card { min-height: 92px !important; }
+      .admin-command-copy small { display:none; }
+    }
+
+</style>
 </head>
 <body class="time-night auth-pending">
   <div class="boot-screen" id="boot-screen">✦ СОЗВЕЗДИЕ ЗАГРУЖАЕТСЯ</div>

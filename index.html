@@ -2010,6 +2010,10 @@
     .nav-badge{display:none;margin-left:auto;background:#F59E0B;color:#060810;border-radius:999px;padding:2px 7px;font-size:.62rem;font-weight:800}
     .nav-badge.show{display:inline-block}
     .poem-admin-actions{display:none;gap:8px;margin-top:18px;border-top:1px solid rgba(16,185,129,.22);padding-top:14px}
+    .poem-inline-editor{display:none;margin-top:18px;padding-top:16px;border-top:1px solid rgba(16,185,129,.22)}
+    .poem-inline-editor.active{display:block}
+    .poem-edit-textarea{min-height:320px;line-height:1.7;resize:vertical;white-space:pre-wrap}
+    .poem-edit-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     body.role-admin .poem-admin-actions{display:flex}
     .mini-action{border:1px solid rgba(16,185,129,.45);background:rgba(16,185,129,.10);color:#A7F3D0;border-radius:10px;padding:8px 11px;cursor:pointer;font-size:.76rem}
     .mini-action.danger{border-color:rgba(239,68,68,.45);background:rgba(239,68,68,.10);color:#FCA5A5}
@@ -3007,8 +3011,17 @@
         <div class="scroll-view-title" id="scroll-title"></div>
         <div class="scroll-view-body" id="scroll-body"></div>
         <div class="scroll-view-footer" id="scroll-date"></div>
+        <div class="poem-inline-editor" id="poem-inline-editor">
+          <input class="admin-form-input" id="edit-poem-title" placeholder="Название стиха">
+          <input class="admin-form-input" id="edit-poem-subtitle" placeholder="Подпись / повод">
+          <textarea class="admin-form-input admin-form-textarea poem-edit-textarea" id="edit-poem-body" placeholder="Текст стиха..."></textarea>
+          <div class="poem-edit-actions">
+            <button class="mini-action" onclick="adminSaveCurrentPoem()">💾 Сохранить</button>
+            <button class="mini-action" onclick="adminCancelPoemEdit()">Отмена</button>
+          </div>
+        </div>
         <div class="poem-admin-actions" id="poem-admin-actions">
-          <button class="mini-action" onclick="adminEditCurrentPoem()">✏️ Редактировать</button>
+          <button class="mini-action" onclick="adminEditCurrentPoem()">✏️ Редактировать текст</button>
           <button class="mini-action danger" onclick="adminDeleteCurrentPoem()">🗑️ Удалить</button>
         </div>
       </div>
@@ -4352,7 +4365,7 @@
     let poemsDatabase=[]; let remotePoemIds=new Set();
     async function loadRemotePoems(){
       if(!currentUser)return; const {data,error}=await sb.from('poems').select('*').eq('published',true).order('created_at',{ascending:false}); if(error){console.error(error);return}
-      poemsDatabase=(data||[]).map(p=>({id:p.id,title:p.title,date:p.subtitle||formatDbDate(p.created_at),text:p.body,remote:true,created_at:p.created_at})); remotePoemIds=new Set(poemsDatabase.map(p=>p.id));
+      poemsDatabase=(data||[]).map(p=>({id:p.id,title:p.title,date:p.subtitle||formatDbDate(p.created_at),text:String(p.body||'').replace(/\\n/g,'\n'),remote:true,created_at:p.created_at})); remotePoemIds=new Set(poemsDatabase.map(p=>p.id));
       document.getElementById('poem-count-label').textContent=`Сборник стихов (${poemsDatabase.length})`; renderPoemsList(); const c=document.getElementById('adm-poems-count');if(c)c.textContent=poemsDatabase.length;
     }
     async function adminPublishPoem(){
@@ -4360,10 +4373,34 @@
       const {data,error}=await sb.from('poems').insert({title,subtitle,body,created_by:currentUser.id,published:true}).select().single(); if(error)return alert('Не удалось добавить стих: '+error.message);
       document.getElementById('admin-poem-title').value='';document.getElementById('admin-poem-subtitle').value='';document.getElementById('admin-poem-body').value=''; await createNotification('user','poem',data.id,`Новый стих: «${title}»`);showLizaToast('📜 Новый стих появился в Свитке');await loadRemotePoems();
     }
-    async function adminEditCurrentPoem(){
-      if(currentRole!=='admin'||!currentlyOpenPoemId)return;const p=poemsDatabase.find(x=>x.id===currentlyOpenPoemId);if(!p)return;
-      const title=prompt('Название стиха:',p.title);if(title===null||!title.trim())return;const subtitle=prompt('Подпись / повод:',p.date||'');if(subtitle===null)return;const body=prompt('Текст стиха:',p.text);if(body===null||!body.trim())return;
-      const {error}=await sb.from('poems').update({title:title.trim(),subtitle:subtitle.trim(),body:body.trim()}).eq('id',p.id);if(error)return alert(error.message);await loadRemotePoems();openPoemScroll(p.id,false);showLizaToast('✏️ Стих обновлён');
+    function adminEditCurrentPoem(){
+      if(currentRole!=='admin'||!currentlyOpenPoemId)return;
+      const p=poemsDatabase.find(x=>x.id===currentlyOpenPoemId);if(!p)return;
+      document.getElementById('edit-poem-title').value=p.title||'';
+      document.getElementById('edit-poem-subtitle').value=p.date||'';
+      document.getElementById('edit-poem-body').value=String(p.text||'').replace(/\\n/g,'\n');
+      document.getElementById('poem-inline-editor').classList.add('active');
+      document.getElementById('poem-admin-actions').style.display='none';
+      document.getElementById('edit-poem-body').focus();
+      document.getElementById('poem-inline-editor').scrollIntoView({behavior:'smooth',block:'center'});
+    }
+    function adminCancelPoemEdit(){
+      document.getElementById('poem-inline-editor')?.classList.remove('active');
+      const a=document.getElementById('poem-admin-actions');if(a)a.style.display='';
+    }
+    async function adminSaveCurrentPoem(){
+      if(currentRole!=='admin'||!currentlyOpenPoemId)return;
+      const p=poemsDatabase.find(x=>x.id===currentlyOpenPoemId);if(!p)return;
+      const title=document.getElementById('edit-poem-title').value.trim();
+      const subtitle=document.getElementById('edit-poem-subtitle').value.trim();
+      const body=document.getElementById('edit-poem-body').value.replace(/\\n/g,'\n').trim();
+      if(!title||!body)return alert('Нужны название и текст стиха.');
+      const {error}=await sb.from('poems').update({title,subtitle,body}).eq('id',p.id);
+      if(error)return alert(error.message);
+      adminCancelPoemEdit();
+      await loadRemotePoems();
+      openPoemScroll(p.id,false);
+      showLizaToast('✏️ Стих обновлён');
     }
     async function adminDeleteCurrentPoem(){if(currentRole!=='admin'||!currentlyOpenPoemId||!confirm('Удалить этот стих?'))return;const id=currentlyOpenPoemId;const {error}=await sb.from('poems').delete().eq('id',id);if(error)return alert(error.message);closePoemScroll();await loadRemotePoems();showLizaToast('🗑️ Стих удалён');}
 
@@ -4455,6 +4492,7 @@
       const poem = poemsDatabase.find(p => p.id === id);
       if (!poem) return;
       currentlyOpenPoemId = id;
+      adminCancelPoemEdit();
 
       const listCard = document.getElementById('poems-list-card');
       const scrollView = document.getElementById('poem-scroll-view');
@@ -4483,6 +4521,7 @@
     function closePoemScroll(saveState=true) {
       const listCard = document.getElementById('poems-list-card');
       const scrollView = document.getElementById('poem-scroll-view');
+      adminCancelPoemEdit();
       scrollView.style.display = 'none';
       listCard.style.display = 'block';
       currentlyOpenPoemId = null;

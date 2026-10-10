@@ -2575,6 +2575,65 @@
       .admin-command-copy small { display:none; }
     }
 
+
+    /* ===== ГАЛЕРЕЯ ЗВЁЗД ===== */
+    .gallery-head-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 16px}
+    .gallery-head-row .subtitle{margin:0;text-align:left}
+    .gallery-album-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .gallery-album-card{position:relative;min-height:170px;border-radius:20px;overflow:hidden;border:1px solid rgba(212,175,55,.28);background:linear-gradient(145deg,rgba(6,8,16,.95),rgba(15,23,42,.88));cursor:pointer;text-align:left;box-shadow:0 10px 28px rgba(0,0,0,.22)}
+    .gallery-album-cover{height:110px;background:radial-gradient(circle at 50% 45%,rgba(245,158,11,.18),transparent 34%),#070b16;display:grid;place-items:center;overflow:hidden}
+    .gallery-album-cover img,.gallery-album-cover video{width:100%;height:100%;object-fit:cover;display:block}
+    .gallery-album-placeholder{font-size:2.2rem;filter:drop-shadow(0 0 12px rgba(245,158,11,.45))}
+    .gallery-album-info{padding:12px 13px 13px}
+    .gallery-album-title{font-family:'Cinzel',serif;font-size:.88rem;color:#F8FAFC;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+    .gallery-album-meta{font-size:.68rem;color:#94A3B8;margin-top:5px;line-height:1.35}
+    .gallery-media-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}
+    .gallery-media-tile{position:relative;aspect-ratio:1/1;border-radius:13px;overflow:hidden;background:#050812;border:1px solid rgba(148,163,184,.17);cursor:pointer;padding:0}
+    .gallery-media-tile img,.gallery-media-tile video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+    .gallery-video-mark{position:absolute;right:7px;bottom:7px;width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.68);color:white;font-size:.72rem;border:1px solid rgba(255,255,255,.18)}
+    .gallery-empty{padding:28px 14px;border:1px dashed rgba(148,163,184,.25);border-radius:16px;color:#94A3B8;font-size:.82rem;text-align:center}
+    .gallery-admin-row{display:flex;gap:7px;margin-top:7px;flex-wrap:wrap}
+    .gallery-admin-row button{flex:1;min-width:110px}
+    .gallery-upload-status{font-size:.74rem;color:#F59E0B;min-height:18px;margin:6px 0 8px}
+    .gallery-viewer{position:fixed;inset:0;z-index:460;background:rgba(2,4,10,.94);display:none;align-items:center;justify-content:center;padding:54px 14px 22px;backdrop-filter:blur(10px)}
+    .gallery-viewer.show{display:flex}
+    .gallery-viewer-inner{width:min(980px,100%);height:min(82vh,780px);display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center}
+    .gallery-viewer-media{max-width:100%;max-height:calc(82vh - 80px);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.55);object-fit:contain;background:#000}
+    .gallery-viewer-top{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;color:#E2E8F0}
+    .gallery-viewer-title{font-size:.8rem;color:#CBD5E1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .gallery-viewer-close{border:1px solid rgba(245,158,11,.45);background:#0B1120;color:#FDE68A;border-radius:11px;padding:8px 12px;cursor:pointer}
+
+    /* ===== КАЛЕНДАРЬ СОЗВЕЗДИЯ ===== */
+    .countdown-shell{position:relative;overflow:hidden;border-radius:24px;padding:22px 14px 18px;margin:18px 0;background:radial-gradient(circle at 50% 0%,rgba(245,158,11,.16),transparent 44%),rgba(4,8,18,.62);border:1px solid rgba(212,175,55,.34);box-shadow:inset 0 0 35px rgba(245,158,11,.03)}
+    .countdown-label{font-family:'Cinzel',serif;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem;color:#F59E0B;margin-bottom:13px}
+    .countdown-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .countdown-unit{min-width:0;padding:13px 5px 11px;border-radius:16px;background:rgba(6,8,16,.68);border:1px solid rgba(148,163,184,.16)}
+    .countdown-number{display:block;font-family:'Cinzel',serif;color:#FFF8E8;font-size:clamp(1.35rem,6vw,2.35rem);font-weight:700;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 0 18px rgba(245,158,11,.14)}
+    .countdown-name{display:block;margin-top:7px;color:#64748B;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em}
+    .meeting-target-line{margin-top:14px;color:#CBD5E1;font-size:.76rem;line-height:1.45}
+    .meeting-target-line b{color:#FDE68A}
+    .calendar-card{background:rgba(4,8,18,.5);border:1px solid rgba(148,163,184,.16);border-radius:21px;padding:15px;margin-top:13px}
+    .calendar-head{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:8px;margin-bottom:13px}
+    .calendar-head button{width:42px;height:38px;border-radius:11px;border:1px solid rgba(212,175,55,.28);background:#060810;color:#FDE68A;cursor:pointer}
+    .calendar-month-title{font-family:'Cinzel',serif;color:#F8FAFC;font-size:.9rem;text-transform:uppercase;letter-spacing:.08em;text-align:center}
+    .calendar-weekdays,.calendar-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+    .calendar-weekday{text-align:center;color:#64748B;font-size:.58rem;text-transform:uppercase;padding:4px 0 7px}
+    .calendar-day{position:relative;aspect-ratio:1/1;display:grid;place-items:center;border-radius:10px;color:#CBD5E1;font-size:.72rem;border:1px solid transparent;font-variant-numeric:tabular-nums}
+    .calendar-day.outside{opacity:.18}
+    .calendar-day.past{color:#64748B;background:rgba(15,23,42,.36)}
+    .calendar-day.past::after{content:'×';position:absolute;inset:0;display:grid;place-items:center;color:rgba(248,113,113,.76);font-size:1.22rem;font-weight:300;line-height:1;transform:rotate(-7deg)}
+    .calendar-day.today{border-color:#F59E0B;color:#FEF3C7;box-shadow:0 0 13px rgba(245,158,11,.18)}
+    .calendar-day.today::before{content:'сегодня';position:absolute;bottom:1px;font-size:.37rem;color:#F59E0B;text-transform:uppercase;letter-spacing:.03em}
+    .calendar-day.meeting{background:radial-gradient(circle,rgba(245,158,11,.22),rgba(245,158,11,.07));border-color:#F59E0B;color:#FFF8E8;font-weight:700;box-shadow:0 0 18px rgba(245,158,11,.20)}
+    .calendar-day.meeting::before{content:'★';position:absolute;top:0px;right:3px;color:#FDE68A;font-size:.55rem}
+    .calendar-jump{margin-top:11px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+    .calendar-legend{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px;color:#64748B;font-size:.61rem}
+    .calendar-legend b{color:#F59E0B;font-weight:600}
+    .calendar-admin-note{font-size:.72rem;color:#94A3B8;line-height:1.55;margin:7px 0 12px}
+
+    @media(min-width:700px){.gallery-album-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.gallery-media-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.calendar-card{padding:20px}.calendar-day{font-size:.8rem}}
+    @media(max-width:480px){.gallery-album-grid{grid-template-columns:1fr 1fr;gap:8px}.gallery-album-card{min-height:150px}.gallery-album-cover{height:92px}.gallery-album-info{padding:10px}.gallery-media-grid{gap:5px}.countdown-shell{padding:18px 8px 15px}.countdown-grid{gap:5px}.countdown-unit{padding:11px 2px 9px;border-radius:13px}.countdown-name{font-size:.5rem}.calendar-card{padding:11px}.calendar-days,.calendar-weekdays{gap:2px}.calendar-day{border-radius:8px;font-size:.66rem}}
+
 </style>
 </head>
 <body class="time-night auth-pending">
@@ -2708,9 +2767,28 @@
     <button class="nav-btn" onclick="switchTab('tab-songs')">
       <span>🎵</span> Архив песен <span class="nav-badge" id="songs-nav-new">NEW</span>
     </button>
+    <button class="nav-btn" onclick="switchTab('tab-gallery')">
+      <span>🌠</span> Галерея звёзд
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-calendar')">
+      <span>🗓️</span> Календарь Созвездия
+    </button>
     <button class="nav-btn admin-only" id="admin-nav-btn" onclick="switchTab('tab-admin')">
       <span>⚙️</span> Панель Созвездия
     </button>
+  </div>
+
+  <div class="gallery-viewer" id="gallery-viewer" onclick="galleryViewerBackdrop(event)">
+    <div class="gallery-viewer-inner">
+      <div class="gallery-viewer-top">
+        <div class="gallery-viewer-title" id="gallery-viewer-title">Воспоминание</div>
+        <div style="display:flex;gap:7px;align-items:center">
+          <button class="gallery-viewer-close admin-only" style="border-color:#EF4444;color:#FCA5A5" onclick="adminDeleteOpenGalleryItem()">Удалить 🗑️</button>
+          <button class="gallery-viewer-close" onclick="closeGalleryViewer()">Закрыть ✕</button>
+        </div>
+      </div>
+      <div id="gallery-viewer-media-wrap" style="display:grid;place-items:center;width:100%;min-height:0"></div>
+    </div>
   </div>
 
   <div class="container">
@@ -2752,6 +2830,8 @@
           <button class="admin-command-card" onclick="switchTab('tab-poems')"><span class="admin-command-icon">📜</span><span class="admin-command-copy"><b>Стихи</b><small>личный сборник</small></span><span class="admin-command-arrow">→</span></button>
           <button class="admin-command-card" onclick="switchTab('tab-coupons')"><span class="admin-command-icon">🎟️</span><span class="admin-command-copy"><b>Купоны</b><small>желания для вас двоих</small></span><span class="admin-command-arrow">→</span></button>
           <button class="admin-command-card" onclick="switchTab('tab-catcher')"><span class="admin-command-icon">⭐</span><span class="admin-command-copy"><b>Ловец звёзд</b><small id="admin-score-meta">рекорд: 0</small></span><span class="admin-command-arrow">→</span></button>
+          <button class="admin-command-card" onclick="switchTab('tab-gallery')"><span class="admin-command-icon">🌠</span><span class="admin-command-copy"><b>Галерея звёзд</b><small>альбомы, фото и видео</small></span><span class="admin-command-arrow">→</span></button>
+          <button class="admin-command-card" onclick="switchTab('tab-calendar')"><span class="admin-command-icon">🗓️</span><span class="admin-command-copy"><b>Календарь</b><small>живой отсчёт до встречи</small></span><span class="admin-command-arrow">→</span></button>
         </div>
 
         <div class="hub-grid">
@@ -2795,6 +2875,16 @@
             <div class="hub-icon">📜</div>
             <div class="hub-title">Стихи</div>
             <div class="hub-meta">личный сборник</div>
+          </div>
+          <div class="hub-item" onclick="switchTab('tab-gallery')">
+            <div class="hub-icon">🌠</div>
+            <div class="hub-title">Галерея звёзд</div>
+            <div class="hub-meta">наши воспоминания</div>
+          </div>
+          <div class="hub-item" onclick="switchTab('tab-calendar')">
+            <div class="hub-icon">🗓️</div>
+            <div class="hub-title">Календарь</div>
+            <div class="hub-meta" id="hub-countdown-meta">до встречи</div>
           </div>
         </div>
 
@@ -3058,6 +3148,57 @@
       </div>
     </div>
 
+    <!-- 10. ГАЛЕРЕЯ ЗВЁЗД -->
+    <div class="tab-content" id="tab-gallery">
+      <div class="card" id="gallery-albums-card">
+        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
+        <div class="protocol-tag">Архив воспоминаний</div>
+        <h1>Галерея звёзд</h1>
+        <p class="subtitle">Фото и видео собраны по созвездиям-папкам, чтобы каждое воспоминание легко находилось.</p>
+        <div class="gallery-album-grid" id="gallery-album-grid"><div class="gallery-empty">Загружаю созвездия…</div></div>
+      </div>
+      <div class="card" id="gallery-album-card" style="display:none">
+        <button class="back-btn" onclick="closeGalleryAlbum()">← Ко всем созвездиям</button>
+        <div class="protocol-tag">Созвездие воспоминаний</div>
+        <h1 id="gallery-open-title">—</h1>
+        <p class="subtitle" id="gallery-open-description"></p>
+        <div class="gallery-media-grid" id="gallery-media-grid"></div>
+      </div>
+    </div>
+
+    <!-- 11. КАЛЕНДАРЬ СОЗВЕЗДИЯ -->
+    <div class="tab-content" id="tab-calendar">
+      <div class="card">
+        <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
+        <div class="protocol-tag">Точка сближения</div>
+        <h1>Календарь Созвездия</h1>
+        <p class="subtitle">Каждая секунда приближает день, когда расстояние закончится.</p>
+
+        <div class="countdown-shell">
+          <div class="countdown-label" id="countdown-label">До нашей встречи осталось</div>
+          <div class="countdown-grid">
+            <div class="countdown-unit"><span class="countdown-number" id="countdown-days">000</span><span class="countdown-name">дней</span></div>
+            <div class="countdown-unit"><span class="countdown-number" id="countdown-hours">00</span><span class="countdown-name">часов</span></div>
+            <div class="countdown-unit"><span class="countdown-number" id="countdown-minutes">00</span><span class="countdown-name">минут</span></div>
+            <div class="countdown-unit"><span class="countdown-number" id="countdown-seconds">00</span><span class="countdown-name">секунд</span></div>
+          </div>
+          <div class="meeting-target-line" id="meeting-target-line"><b>16 апреля 2027</b> · Москва</div>
+        </div>
+
+        <div class="calendar-card">
+          <div class="calendar-head">
+            <button onclick="shiftCalendarMonth(-1)" aria-label="Предыдущий месяц">←</button>
+            <div class="calendar-month-title" id="calendar-month-title">—</div>
+            <button onclick="shiftCalendarMonth(1)" aria-label="Следующий месяц">→</button>
+          </div>
+          <div class="calendar-weekdays"><div class="calendar-weekday">Пн</div><div class="calendar-weekday">Вт</div><div class="calendar-weekday">Ср</div><div class="calendar-weekday">Чт</div><div class="calendar-weekday">Пт</div><div class="calendar-weekday">Сб</div><div class="calendar-weekday">Вс</div></div>
+          <div class="calendar-days" id="constellation-calendar-days"></div>
+          <div class="calendar-jump"><button class="mini-action" onclick="jumpCalendarToday()">Сегодня</button><button class="mini-action" onclick="jumpCalendarMeeting()">★ К встрече</button></div>
+          <div class="calendar-legend"><span>× прошедший день</span><span><b>рамка</b> — сегодня</span><span>★ встреча</span></div>
+        </div>
+      </div>
+    </div>
+
     <!-- 10. ПАНЕЛЬ СОЗВЕЗДИЯ (АДМИНКА) -->
     <div class="tab-content" id="tab-admin">
       <div class="card">
@@ -3072,6 +3213,8 @@
           <button class="admin-tab-btn" id="atab-btn-poems" onclick="switchAdminTab('poems')">📜 Стихи</button>
           <button class="admin-tab-btn" id="atab-btn-songs" onclick="switchAdminTab('songs')">🎵 Песни</button>
           <button class="admin-tab-btn" id="atab-btn-ciphers" onclick="switchAdminTab('ciphers')">🔑 Шифры</button>
+          <button class="admin-tab-btn" id="atab-btn-gallery" onclick="switchAdminTab('gallery')">🌠 Галерея</button>
+          <button class="admin-tab-btn" id="atab-btn-calendar" onclick="switchAdminTab('calendar')">🗓️ Календарь</button>
         </div>
 
         <!-- 1. Дашборд -->
@@ -3140,6 +3283,35 @@
           <button class="mini-action" id="admin-cipher-cancel-btn" style="display:none;margin-bottom:8px;" onclick="cancelCipherEdit()">Отменить редактирование</button>
           <div class="role-note">Новый шифр даст Лизе уведомление. Ты можешь открыть предпросмотр, отредактировать или удалить любой шифр.</div>
           <div class="cipher-admin-list" id="admin-cipher-list"></div>
+        </div>
+
+        <div id="admin-sec-gallery" style="display:none;text-align:left;">
+          <div class="protocol-tag" style="color:#10B981">Новая папка-созвездие</div>
+          <input class="admin-form-input" id="admin-gallery-title" placeholder="Название папки, например: Наша первая встреча">
+          <input class="admin-form-input" id="admin-gallery-description" placeholder="Короткое описание — необязательно">
+          <button class="submit-btn" style="background:linear-gradient(135deg,#10B981,#059669);margin-bottom:14px" onclick="adminCreateGalleryAlbum()">Создать созвездие 🌠</button>
+
+          <div class="protocol-tag" style="color:#10B981">Загрузка воспоминаний</div>
+          <select class="admin-form-input" id="admin-gallery-album-select" style="font-size:.88rem;letter-spacing:0;text-align:left">
+            <option value="">Сначала создай папку</option>
+          </select>
+          <label class="upload-note">Можно выбрать сразу несколько фотографий и видео.</label>
+          <input class="admin-form-input" id="admin-gallery-files" type="file" accept="image/*,video/*" multiple>
+          <button class="submit-btn" style="background:linear-gradient(135deg,#10B981,#059669)" onclick="adminUploadGalleryFiles()">Загрузить в галерею ✦</button>
+          <div class="gallery-upload-status" id="gallery-upload-status"></div>
+          <div class="role-note">Фото и видео хранятся в приватном хранилище Supabase и открываются через временные ссылки, как песни и картинки шифров.</div>
+          <div id="admin-gallery-list" style="margin-top:14px"></div>
+        </div>
+
+        <div id="admin-sec-calendar" style="display:none;text-align:left;">
+          <div class="protocol-tag" style="color:#10B981">Точка встречи</div>
+          <label class="upload-note">Дата встречи</label>
+          <input class="admin-form-input" id="admin-meeting-date" type="date" style="font-size:16px;letter-spacing:0;text-align:left">
+          <label class="upload-note">Точное время встречи по Москве</label>
+          <input class="admin-form-input" id="admin-meeting-time" type="time" step="60" style="font-size:16px;letter-spacing:0;text-align:left">
+          <input class="admin-form-input" id="admin-meeting-title" placeholder="Подпись, например: Наша первая встреча">
+          <button class="submit-btn" style="background:linear-gradient(135deg,#10B981,#059669);margin-bottom:8px" onclick="adminSaveMeetingTarget()">Сохранить дату встречи 🗓️</button>
+          <div class="calendar-admin-note">Счётчик у обоих аккаунтов обновляется каждую секунду. Дата хранится общей для сайта. Если точное время пока неизвестно, можно оставить 00:00 и поменять позже.</div>
         </div>
       </div>
     </div>
@@ -3242,7 +3414,7 @@
       else restoreSavedPlace();
 
       gameHighScore = parseInt(uGet('star_high_score') || '0', 10);
-      await Promise.all([loadSharedHighScores(), loadMessages(), loadCouponsState(), loadRemotePoems(), loadSongs(), loadNotifications(), loadCiphers(), loadAdminDashboardExtras(), loadCounterpartPresence()]);
+      await Promise.all([loadSharedHighScores(), loadMessages(), loadCouponsState(), loadRemotePoems(), loadSongs(), loadNotifications(), loadCiphers(), loadAdminDashboardExtras(), loadCounterpartPresence(), loadConstellationSettings(), loadGallery()]);
       await loadRemoteFavorites();
       await markPresence(true);
       subscribeRealtime();
@@ -3686,6 +3858,8 @@
       if (tabId === 'tab-songs') { renderSongsList(); if(!opts.restoreNested) closeSongPlayer(false); markNotificationsRead('song'); }
       if (tabId === 'tab-crystal' && !opts.restoreNested) closeCrystalScroll();
       if (tabId === 'tab-letters') { if(!opts.restoreNested) closeLetterReader(); markIncomingMessagesRead(); }
+      if (tabId === 'tab-gallery') { loadGallery(); if(!opts.restoreNested) closeGalleryAlbum(false); }
+      if (tabId === 'tab-calendar') { renderConstellationCalendar(); updateMeetingCountdown(); }
     }
 
     function savePlace(tabId, nested=null) {
@@ -3701,6 +3875,7 @@
       setActiveTabUI(tab,{restoreNested:true});
       if(state?.nested?.type==='poem' && tab==='tab-poems') setTimeout(()=>openPoemScroll(state.nested.id,false),0);
       if(state?.nested?.type==='song' && tab==='tab-songs') setTimeout(()=>openSongPlayer(state.nested.id,false),0);
+      if(state?.nested?.type==='gallery-album' && tab==='tab-gallery') setTimeout(()=>openGalleryAlbum(state.nested.id),0);
       history.replaceState({lizaTab:tab},'',window.location.href);
     }
 
@@ -3724,6 +3899,7 @@
       let savedTab=state?.tab || uGet(LAST_TAB_KEY) || 'tab-home'; if(savedTab==='tab-admin'||!document.getElementById(savedTab)||!roleAllowedTab(savedTab))savedTab='tab-home';
       history.replaceState({lizaTab:savedTab},'',window.location.href);
       setActiveTabUI(savedTab,{restoreNested:true});
+      if(state?.nested?.type==='gallery-album' && savedTab==='tab-gallery') setTimeout(()=>openGalleryAlbum(state.nested.id),0);
       window.addEventListener('popstate',(event)=>{const tabId=event.state?.lizaTab;const targetTab=document.getElementById(tabId)?tabId:'tab-home';isHistoryNavigation=true;switchTab(targetTab,true);isHistoryNavigation=false;});
     }
 
@@ -4227,7 +4403,7 @@
     // 10. АДМИНКА — роль проверяется также политиками RLS в Supabase
     function switchAdminTab(tab) {
       if (currentRole !== 'admin') return switchTab('tab-home');
-      for (const name of ['dash','inbox','reply','poems','songs','ciphers']) {
+      for (const name of ['dash','inbox','reply','poems','songs','ciphers','gallery','calendar']) {
         document.getElementById(`atab-btn-${name}`)?.classList.toggle('active', tab === name);
         const sec = document.getElementById(`admin-sec-${name}`); if (sec) sec.style.display = tab === name ? 'block' : 'none';
       }
@@ -4529,7 +4705,7 @@
     }
 
     let realtimeV3=null;
-    function subscribeRealtimeV3(){if(!currentUser)return;if(realtimeV3)sb.removeChannel(realtimeV3);realtimeV3=sb.channel('constellation-v3').on('postgres_changes',{event:'*',schema:'public',table:'notifications'},()=>loadNotifications()).on('postgres_changes',{event:'*',schema:'public',table:'songs'},()=>loadSongs()).on('postgres_changes',{event:'*',schema:'public',table:'coupon_redemptions'},()=>loadCouponsState()).on('postgres_changes',{event:'*',schema:'public',table:'ciphers'},()=>loadCiphers()).subscribe();}
+    function subscribeRealtimeV3(){if(!currentUser)return;if(realtimeV3)sb.removeChannel(realtimeV3);realtimeV3=sb.channel('constellation-v3').on('postgres_changes',{event:'*',schema:'public',table:'notifications'},()=>loadNotifications()).on('postgres_changes',{event:'*',schema:'public',table:'songs'},()=>loadSongs()).on('postgres_changes',{event:'*',schema:'public',table:'coupon_redemptions'},()=>loadCouponsState()).on('postgres_changes',{event:'*',schema:'public',table:'ciphers'},()=>loadCiphers()).on('postgres_changes',{event:'*',schema:'public',table:'gallery_albums'},()=>loadGallery()).on('postgres_changes',{event:'*',schema:'public',table:'gallery_items'},()=>loadGallery()).on('postgres_changes',{event:'*',schema:'public',table:'constellation_settings'},()=>loadConstellationSettings()).subscribe();}
 
     // ===== УВЕДОМЛЕНИЯ =====
     let notifications=[];
@@ -4729,6 +4905,236 @@
       const paths=[c.image_path,c.secret_image_path].filter(Boolean);if(paths.length)await sb.storage.from('constellation-media').remove(paths);
       const {error}=await sb.from('ciphers').delete().eq('code',code);if(error)return alert(error.message);
       await sb.from('notifications').delete().eq('type','cipher').eq('target_id',code);if(editingCipherCode===code)cancelCipherEdit();await loadCiphers();showLizaToast('🗑️ Шифр удалён');
+    }
+
+
+    // ===== ГАЛЕРЕЯ ЗВЁЗД =====
+    let galleryAlbums=[];
+    let galleryItems=[];
+    let galleryCurrentAlbumId=null;
+    let galleryViewerItemId=null;
+
+    async function loadGallery(){
+      if(!currentUser)return;
+      const [{data:albums,error:aErr},{data:items,error:iErr}]=await Promise.all([
+        sb.from('gallery_albums').select('*').order('created_at',{ascending:false}),
+        sb.from('gallery_items').select('*').order('created_at',{ascending:false})
+      ]);
+      if(aErr||iErr){
+        console.warn('Галерея пока недоступна. Выполни SQL-миграцию.',aErr||iErr);
+        const grid=document.getElementById('gallery-album-grid');
+        if(grid)grid.innerHTML='<div class="gallery-empty" style="grid-column:1/-1">Галерея ещё не подключена к базе. Созвездию нужно один раз выполнить SQL-файл обновления.</div>';
+        return;
+      }
+      galleryAlbums=albums||[];galleryItems=items||[];
+      await renderGalleryAlbums();
+      renderAdminGallery();
+      if(galleryCurrentAlbumId && galleryAlbums.some(a=>String(a.id)===String(galleryCurrentAlbumId))) await renderOpenGalleryAlbum();
+    }
+
+    async function galleryCoverMarkup(album){
+      const item=galleryItems.find(x=>String(x.album_id)===String(album.id));
+      if(!item)return '<div class="gallery-album-placeholder">✦</div>';
+      const url=await signedMedia(item.file_path);if(!url)return '<div class="gallery-album-placeholder">✦</div>';
+      return item.media_type==='video'?`<video src="${url}" muted preload="metadata" playsinline></video>`:`<img src="${url}" alt="">`;
+    }
+
+    async function renderGalleryAlbums(){
+      const box=document.getElementById('gallery-album-grid');if(!box)return;
+      if(!galleryAlbums.length){box.innerHTML='<div class="gallery-empty" style="grid-column:1/-1">Пока здесь тихо. Первое созвездие воспоминаний ещё ждёт свою звезду ✦</div>';return;}
+      const cards=[];
+      for(const a of galleryAlbums){
+        const count=galleryItems.filter(x=>String(x.album_id)===String(a.id)).length;
+        const cover=await galleryCoverMarkup(a);
+        cards.push(`<div class="gallery-album-card" onclick="openGalleryAlbum('${a.id}')"><div class="gallery-album-cover">${cover}</div><div class="gallery-album-info"><div class="gallery-album-title">${escapeHtml(a.title)}</div><div class="gallery-album-meta">${count} ${galleryCountWord(count)}${a.description?` · ${escapeHtml(a.description)}`:''}</div></div></div>`);
+      }
+      box.innerHTML=cards.join('');
+    }
+
+    function galleryCountWord(n){const m=n%100;if(m>=11&&m<=14)return'воспоминаний';const d=n%10;return d===1?'воспоминание':d>=2&&d<=4?'воспоминания':'воспоминаний';}
+
+    async function openGalleryAlbum(id){
+      galleryCurrentAlbumId=id;
+      document.getElementById('gallery-albums-card').style.display='none';
+      document.getElementById('gallery-album-card').style.display='block';
+      await renderOpenGalleryAlbum();
+      if(document.getElementById('tab-gallery')?.classList.contains('active'))savePlace('tab-gallery',{type:'gallery-album',id:String(id)});
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function closeGalleryAlbum(saveState=true){
+      galleryCurrentAlbumId=null;
+      const list=document.getElementById('gallery-albums-card'),detail=document.getElementById('gallery-album-card');
+      if(list)list.style.display='block';if(detail)detail.style.display='none';
+      if(saveState&&document.getElementById('tab-gallery')?.classList.contains('active'))savePlace('tab-gallery',null);
+    }
+
+    async function renderOpenGalleryAlbum(){
+      const album=galleryAlbums.find(a=>String(a.id)===String(galleryCurrentAlbumId));if(!album){closeGalleryAlbum(false);return;}
+      document.getElementById('gallery-open-title').textContent=album.title;
+      document.getElementById('gallery-open-description').textContent=album.description||'Каждый кадр — маленькая звезда этой истории.';
+      const box=document.getElementById('gallery-media-grid');
+      const items=galleryItems.filter(x=>String(x.album_id)===String(album.id));
+      if(!items.length){box.innerHTML='<div class="gallery-empty" style="grid-column:1/-1">В этой папке пока нет фото или видео.</div>';return;}
+      const out=[];
+      for(const item of items){
+        const url=await signedMedia(item.file_path);if(!url)continue;
+        const media=item.media_type==='video'?`<video src="${url}" muted preload="metadata" playsinline></video><span class="gallery-video-mark">▶</span>`:`<img src="${url}" alt="">`;
+        out.push(`<button class="gallery-media-tile" onclick="openGalleryItem('${item.id}')" title="${escapeHtml(item.original_name||'Воспоминание')}">${media}</button>`);
+      }
+      box.innerHTML=out.join('')||'<div class="gallery-empty" style="grid-column:1/-1">Не удалось открыть медиа.</div>';
+    }
+
+    async function openGalleryItem(id){
+      const item=galleryItems.find(x=>String(x.id)===String(id));if(!item)return;
+      galleryViewerItemId=String(id);
+      const url=await signedMedia(item.file_path);if(!url)return showLizaToast('Не удалось открыть воспоминание');
+      document.getElementById('gallery-viewer-title').textContent=item.caption||item.original_name||'Воспоминание';
+      const wrap=document.getElementById('gallery-viewer-media-wrap');
+      wrap.innerHTML=item.media_type==='video'?`<video class="gallery-viewer-media" src="${url}" controls autoplay playsinline></video>`:`<img class="gallery-viewer-media" src="${url}" alt="">`;
+      document.getElementById('gallery-viewer').classList.add('show');
+    }
+    function closeGalleryViewer(){const v=document.getElementById('gallery-viewer');v.classList.remove('show');const video=v.querySelector('video');if(video)video.pause();document.getElementById('gallery-viewer-media-wrap').innerHTML='';galleryViewerItemId=null;}
+    function galleryViewerBackdrop(e){if(e.target?.id==='gallery-viewer')closeGalleryViewer();}
+
+    function renderAdminGallery(){
+      if(currentRole!=='admin')return;
+      const sel=document.getElementById('admin-gallery-album-select');
+      if(sel){const old=sel.value;sel.innerHTML=galleryAlbums.length?'<option value="">Выбери папку…</option>'+galleryAlbums.map(a=>`<option value="${a.id}">${escapeHtml(a.title)}</option>`).join(''):'<option value="">Сначала создай папку</option>';if(galleryAlbums.some(a=>String(a.id)===String(old)))sel.value=old;}
+      const list=document.getElementById('admin-gallery-list');if(!list)return;
+      list.innerHTML=galleryAlbums.length?galleryAlbums.map(a=>{const count=galleryItems.filter(x=>String(x.album_id)===String(a.id)).length;return `<div class="cipher-admin-item"><div><b>${escapeHtml(a.title)}</b><small>${count} ${galleryCountWord(count)}${a.description?` · ${escapeHtml(a.description)}`:''}</small></div><div class="cipher-admin-actions"><button class="cipher-small-btn" onclick="openGalleryAlbumFromAdmin('${a.id}')">👁 Открыть</button><button class="cipher-small-btn edit" onclick="adminRenameGalleryAlbum('${a.id}')">✏️ Название</button><button class="cipher-delete-btn" onclick="adminDeleteGalleryAlbum('${a.id}')">🗑️ Удалить</button></div></div>`}).join(''):'<div class="role-note">Папок пока нет.</div>';
+    }
+
+    async function adminCreateGalleryAlbum(){
+      if(currentRole!=='admin')return;
+      const title=document.getElementById('admin-gallery-title').value.trim(),description=document.getElementById('admin-gallery-description').value.trim();
+      if(!title)return alert('Укажи название папки.');
+      const {error}=await sb.from('gallery_albums').insert({title,description,created_by:currentUser.id});
+      if(error)return alert('Не удалось создать папку: '+error.message);
+      document.getElementById('admin-gallery-title').value='';document.getElementById('admin-gallery-description').value='';
+      showLizaToast('🌠 Новое созвездие создано');await loadGallery();
+    }
+
+    async function adminUploadGalleryFiles(){
+      if(currentRole!=='admin')return;
+      const albumId=document.getElementById('admin-gallery-album-select').value;
+      const files=[...document.getElementById('admin-gallery-files').files];
+      const status=document.getElementById('gallery-upload-status');
+      if(!albumId)return alert('Сначала выбери папку.');if(!files.length)return alert('Выбери фото или видео.');
+      let done=0;const uploaded=[];
+      try{
+        for(const file of files){
+          status.textContent=`Загружаю ${done+1} из ${files.length}: ${file.name}`;
+          const media_type=file.type.startsWith('video/')?'video':'image';
+          const path=await uploadMediaFile(file,`gallery/${albumId}`);uploaded.push(path);
+          const {error}=await sb.from('gallery_items').insert({album_id:albumId,file_path:path,media_type,original_name:file.name,created_by:currentUser.id});
+          if(error)throw error;done++;
+        }
+        document.getElementById('admin-gallery-files').value='';status.textContent=`Готово: загружено ${done} из ${files.length}.`;
+        showLizaToast('✨ Воспоминания добавлены');await loadGallery();
+      }catch(e){status.textContent='Ошибка загрузки.';alert('Не удалось загрузить файл: '+e.message);await loadGallery();}
+    }
+
+    async function adminDeleteOpenGalleryItem(){
+      if(currentRole!=='admin'||!galleryViewerItemId)return;
+      const item=galleryItems.find(x=>String(x.id)===String(galleryViewerItemId));if(!item)return;
+      if(!confirm('Удалить это фото/видео из галереи?'))return;
+      if(item.file_path){const {error:sErr}=await sb.storage.from('constellation-media').remove([item.file_path]);if(sErr)console.warn(sErr);}
+      const {error}=await sb.from('gallery_items').delete().eq('id',item.id);if(error)return alert(error.message);
+      closeGalleryViewer();await loadGallery();showLizaToast('🗑️ Воспоминание удалено');
+    }
+
+    async function adminRenameGalleryAlbum(id){
+      if(currentRole!=='admin')return;const a=galleryAlbums.find(x=>String(x.id)===String(id));if(!a)return;
+      const title=prompt('Новое название папки:',a.title);if(title===null||!title.trim())return;
+      const description=prompt('Описание папки:',a.description||'');if(description===null)return;
+      const {error}=await sb.from('gallery_albums').update({title:title.trim(),description:description.trim()}).eq('id',id);if(error)return alert(error.message);await loadGallery();showLizaToast('✏️ Папка обновлена');
+    }
+    async function adminDeleteGalleryAlbum(id){
+      if(currentRole!=='admin'||!confirm('Удалить папку и ВСЕ фото/видео внутри неё?'))return;
+      const items=galleryItems.filter(x=>String(x.album_id)===String(id));const paths=items.map(x=>x.file_path).filter(Boolean);
+      if(paths.length){const {error:sErr}=await sb.storage.from('constellation-media').remove(paths);if(sErr)console.warn(sErr);}
+      const {error}=await sb.from('gallery_albums').delete().eq('id',id);if(error)return alert(error.message);
+      if(String(galleryCurrentAlbumId)===String(id))closeGalleryAlbum(false);await loadGallery();showLizaToast('🗑️ Созвездие удалено');
+    }
+    function openGalleryAlbumFromAdmin(id){switchTab('tab-gallery');setTimeout(()=>openGalleryAlbum(id),30);}
+
+    // ===== КАЛЕНДАРЬ СОЗВЕЗДИЯ =====
+    let meetingConfig={target:'2027-04-16T00:00:00+03:00',title:'Наша первая встреча'};
+    let meetingCountdownTimer=null;
+    let calendarViewYear=null,calendarViewMonth=null;
+
+    function moscowParts(date=new Date()){
+      const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date);
+      const o={};parts.forEach(p=>{if(p.type!=='literal')o[p.type]=p.value});return {year:+o.year,month:+o.month,day:+o.day,iso:`${o.year}-${o.month}-${o.day}`};
+    }
+    function meetingMoscowParts(){return moscowParts(new Date(meetingConfig.target));}
+    function pad2(n){return String(n).padStart(2,'0');}
+
+    async function loadConstellationSettings(){
+      if(!currentUser)return;
+      const {data,error}=await sb.from('constellation_settings').select('key,value').eq('key','meeting_target').maybeSingle();
+      if(!error&&data?.value){const v=data.value;meetingConfig={target:v.target||meetingConfig.target,title:v.title||meetingConfig.title};}
+      else if(error)console.warn('Настройки календаря пока используют значение по умолчанию. Выполни SQL-миграцию.',error);
+      fillMeetingAdminForm();
+      jumpCalendarToday(false);
+      updateMeetingCountdown();
+      clearInterval(meetingCountdownTimer);meetingCountdownTimer=setInterval(updateMeetingCountdown,1000);
+      renderConstellationCalendar();
+    }
+
+    function fillMeetingAdminForm(){
+      if(currentRole!=='admin')return;
+      const d=new Date(meetingConfig.target);if(Number.isNaN(d.getTime()))return;
+      const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(d);const p={};fmt.forEach(x=>{if(x.type!=='literal')p[x.type]=x.value});
+      const dateEl=document.getElementById('admin-meeting-date'),timeEl=document.getElementById('admin-meeting-time'),titleEl=document.getElementById('admin-meeting-title');
+      if(dateEl)dateEl.value=`${p.year}-${p.month}-${p.day}`;if(timeEl)timeEl.value=`${p.hour}:${p.minute}`;if(titleEl)titleEl.value=meetingConfig.title||'Наша первая встреча';
+    }
+
+    async function adminSaveMeetingTarget(){
+      if(currentRole!=='admin')return;
+      const date=document.getElementById('admin-meeting-date').value,time=document.getElementById('admin-meeting-time').value||'00:00',title=document.getElementById('admin-meeting-title').value.trim()||'Наша первая встреча';
+      if(!date)return alert('Выбери дату встречи.');
+      const target=`${date}T${time}:00+03:00`;
+      if(Number.isNaN(new Date(target).getTime()))return alert('Дата или время указаны неверно.');
+      const value={target,title};
+      const {error}=await sb.from('constellation_settings').upsert({key:'meeting_target',value,updated_by:currentUser.id,updated_at:new Date().toISOString()},{onConflict:'key'});
+      if(error)return alert('Не удалось сохранить дату: '+error.message);
+      meetingConfig=value;updateMeetingCountdown();jumpCalendarMeeting();showLizaToast('🗓️ Точка встречи обновлена');
+    }
+
+    function splitDuration(ms){
+      const total=Math.max(0,Math.floor(ms/1000));return {days:Math.floor(total/86400),hours:Math.floor(total%86400/3600),minutes:Math.floor(total%3600/60),seconds:total%60};
+    }
+    function updateMeetingCountdown(){
+      const target=new Date(meetingConfig.target);if(Number.isNaN(target.getTime()))return;
+      const now=new Date(),future=target.getTime()>=now.getTime(),d=splitDuration(Math.abs(target-now));
+      const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+      set('countdown-days',String(d.days).padStart(3,'0'));set('countdown-hours',pad2(d.hours));set('countdown-minutes',pad2(d.minutes));set('countdown-seconds',pad2(d.seconds));
+      const label=document.getElementById('countdown-label');if(label)label.textContent=future?'До нашей встречи осталось':'Мы дождались ✦ Уже вместе';
+      const line=document.getElementById('meeting-target-line');if(line)line.innerHTML=`<b>${escapeHtml(formatMeetingTarget(target))}</b> · Москва · ${escapeHtml(meetingConfig.title||'Наша встреча')}`;
+      const hub=document.getElementById('hub-countdown-meta');if(hub)hub.textContent=future?`${d.days} дн · ${pad2(d.hours)}:${pad2(d.minutes)}:${pad2(d.seconds)}`:`встреча случилась ✦`;
+    }
+    function formatMeetingTarget(date){return new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date);}
+
+    function ensureCalendarView(){if(calendarViewYear!==null)return;const p=moscowParts();calendarViewYear=p.year;calendarViewMonth=p.month-1;}
+    function shiftCalendarMonth(delta){ensureCalendarView();calendarViewMonth+=delta;while(calendarViewMonth<0){calendarViewMonth+=12;calendarViewYear--}while(calendarViewMonth>11){calendarViewMonth-=12;calendarViewYear++}renderConstellationCalendar();}
+    function jumpCalendarToday(render=true){const p=moscowParts();calendarViewYear=p.year;calendarViewMonth=p.month-1;if(render)renderConstellationCalendar();}
+    function jumpCalendarMeeting(){const p=meetingMoscowParts();calendarViewYear=p.year;calendarViewMonth=p.month-1;renderConstellationCalendar();}
+    function isoYmd(y,m,d){return `${y}-${pad2(m)}-${pad2(d)}`;}
+    function ruMonthTitle(y,m){return new Intl.DateTimeFormat('ru-RU',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(y,m,1)));}
+    function renderConstellationCalendar(){
+      const box=document.getElementById('constellation-calendar-days'),title=document.getElementById('calendar-month-title');if(!box||!title)return;ensureCalendarView();
+      const y=calendarViewYear,m=calendarViewMonth;title.textContent=ruMonthTitle(y,m);
+      const today=moscowParts().iso,meet=meetingMoscowParts().iso;
+      const first=new Date(Date.UTC(y,m,1));const mondayOffset=(first.getUTCDay()+6)%7;const start=new Date(Date.UTC(y,m,1-mondayOffset));
+      const cells=[];
+      for(let i=0;i<42;i++){
+        const d=new Date(start.getTime()+i*86400000);const cy=d.getUTCFullYear(),cm=d.getUTCMonth()+1,cd=d.getUTCDate(),iso=isoYmd(cy,cm,cd);const classes=['calendar-day'];
+        if(cm!==m+1)classes.push('outside');if(iso<today)classes.push('past');if(iso===today)classes.push('today');if(iso===meet)classes.push('meeting');
+        cells.push(`<div class="${classes.join(' ')}" title="${iso===meet?escapeHtml(meetingConfig.title||'Встреча'):iso}">${cd}</div>`);
+      }
+      box.innerHTML=cells.join('');
     }
 
     // 14. АПТЕЧКА НАСТРОЕНИЯ (30 фраз)

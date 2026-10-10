@@ -2630,6 +2630,35 @@
     .calendar-legend{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px;color:#64748B;font-size:.61rem}
     .calendar-legend b{color:#F59E0B;font-weight:600}
     .calendar-admin-note{font-size:.72rem;color:#94A3B8;line-height:1.55;margin:7px 0 12px}
+    .calendar-day.before-start{opacity:.16;color:#64748B;background:transparent}
+    .calendar-day.constellation-start{border-color:rgba(96,165,250,.7);color:#DBEAFE;box-shadow:0 0 13px rgba(96,165,250,.16)}
+    .calendar-day.constellation-start::before{content:'✦';position:absolute;top:1px;right:3px;color:#93C5FD;font-size:.54rem}
+    .calendar-day.monthmark{background:radial-gradient(circle,rgba(236,72,153,.18),rgba(236,72,153,.05));border-color:rgba(244,114,182,.58);color:#FCE7F3;font-weight:700;box-shadow:0 0 14px rgba(236,72,153,.12)}
+    .calendar-day.monthmark::before{content:'♥';position:absolute;top:0;right:3px;color:#F9A8D4;font-size:.52rem}
+    .calendar-day.meeting.monthmark::before{content:'★';color:#FDE68A}
+    .calendar-day.has-reminder{box-shadow:inset 0 -3px 0 rgba(52,211,153,.92),0 0 10px rgba(52,211,153,.08)}
+    .calendar-day.today.has-reminder{box-shadow:inset 0 -3px 0 rgba(52,211,153,.92),0 0 13px rgba(245,158,11,.18)}
+    .calendar-day.meeting.has-reminder{box-shadow:inset 0 -3px 0 rgba(52,211,153,.92),0 0 18px rgba(245,158,11,.20)}
+    .calendar-day.selected{outline:2px solid rgba(52,211,153,.72);outline-offset:1px}
+    .calendar-day{cursor:pointer}
+    .calendar-day.outside{cursor:default}
+    .calendar-reminder-panel{margin-top:14px;border:1px solid rgba(52,211,153,.24);border-radius:18px;padding:14px;background:rgba(4,12,18,.58);text-align:left}
+    .calendar-reminder-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .calendar-reminder-title{font-family:'Cinzel',serif;color:#D1FAE5;font-size:.82rem;letter-spacing:.04em}
+    .calendar-reminder-special{font-size:.68rem;color:#F9A8D4;margin-top:3px;min-height:16px}
+    .calendar-reminder-list{display:flex;flex-direction:column;gap:8px;margin-bottom:11px}
+    .calendar-reminder-empty{color:#64748B;font-size:.74rem;padding:8px 0}
+    .calendar-reminder-item{border:1px solid rgba(148,163,184,.16);border-radius:13px;padding:10px 11px;background:rgba(6,8,16,.58)}
+    .calendar-reminder-item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+    .calendar-reminder-item b{display:block;color:#F8FAFC;font-size:.78rem;line-height:1.35}
+    .calendar-reminder-item small{display:block;color:#94A3B8;font-size:.65rem;margin-top:4px;line-height:1.4}
+    .calendar-reminder-author{color:#34D399!important}
+    .calendar-reminder-delete{border:1px solid rgba(239,68,68,.45);background:rgba(127,29,29,.12);color:#FCA5A5;border-radius:9px;padding:5px 8px;font-size:.64rem;cursor:pointer;white-space:nowrap}
+    .calendar-reminder-form{display:grid;grid-template-columns:1fr;gap:8px;padding-top:10px;border-top:1px solid rgba(148,163,184,.12)}
+    .calendar-reminder-form input,.calendar-reminder-form textarea{width:100%;background:#060810;border:1px solid rgba(148,163,184,.25);border-radius:11px;color:#F8FAFC;padding:10px 11px;font:inherit;font-size:.78rem;outline:none}
+    .calendar-reminder-form textarea{resize:vertical;min-height:64px}
+    .calendar-reminder-form input:focus,.calendar-reminder-form textarea:focus{border-color:#10B981}
+    .calendar-reminder-add{border:none;border-radius:11px;padding:10px 12px;background:linear-gradient(135deg,#10B981,#059669);color:white;font-weight:700;font-size:.72rem;cursor:pointer;text-transform:uppercase;letter-spacing:.05em}
 
     @media(min-width:700px){.gallery-album-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.gallery-media-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.calendar-card{padding:20px}.calendar-day{font-size:.8rem}}
     @media(max-width:480px){.gallery-album-grid{grid-template-columns:1fr 1fr;gap:8px}.gallery-album-card{min-height:150px}.gallery-album-cover{height:92px}.gallery-album-info{padding:10px}.gallery-media-grid{gap:5px}.countdown-shell{padding:18px 8px 15px}.countdown-grid{gap:5px}.countdown-unit{padding:11px 2px 9px;border-radius:13px}.countdown-name{font-size:.5rem}.calendar-card{padding:11px}.calendar-days,.calendar-weekdays{gap:2px}.calendar-day{border-radius:8px;font-size:.66rem}}
@@ -3154,14 +3183,12 @@
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
         <div class="protocol-tag">Архив воспоминаний</div>
         <h1>Галерея звёзд</h1>
-        <p class="subtitle">Фото и видео собраны по созвездиям-папкам, чтобы каждое воспоминание легко находилось.</p>
         <div class="gallery-album-grid" id="gallery-album-grid"><div class="gallery-empty">Загружаю созвездия…</div></div>
       </div>
       <div class="card" id="gallery-album-card" style="display:none">
         <button class="back-btn" onclick="closeGalleryAlbum()">← Ко всем созвездиям</button>
         <div class="protocol-tag">Созвездие воспоминаний</div>
         <h1 id="gallery-open-title">—</h1>
-        <p class="subtitle" id="gallery-open-description"></p>
         <div class="gallery-media-grid" id="gallery-media-grid"></div>
       </div>
     </div>
@@ -3172,7 +3199,6 @@
         <button class="back-btn" onclick="switchTab('tab-home')">← Назад в Твой уголок</button>
         <div class="protocol-tag">Точка сближения</div>
         <h1>Календарь Созвездия</h1>
-        <p class="subtitle">Каждая секунда приближает день, когда расстояние закончится.</p>
 
         <div class="countdown-shell">
           <div class="countdown-label" id="countdown-label">До нашей встречи осталось</div>
@@ -3194,7 +3220,20 @@
           <div class="calendar-weekdays"><div class="calendar-weekday">Пн</div><div class="calendar-weekday">Вт</div><div class="calendar-weekday">Ср</div><div class="calendar-weekday">Чт</div><div class="calendar-weekday">Пт</div><div class="calendar-weekday">Сб</div><div class="calendar-weekday">Вс</div></div>
           <div class="calendar-days" id="constellation-calendar-days"></div>
           <div class="calendar-jump"><button class="mini-action" onclick="jumpCalendarToday()">Сегодня</button><button class="mini-action" onclick="jumpCalendarMeeting()">★ К встрече</button></div>
-          <div class="calendar-legend"><span>× прошедший день</span><span><b>рамка</b> — сегодня</span><span>★ встреча</span></div>
+          <div class="calendar-reminder-panel" id="calendar-reminder-panel">
+            <div class="calendar-reminder-head">
+              <div>
+                <div class="calendar-reminder-title" id="calendar-reminder-date-title">Напоминания</div>
+                <div class="calendar-reminder-special" id="calendar-reminder-special"></div>
+              </div>
+            </div>
+            <div class="calendar-reminder-list" id="calendar-reminder-list"></div>
+            <div class="calendar-reminder-form">
+              <input id="calendar-reminder-title-input" maxlength="120" placeholder="Напоминание на этот день">
+              <textarea id="calendar-reminder-note-input" maxlength="500" placeholder="Заметка — необязательно"></textarea>
+              <button class="calendar-reminder-add" onclick="addCalendarReminder()">Добавить напоминание ✦</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -3288,18 +3327,15 @@
         <div id="admin-sec-gallery" style="display:none;text-align:left;">
           <div class="protocol-tag" style="color:#10B981">Новая папка-созвездие</div>
           <input class="admin-form-input" id="admin-gallery-title" placeholder="Название папки, например: Наша первая встреча">
-          <input class="admin-form-input" id="admin-gallery-description" placeholder="Короткое описание — необязательно">
           <button class="submit-btn" style="background:linear-gradient(135deg,#10B981,#059669);margin-bottom:14px" onclick="adminCreateGalleryAlbum()">Создать созвездие 🌠</button>
 
           <div class="protocol-tag" style="color:#10B981">Загрузка воспоминаний</div>
           <select class="admin-form-input" id="admin-gallery-album-select" style="font-size:.88rem;letter-spacing:0;text-align:left">
             <option value="">Сначала создай папку</option>
           </select>
-          <label class="upload-note">Можно выбрать сразу несколько фотографий и видео.</label>
           <input class="admin-form-input" id="admin-gallery-files" type="file" accept="image/*,video/*" multiple>
           <button class="submit-btn" style="background:linear-gradient(135deg,#10B981,#059669)" onclick="adminUploadGalleryFiles()">Загрузить в галерею ✦</button>
           <div class="gallery-upload-status" id="gallery-upload-status"></div>
-          <div class="role-note">Фото и видео хранятся в приватном хранилище Supabase и открываются через временные ссылки, как песни и картинки шифров.</div>
           <div id="admin-gallery-list" style="margin-top:14px"></div>
         </div>
 
@@ -3311,7 +3347,6 @@
           <input class="admin-form-input" id="admin-meeting-time" type="time" step="60" style="font-size:16px;letter-spacing:0;text-align:left">
           <input class="admin-form-input" id="admin-meeting-title" placeholder="Подпись, например: Наша первая встреча">
           <button class="submit-btn" style="background:linear-gradient(135deg,#10B981,#059669);margin-bottom:8px" onclick="adminSaveMeetingTarget()">Сохранить дату встречи 🗓️</button>
-          <div class="calendar-admin-note">Счётчик у обоих аккаунтов обновляется каждую секунду. Дата хранится общей для сайта. Если точное время пока неизвестно, можно оставить 00:00 и поменять позже.</div>
         </div>
       </div>
     </div>
@@ -3414,7 +3449,7 @@
       else restoreSavedPlace();
 
       gameHighScore = parseInt(uGet('star_high_score') || '0', 10);
-      await Promise.all([loadSharedHighScores(), loadMessages(), loadCouponsState(), loadRemotePoems(), loadSongs(), loadNotifications(), loadCiphers(), loadAdminDashboardExtras(), loadCounterpartPresence(), loadConstellationSettings(), loadGallery()]);
+      await Promise.all([loadSharedHighScores(), loadMessages(), loadCouponsState(), loadRemotePoems(), loadSongs(), loadNotifications(), loadCiphers(), loadAdminDashboardExtras(), loadCounterpartPresence(), loadConstellationSettings(), loadGallery(), loadCalendarReminders()]);
       await loadRemoteFavorites();
       await markPresence(true);
       subscribeRealtime();
@@ -4479,6 +4514,10 @@
         .on('postgres_changes',{event:'*',schema:'public',table:'messages'},()=>loadMessages())
         .on('postgres_changes',{event:'*',schema:'public',table:'poems'},()=>loadRemotePoems())
         .on('postgres_changes',{event:'*',schema:'public',table:'game_scores'},()=>loadSharedHighScores())
+        .on('postgres_changes',{event:'*',schema:'public',table:'gallery_albums'},()=>loadGallery())
+        .on('postgres_changes',{event:'*',schema:'public',table:'gallery_items'},()=>loadGallery())
+        .on('postgres_changes',{event:'*',schema:'public',table:'constellation_settings'},()=>loadConstellationSettings())
+        .on('postgres_changes',{event:'*',schema:'public',table:'calendar_reminders'},()=>loadCalendarReminders())
 .on('postgres_changes',{event:'*',schema:'public',table:'profiles'},()=>{loadAdminDashboardExtras();loadCounterpartPresence();})
         .subscribe();
     }
@@ -4802,7 +4841,57 @@
     for(const id of ['player-progress','mini-player-progress'])document.getElementById(id).addEventListener('input',e=>{if(playerAudio.duration)playerAudio.currentTime=playerAudio.duration*(+e.target.value/1000);syncPlayerUi();savePlayerState()});
     document.getElementById('player-volume').addEventListener('input',e=>{playerAudio.volume=+e.target.value;savePlayerState()});
     window.addEventListener('pagehide',()=>savePlayerState(true));window.addEventListener('beforeunload',()=>savePlayerState(true));
-    async function uploadMediaFile(file,folder){if(!file)return null;const safe=(file.name||'file').replace(/[^a-zA-Z0-9._-]/g,'_');const path=`${folder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safe}`;const {error}=await sb.storage.from('constellation-media').upload(path,file,{upsert:false});if(error)throw error;return path;}
+    async function uploadMediaFile(file,folder,onProgress=null){
+      if(!file)return null;
+      const safe=(file.name||'file').replace(/[^a-zA-Z0-9._-]/g,'_');
+      const path=`${folder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safe}`;
+
+      // Для галереи (особенно видео) используем TUS-resumable upload:
+      // он показывает реальный прогресс, автоматически повторяет оборванные куски
+      // и намного надёжнее обычного multipart для крупных файлов.
+      if(folder.startsWith('gallery/')){
+        const {data:{session},error:sessionError}=await sb.auth.getSession();
+        if(sessionError)throw sessionError;
+        if(!session?.access_token)throw new Error('Сессия входа истекла. Войди в убежище заново.');
+
+        const tus=await import('https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/+esm');
+        const projectRef=new URL(SUPABASE_URL).hostname.split('.')[0];
+        const endpoint=`https://${projectRef}.storage.supabase.co/storage/v1/upload/resumable`;
+
+        return await new Promise((resolve,reject)=>{
+          const upload=new tus.Upload(file,{
+            endpoint,
+            retryDelays:[0,3000,5000,10000,20000],
+            headers:{authorization:`Bearer ${session.access_token}`},
+            uploadDataDuringCreation:true,
+            removeFingerprintOnSuccess:true,
+            metadata:{
+              bucketName:'constellation-media',
+              objectName:path,
+              contentType:file.type||'application/octet-stream',
+              cacheControl:'3600'
+            },
+            onError:error=>reject(error),
+            onProgress:(bytesUploaded,bytesTotal)=>{
+              if(typeof onProgress==='function'){
+                const pct=bytesTotal?Math.min(100,Math.round(bytesUploaded/bytesTotal*100)):0;
+                onProgress(pct,bytesUploaded,bytesTotal);
+              }
+            },
+            onSuccess:()=>resolve(path)
+          });
+
+          upload.findPreviousUploads().then(previous=>{
+            if(previous.length)upload.resumeFromPreviousUpload(previous[0]);
+            upload.start();
+          }).catch(reject);
+        });
+      }
+
+      const {error}=await sb.storage.from('constellation-media').upload(path,file,{upsert:false});
+      if(error)throw error;
+      return path;
+    }
     async function adminPublishSong(){if(currentRole!=='admin')return;const title=document.getElementById('admin-song-title').value.trim(),subtitle=document.getElementById('admin-song-subtitle').value.trim(),audio=document.getElementById('admin-song-audio').files[0],cover=document.getElementById('admin-song-cover').files[0];if(!title||!audio)return alert('Нужны название и аудиофайл.');try{const audio_path=await uploadMediaFile(audio,'audio'),cover_path=cover?await uploadMediaFile(cover,'covers'):null;const {data,error}=await sb.from('songs').insert({title,subtitle,audio_path,cover_path,created_by:currentUser.id,published:true}).select().single();if(error)throw error;await createNotification('user','song',data.id,`Новая песня: «${title}»`);document.getElementById('admin-song-title').value='';document.getElementById('admin-song-subtitle').value='';document.getElementById('admin-song-audio').value='';document.getElementById('admin-song-cover').value='';showLizaToast('🎵 Песня добавлена');await loadSongs();}catch(e){alert('Не удалось добавить песню: '+e.message)}}
     async function adminEditCurrentSong(){if(currentRole!=='admin'||!currentlyOpenSongId)return;const song=songsDatabase.find(x=>x.id===currentlyOpenSongId);const title=prompt('Название песни:',song.title);if(title===null||!title.trim())return;const subtitle=prompt('Подпись / повод:',song.subtitle||'');if(subtitle===null)return;const {error}=await sb.from('songs').update({title:title.trim(),subtitle:subtitle.trim()}).eq('id',song.id);if(error)return alert(error.message);await loadSongs();openSongPlayer(song.id,false);showLizaToast('✏️ Песня обновлена');}
     async function adminDeleteCurrentSong(){if(currentRole!=='admin'||!currentlyOpenSongId||!confirm('Удалить песню?'))return;const song=songsDatabase.find(x=>x.id===currentlyOpenSongId);if(song?.audio_path)await sb.storage.from('constellation-media').remove([song.audio_path]);if(song?.cover_path)await sb.storage.from('constellation-media').remove([song.cover_path]);const {error}=await sb.from('songs').delete().eq('id',currentlyOpenSongId);if(error)return alert(error.message);closeSongPlayer();await loadSongs();showLizaToast('🗑️ Песня удалена');}
@@ -4946,7 +5035,7 @@
       for(const a of galleryAlbums){
         const count=galleryItems.filter(x=>String(x.album_id)===String(a.id)).length;
         const cover=await galleryCoverMarkup(a);
-        cards.push(`<div class="gallery-album-card" onclick="openGalleryAlbum('${a.id}')"><div class="gallery-album-cover">${cover}</div><div class="gallery-album-info"><div class="gallery-album-title">${escapeHtml(a.title)}</div><div class="gallery-album-meta">${count} ${galleryCountWord(count)}${a.description?` · ${escapeHtml(a.description)}`:''}</div></div></div>`);
+        cards.push(`<div class="gallery-album-card" onclick="openGalleryAlbum('${a.id}')"><div class="gallery-album-cover">${cover}</div><div class="gallery-album-info"><div class="gallery-album-title">${escapeHtml(a.title)}</div><div class="gallery-album-meta">${count} ${galleryCountWord(count)}</div></div></div>`);
       }
       box.innerHTML=cards.join('');
     }
@@ -4972,7 +5061,6 @@
     async function renderOpenGalleryAlbum(){
       const album=galleryAlbums.find(a=>String(a.id)===String(galleryCurrentAlbumId));if(!album){closeGalleryAlbum(false);return;}
       document.getElementById('gallery-open-title').textContent=album.title;
-      document.getElementById('gallery-open-description').textContent=album.description||'Каждый кадр — маленькая звезда этой истории.';
       const box=document.getElementById('gallery-media-grid');
       const items=galleryItems.filter(x=>String(x.album_id)===String(album.id));
       if(!items.length){box.innerHTML='<div class="gallery-empty" style="grid-column:1/-1">В этой папке пока нет фото или видео.</div>';return;}
@@ -5002,37 +5090,90 @@
       const sel=document.getElementById('admin-gallery-album-select');
       if(sel){const old=sel.value;sel.innerHTML=galleryAlbums.length?'<option value="">Выбери папку…</option>'+galleryAlbums.map(a=>`<option value="${a.id}">${escapeHtml(a.title)}</option>`).join(''):'<option value="">Сначала создай папку</option>';if(galleryAlbums.some(a=>String(a.id)===String(old)))sel.value=old;}
       const list=document.getElementById('admin-gallery-list');if(!list)return;
-      list.innerHTML=galleryAlbums.length?galleryAlbums.map(a=>{const count=galleryItems.filter(x=>String(x.album_id)===String(a.id)).length;return `<div class="cipher-admin-item"><div><b>${escapeHtml(a.title)}</b><small>${count} ${galleryCountWord(count)}${a.description?` · ${escapeHtml(a.description)}`:''}</small></div><div class="cipher-admin-actions"><button class="cipher-small-btn" onclick="openGalleryAlbumFromAdmin('${a.id}')">👁 Открыть</button><button class="cipher-small-btn edit" onclick="adminRenameGalleryAlbum('${a.id}')">✏️ Название</button><button class="cipher-delete-btn" onclick="adminDeleteGalleryAlbum('${a.id}')">🗑️ Удалить</button></div></div>`}).join(''):'<div class="role-note">Папок пока нет.</div>';
+      list.innerHTML=galleryAlbums.length?galleryAlbums.map(a=>{const count=galleryItems.filter(x=>String(x.album_id)===String(a.id)).length;return `<div class="cipher-admin-item"><div><b>${escapeHtml(a.title)}</b><small>${count} ${galleryCountWord(count)}</small></div><div class="cipher-admin-actions"><button class="cipher-small-btn" onclick="openGalleryAlbumFromAdmin('${a.id}')">👁 Открыть</button><button class="cipher-small-btn edit" onclick="adminRenameGalleryAlbum('${a.id}')">✏️ Название</button><button class="cipher-delete-btn" onclick="adminDeleteGalleryAlbum('${a.id}')">🗑️ Удалить</button></div></div>`}).join(''):'<div class="role-note">Папок пока нет.</div>';
     }
 
     async function adminCreateGalleryAlbum(){
       if(currentRole!=='admin')return;
-      const title=document.getElementById('admin-gallery-title').value.trim(),description=document.getElementById('admin-gallery-description').value.trim();
+      const title=document.getElementById('admin-gallery-title').value.trim();
       if(!title)return alert('Укажи название папки.');
-      const {error}=await sb.from('gallery_albums').insert({title,description,created_by:currentUser.id});
+      const {error}=await sb.from('gallery_albums').insert({title,description:'',created_by:currentUser.id});
       if(error)return alert('Не удалось создать папку: '+error.message);
-      document.getElementById('admin-gallery-title').value='';document.getElementById('admin-gallery-description').value='';
+      document.getElementById('admin-gallery-title').value='';
       showLizaToast('🌠 Новое созвездие создано');await loadGallery();
     }
 
+    let galleryUploadInProgress=false;
+    window.addEventListener('beforeunload',e=>{
+      if(!galleryUploadInProgress)return;
+      e.preventDefault();
+      e.returnValue='';
+    });
+
+    function galleryHumanBytes(bytes){
+      if(!Number.isFinite(bytes)||bytes<=0)return '0 Б';
+      const units=['Б','КБ','МБ','ГБ'];let i=0,n=bytes;
+      while(n>=1024&&i<units.length-1){n/=1024;i++;}
+      return `${n.toFixed(i?1:0)} ${units[i]}`;
+    }
+
     async function adminUploadGalleryFiles(){
-      if(currentRole!=='admin')return;
+      if(currentRole!=='admin'||galleryUploadInProgress)return;
       const albumId=document.getElementById('admin-gallery-album-select').value;
-      const files=[...document.getElementById('admin-gallery-files').files];
+      const input=document.getElementById('admin-gallery-files');
+      const files=[...input.files];
       const status=document.getElementById('gallery-upload-status');
-      if(!albumId)return alert('Сначала выбери папку.');if(!files.length)return alert('Выбери фото или видео.');
-      let done=0;const uploaded=[];
+      if(!albumId)return alert('Сначала выбери папку.');
+      if(!files.length)return alert('Выбери фото или видео.');
+
+      const btn=[...document.querySelectorAll('button')].find(b=>b.getAttribute('onclick')==='adminUploadGalleryFiles()');
+      let done=0;
+      galleryUploadInProgress=true;
+      if(btn){btn.disabled=true;btn.style.opacity='.65';btn.textContent='ЗАГРУЗКА…';}
+
       try{
         for(const file of files){
-          status.textContent=`Загружаю ${done+1} из ${files.length}: ${file.name}`;
           const media_type=file.type.startsWith('video/')?'video':'image';
-          const path=await uploadMediaFile(file,`gallery/${albumId}`);uploaded.push(path);
-          const {error}=await sb.from('gallery_items').insert({album_id:albumId,file_path:path,media_type,original_name:file.name,created_by:currentUser.id});
-          if(error)throw error;done++;
+          let uploadedPath=null;
+          const total=galleryHumanBytes(file.size);
+          status.textContent=`${done+1} из ${files.length} · 0% · ${file.name} · ${total}`;
+
+          try{
+            uploadedPath=await uploadMediaFile(file,`gallery/${albumId}`,(pct,loaded,bytesTotal)=>{
+              status.textContent=`${done+1} из ${files.length} · ${pct}% · ${galleryHumanBytes(loaded)} / ${galleryHumanBytes(bytesTotal)} · ${file.name}`;
+            });
+
+            status.textContent=`${done+1} из ${files.length} · файл загружен, сохраняю в галерее…`;
+            const {error}=await sb.from('gallery_items').insert({
+              album_id:albumId,
+              file_path:uploadedPath,
+              media_type,
+              original_name:file.name,
+              created_by:currentUser.id
+            });
+            if(error){
+              await sb.storage.from('constellation-media').remove([uploadedPath]);
+              throw error;
+            }
+            done++;
+            await loadGallery();
+          }catch(fileError){
+            status.textContent=`Ошибка на файле «${file.name}». Загружено: ${done} из ${files.length}.`;
+            throw fileError;
+          }
         }
-        document.getElementById('admin-gallery-files').value='';status.textContent=`Готово: загружено ${done} из ${files.length}.`;
-        showLizaToast('✨ Воспоминания добавлены');await loadGallery();
-      }catch(e){status.textContent='Ошибка загрузки.';alert('Не удалось загрузить файл: '+e.message);await loadGallery();}
+
+        input.value='';
+        status.textContent=`Готово: загружено ${done} из ${files.length}.`;
+        showLizaToast('✨ Воспоминания добавлены');
+      }catch(e){
+        const msg=e?.message||String(e);
+        alert('Не удалось загрузить файл: '+msg);
+        await loadGallery();
+      }finally{
+        galleryUploadInProgress=false;
+        if(btn){btn.disabled=false;btn.style.opacity='';btn.textContent='ЗАГРУЗИТЬ В ГАЛЕРЕЮ ✦';}
+      }
     }
 
     async function adminDeleteOpenGalleryItem(){
@@ -5047,8 +5188,7 @@
     async function adminRenameGalleryAlbum(id){
       if(currentRole!=='admin')return;const a=galleryAlbums.find(x=>String(x.id)===String(id));if(!a)return;
       const title=prompt('Новое название папки:',a.title);if(title===null||!title.trim())return;
-      const description=prompt('Описание папки:',a.description||'');if(description===null)return;
-      const {error}=await sb.from('gallery_albums').update({title:title.trim(),description:description.trim()}).eq('id',id);if(error)return alert(error.message);await loadGallery();showLizaToast('✏️ Папка обновлена');
+      const {error}=await sb.from('gallery_albums').update({title:title.trim(),description:''}).eq('id',id);if(error)return alert(error.message);await loadGallery();showLizaToast('✏️ Папка обновлена');
     }
     async function adminDeleteGalleryAlbum(id){
       if(currentRole!=='admin'||!confirm('Удалить папку и ВСЕ фото/видео внутри неё?'))return;
@@ -5060,9 +5200,18 @@
     function openGalleryAlbumFromAdmin(id){switchTab('tab-gallery');setTimeout(()=>openGalleryAlbum(id),30);}
 
     // ===== КАЛЕНДАРЬ СОЗВЕЗДИЯ =====
+    // История календаря начинается 26 мая 2026.
+    // Ежемесячная дата отношений — 16-е число, первый такой день: 16 июня 2026.
+    const CONSTELLATION_START_ISO='2026-05-26';
+    const RELATIONSHIP_ANCHOR_ISO='2026-06-16';
+    const CALENDAR_MIN_YEAR=2026;
+    const CALENDAR_MIN_MONTH=4; // май, 0-based
     let meetingConfig={target:'2027-04-16T00:00:00+03:00',title:'Наша первая встреча'};
     let meetingCountdownTimer=null;
     let calendarViewYear=null,calendarViewMonth=null;
+    let calendarReminders=[];
+    let calendarReminderProfiles={};
+    let calendarSelectedDate=null;
 
     function moscowParts(date=new Date()){
       const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date);
@@ -5075,7 +5224,7 @@
       if(!currentUser)return;
       const {data,error}=await sb.from('constellation_settings').select('key,value').eq('key','meeting_target').maybeSingle();
       if(!error&&data?.value){const v=data.value;meetingConfig={target:v.target||meetingConfig.target,title:v.title||meetingConfig.title};}
-      else if(error)console.warn('Настройки календаря пока используют значение по умолчанию. Выполни SQL-миграцию.',error);
+      else if(error)console.warn('Настройки календаря пока используют значение по умолчанию.',error);
       fillMeetingAdminForm();
       jumpCalendarToday(false);
       updateMeetingCountdown();
@@ -5117,12 +5266,40 @@
     }
     function formatMeetingTarget(date){return new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date);}
 
-    function ensureCalendarView(){if(calendarViewYear!==null)return;const p=moscowParts();calendarViewYear=p.year;calendarViewMonth=p.month-1;}
-    function shiftCalendarMonth(delta){ensureCalendarView();calendarViewMonth+=delta;while(calendarViewMonth<0){calendarViewMonth+=12;calendarViewYear--}while(calendarViewMonth>11){calendarViewMonth-=12;calendarViewYear++}renderConstellationCalendar();}
-    function jumpCalendarToday(render=true){const p=moscowParts();calendarViewYear=p.year;calendarViewMonth=p.month-1;if(render)renderConstellationCalendar();}
-    function jumpCalendarMeeting(){const p=meetingMoscowParts();calendarViewYear=p.year;calendarViewMonth=p.month-1;renderConstellationCalendar();}
+    function ensureCalendarView(){if(calendarViewYear!==null)return;const p=moscowParts();calendarViewYear=p.year;calendarViewMonth=p.month-1;clampCalendarView();}
+    function clampCalendarView(){
+      if(calendarViewYear<CALENDAR_MIN_YEAR||(calendarViewYear===CALENDAR_MIN_YEAR&&calendarViewMonth<CALENDAR_MIN_MONTH)){
+        calendarViewYear=CALENDAR_MIN_YEAR;calendarViewMonth=CALENDAR_MIN_MONTH;
+      }
+    }
+    function shiftCalendarMonth(delta){ensureCalendarView();calendarViewMonth+=delta;while(calendarViewMonth<0){calendarViewMonth+=12;calendarViewYear--}while(calendarViewMonth>11){calendarViewMonth-=12;calendarViewYear++}clampCalendarView();renderConstellationCalendar();}
+    function jumpCalendarToday(render=true){const p=moscowParts();calendarViewYear=p.year;calendarViewMonth=p.month-1;clampCalendarView();if(!calendarSelectedDate)calendarSelectedDate=p.iso;if(render){renderConstellationCalendar();renderCalendarReminderPanel();}}
+    function jumpCalendarMeeting(){const p=meetingMoscowParts();calendarViewYear=p.year;calendarViewMonth=p.month-1;calendarSelectedDate=p.iso;renderConstellationCalendar();renderCalendarReminderPanel();}
     function isoYmd(y,m,d){return `${y}-${pad2(m)}-${pad2(d)}`;}
     function ruMonthTitle(y,m){return new Intl.DateTimeFormat('ru-RU',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(y,m,1)));}
+    function parseIsoYmd(iso){const [y,m,d]=String(iso).split('-').map(Number);return {y,m,d};}
+    function formatCalendarDate(iso){const {y,m,d}=parseIsoYmd(iso);return new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(y,m-1,d)));}
+    function relationshipMonthNumber(iso){
+      const p=parseIsoYmd(iso);if(p.d!==16)return null;
+      const a=parseIsoYmd(RELATIONSHIP_ANCHOR_ISO);
+      const months=(p.y-a.y)*12+(p.m-a.m);
+      return months>=0?months:null;
+    }
+    function relationshipMonthText(months){
+      if(months===0)return 'Начало отношений ✦';
+      const n=months%100,one=months%10;
+      const word=(n>=11&&n<=14)?'месяцев':one===1?'месяц':(one>=2&&one<=4)?'месяца':'месяцев';
+      return `${months} ${word} вместе`;
+    }
+    function calendarSpecialText(iso){
+      const parts=[];
+      if(iso===CONSTELLATION_START_ISO)parts.push('✦ Начало отсчёта Созвездия — 26 мая 2026');
+      const mn=relationshipMonthNumber(iso);if(mn!==null)parts.push(`♥ ${relationshipMonthText(mn)}`);
+      if(iso===meetingMoscowParts().iso)parts.push(`★ ${meetingConfig.title||'Наша встреча'}`);
+      return parts.join(' · ');
+    }
+    function remindersForDate(iso){return calendarReminders.filter(r=>r.reminder_date===iso);}
+
     function renderConstellationCalendar(){
       const box=document.getElementById('constellation-calendar-days'),title=document.getElementById('calendar-month-title');if(!box||!title)return;ensureCalendarView();
       const y=calendarViewYear,m=calendarViewMonth;title.textContent=ruMonthTitle(y,m);
@@ -5131,10 +5308,81 @@
       const cells=[];
       for(let i=0;i<42;i++){
         const d=new Date(start.getTime()+i*86400000);const cy=d.getUTCFullYear(),cm=d.getUTCMonth()+1,cd=d.getUTCDate(),iso=isoYmd(cy,cm,cd);const classes=['calendar-day'];
-        if(cm!==m+1)classes.push('outside');if(iso<today)classes.push('past');if(iso===today)classes.push('today');if(iso===meet)classes.push('meeting');
-        cells.push(`<div class="${classes.join(' ')}" title="${iso===meet?escapeHtml(meetingConfig.title||'Встреча'):iso}">${cd}</div>`);
+        const outside=cm!==m+1;const monthMark=relationshipMonthNumber(iso)!==null;
+        if(outside)classes.push('outside');
+        if(iso<CONSTELLATION_START_ISO)classes.push('before-start');
+        else if(iso<today)classes.push('past');
+        if(iso===CONSTELLATION_START_ISO)classes.push('constellation-start');
+        if(monthMark)classes.push('monthmark');
+        if(iso===today)classes.push('today');
+        if(iso===meet)classes.push('meeting');
+        if(remindersForDate(iso).length)classes.push('has-reminder');
+        if(iso===calendarSelectedDate)classes.push('selected');
+        const click=outside?'':`onclick="selectCalendarDay('${iso}')"`;
+        const tooltip=[formatCalendarDate(iso),calendarSpecialText(iso),remindersForDate(iso).length?`Напоминаний: ${remindersForDate(iso).length}`:''].filter(Boolean).join(' · ');
+        cells.push(`<div class="${classes.join(' ')}" ${click} title="${escapeHtml(tooltip)}">${cd}</div>`);
       }
       box.innerHTML=cells.join('');
+    }
+
+    function selectCalendarDay(iso){
+      if(!iso||iso<CONSTELLATION_START_ISO)return;
+      calendarSelectedDate=iso;
+      const p=parseIsoYmd(iso);calendarViewYear=p.y;calendarViewMonth=p.m-1;
+      renderConstellationCalendar();renderCalendarReminderPanel();
+      document.getElementById('calendar-reminder-panel')?.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+
+    async function loadCalendarReminders(){
+      if(!currentUser)return;
+      const [{data,error},{data:profiles}]=await Promise.all([
+        sb.from('calendar_reminders').select('*').order('reminder_date',{ascending:true}).order('created_at',{ascending:true}),
+        sb.from('profiles').select('id,display_name,role')
+      ]);
+      if(error){
+        console.warn('Напоминания календаря ещё не подключены. Выполни SQL-обновление.',error);
+        calendarReminders=[];
+      }else calendarReminders=data||[];
+      calendarReminderProfiles=Object.fromEntries((profiles||[]).map(p=>[p.id,p]));
+      if(!calendarSelectedDate)calendarSelectedDate=moscowParts().iso<CONSTELLATION_START_ISO?CONSTELLATION_START_ISO:moscowParts().iso;
+      renderConstellationCalendar();renderCalendarReminderPanel();
+    }
+
+    function renderCalendarReminderPanel(){
+      const dateTitle=document.getElementById('calendar-reminder-date-title'),special=document.getElementById('calendar-reminder-special'),list=document.getElementById('calendar-reminder-list');
+      if(!dateTitle||!special||!list)return;
+      const iso=calendarSelectedDate||moscowParts().iso;
+      dateTitle.textContent=formatCalendarDate(iso);
+      special.textContent=calendarSpecialText(iso);
+      const rows=remindersForDate(iso);
+      list.innerHTML=rows.length?rows.map(r=>{
+        const profile=calendarReminderProfiles[r.created_by];
+        const author=profile?.display_name||(r.created_by===currentUser?.id?(currentProfile?.display_name||'Ты'):'Созвездие');
+        const canDelete=r.created_by===currentUser?.id;
+        return `<div class="calendar-reminder-item"><div class="calendar-reminder-item-top"><div><b>${escapeHtml(r.title)}</b>${r.note?`<small>${escapeHtml(r.note)}</small>`:''}<small class="calendar-reminder-author">Добавил(а): ${escapeHtml(author)}</small></div>${canDelete?`<button class="calendar-reminder-delete" onclick="deleteCalendarReminder('${r.id}')">Удалить</button>`:''}</div></div>`;
+      }).join(''):'<div class="calendar-reminder-empty">На этот день напоминаний пока нет.</div>';
+    }
+
+    async function addCalendarReminder(){
+      if(!currentUser)return;
+      const iso=calendarSelectedDate||moscowParts().iso;
+      if(iso<CONSTELLATION_START_ISO)return showLizaToast('Календарь Созвездия начинается 26 мая 2026');
+      const titleEl=document.getElementById('calendar-reminder-title-input'),noteEl=document.getElementById('calendar-reminder-note-input');
+      const title=titleEl?.value.trim()||'',note=noteEl?.value.trim()||'';
+      if(!title)return alert('Напиши напоминание.');
+      const {error}=await sb.from('calendar_reminders').insert({reminder_date:iso,title,note,created_by:currentUser.id});
+      if(error)return alert('Не удалось добавить напоминание: '+error.message);
+      if(titleEl)titleEl.value='';if(noteEl)noteEl.value='';
+      await loadCalendarReminders();showLizaToast('🗓️ Напоминание добавлено');
+    }
+
+    async function deleteCalendarReminder(id){
+      const r=calendarReminders.find(x=>String(x.id)===String(id));
+      if(!r||r.created_by!==currentUser?.id)return;
+      if(!confirm('Удалить это напоминание?'))return;
+      const {error}=await sb.from('calendar_reminders').delete().eq('id',id).eq('created_by',currentUser.id);
+      if(error)return alert('Не удалось удалить напоминание: '+error.message);
+      await loadCalendarReminders();showLizaToast('🗑️ Напоминание удалено');
     }
 
     // 14. АПТЕЧКА НАСТРОЕНИЯ (30 фраз)

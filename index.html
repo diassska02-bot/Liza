@@ -2612,6 +2612,35 @@
     .countdown-name{display:block;margin-top:7px;color:#64748B;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em}
     .meeting-target-line{margin-top:14px;color:#CBD5E1;font-size:.76rem;line-height:1.45}
     .meeting-target-line b{color:#FDE68A}
+
+    /* Путь до встречи: две звезды сходятся к центру */
+    .meeting-progress-card{
+      position:relative;overflow:hidden;margin:14px 0 16px;padding:17px 16px 15px;
+      border-radius:21px;border:1px solid rgba(129,140,248,.24);
+      background:radial-gradient(circle at 50% 110%,rgba(245,158,11,.11),transparent 42%),rgba(4,8,18,.52);
+      box-shadow:inset 0 0 32px rgba(129,140,248,.025);
+    }
+    .meeting-progress-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .meeting-progress-title{font-family:'Cinzel',serif;color:#E2E8F0;font-size:.72rem;letter-spacing:.10em;text-transform:uppercase}
+    .meeting-progress-percent{font-family:'Cinzel',serif;color:#FDE68A;font-size:.82rem;font-variant-numeric:tabular-nums}
+    .meeting-progress-stage{position:relative;height:96px;margin:0 3px}
+    .meeting-progress-line{position:absolute;left:6%;right:6%;top:42px;height:2px;border-radius:99px;background:linear-gradient(90deg,rgba(96,165,250,.32),rgba(148,163,184,.20) 48%,rgba(244,114,182,.32));box-shadow:0 0 10px rgba(148,163,184,.08)}
+    .meeting-progress-center{position:absolute;left:50%;top:34px;transform:translateX(-50%);width:18px;height:18px;border-radius:50%;display:grid;place-items:center;color:#FDE68A;font-size:.68rem;background:#0B1120;border:1px solid rgba(245,158,11,.42);box-shadow:0 0 14px rgba(245,158,11,.20);z-index:2}
+    .meeting-progress-fill-left,.meeting-progress-fill-right{position:absolute;top:42px;height:2px;border-radius:99px;pointer-events:none;opacity:.88}
+    .meeting-progress-fill-left{left:6%;background:linear-gradient(90deg,rgba(96,165,250,.20),rgba(96,165,250,.88));box-shadow:0 0 9px rgba(96,165,250,.42)}
+    .meeting-progress-fill-right{right:6%;background:linear-gradient(90deg,rgba(244,114,182,.88),rgba(244,114,182,.20));box-shadow:0 0 9px rgba(244,114,182,.36)}
+    .meeting-traveler{position:absolute;top:14px;transform:translateX(-50%);transition:left .9s cubic-bezier(.22,1,.36,1);z-index:4;text-align:center;min-width:58px;pointer-events:none}
+    .meeting-traveler-star{width:42px;height:42px;margin:0 auto;border-radius:50%;display:grid;place-items:center;font-size:1.35rem;background:radial-gradient(circle,rgba(255,255,255,.10),rgba(255,255,255,.02) 58%,transparent 62%);animation:meetingStarPulse 2.8s ease-in-out infinite}
+    .meeting-traveler-left .meeting-traveler-star{color:#93C5FD;filter:drop-shadow(0 0 9px rgba(96,165,250,.85))}
+    .meeting-traveler-right .meeting-traveler-star{color:#F9A8D4;filter:drop-shadow(0 0 9px rgba(244,114,182,.75));animation-delay:.5s}
+    .meeting-traveler-name{display:block;margin-top:5px;font-size:.58rem;color:#94A3B8;letter-spacing:.04em}
+    @keyframes meetingStarPulse{0%,100%{transform:scale(.92);opacity:.86}50%{transform:scale(1.08);opacity:1}}
+    .meeting-progress-dates{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:1px;color:#64748B;font-size:.62rem}
+    .meeting-progress-dates span:last-child{text-align:right}
+    .meeting-progress-caption{margin-top:8px;color:#94A3B8;font-size:.69rem;line-height:1.45;text-align:center;font-variant-numeric:tabular-nums}
+    .meeting-progress-caption b{color:#FDE68A;font-weight:600}
+    .meeting-progress-card.arrived .meeting-progress-center{color:#FFF8E8;box-shadow:0 0 22px rgba(245,158,11,.48);border-color:#F59E0B}
+    .meeting-progress-card.arrived .meeting-traveler-star{filter:drop-shadow(0 0 12px rgba(245,158,11,.85));color:#FDE68A}
     .calendar-card{background:rgba(4,8,18,.5);border:1px solid rgba(148,163,184,.16);border-radius:21px;padding:15px;margin-top:13px}
     .calendar-head{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:8px;margin-bottom:13px}
     .calendar-head button{width:42px;height:38px;border-radius:11px;border:1px solid rgba(212,175,55,.28);background:#060810;color:#FDE68A;cursor:pointer}
@@ -2662,6 +2691,7 @@
 
     @media(min-width:700px){.gallery-album-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.gallery-media-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.calendar-card{padding:20px}.calendar-day{font-size:.8rem}}
     @media(max-width:480px){.gallery-album-grid{grid-template-columns:1fr 1fr;gap:8px}.gallery-album-card{min-height:150px}.gallery-album-cover{height:92px}.gallery-album-info{padding:10px}.gallery-media-grid{gap:5px}.countdown-shell{padding:18px 8px 15px}.countdown-grid{gap:5px}.countdown-unit{padding:11px 2px 9px;border-radius:13px}.countdown-name{font-size:.5rem}.calendar-card{padding:11px}.calendar-days,.calendar-weekdays{gap:2px}.calendar-day{border-radius:8px;font-size:.66rem}}
+    @media(max-width:480px){.meeting-progress-card{padding:15px 10px 13px}.meeting-progress-stage{height:88px;margin:0}.meeting-progress-line,.meeting-progress-fill-left,.meeting-progress-fill-right{top:39px}.meeting-progress-center{top:31px}.meeting-traveler{top:11px;min-width:48px}.meeting-traveler-star{width:38px;height:38px;font-size:1.2rem}.meeting-traveler-name{font-size:.53rem}.meeting-progress-dates{font-size:.56rem}.meeting-progress-caption{font-size:.63rem}}
 
 </style>
 </head>
@@ -3209,6 +3239,27 @@
             <div class="countdown-unit"><span class="countdown-number" id="countdown-seconds">00</span><span class="countdown-name">секунд</span></div>
           </div>
           <div class="meeting-target-line" id="meeting-target-line"><b>16 апреля 2027</b> · Москва</div>
+        </div>
+
+        <div class="meeting-progress-card" id="meeting-progress-card">
+          <div class="meeting-progress-top">
+            <div class="meeting-progress-title">Путь до встречи</div>
+            <div class="meeting-progress-percent" id="meeting-progress-percent">0%</div>
+          </div>
+          <div class="meeting-progress-stage" aria-label="Прогресс пути до встречи">
+            <div class="meeting-progress-line"></div>
+            <div class="meeting-progress-fill-left" id="meeting-progress-fill-left"></div>
+            <div class="meeting-progress-fill-right" id="meeting-progress-fill-right"></div>
+            <div class="meeting-progress-center" title="Точка встречи">♥</div>
+            <div class="meeting-traveler meeting-traveler-left" id="meeting-progress-dias">
+              <div class="meeting-traveler-star">✦</div><span class="meeting-traveler-name">Диас</span>
+            </div>
+            <div class="meeting-traveler meeting-traveler-right" id="meeting-progress-liza">
+              <div class="meeting-traveler-star">✦</div><span class="meeting-traveler-name">Лиза</span>
+            </div>
+          </div>
+          <div class="meeting-progress-dates"><span>26 мая 2026</span><span id="meeting-progress-target-date">16 апреля 2027</span></div>
+          <div class="meeting-progress-caption" id="meeting-progress-caption">Путь только начинается ✦</div>
         </div>
 
         <div class="calendar-card">
@@ -5255,6 +5306,55 @@
     function splitDuration(ms){
       const total=Math.max(0,Math.floor(ms/1000));return {days:Math.floor(total/86400),hours:Math.floor(total%86400/3600),minutes:Math.floor(total%3600/60),seconds:total%60};
     }
+    function updateMeetingProgressPath(){
+      const card=document.getElementById('meeting-progress-card');
+      if(!card)return;
+      const start=new Date('2026-05-26T00:00:00+03:00');
+      const target=new Date(meetingConfig.target);
+      const now=new Date();
+      if(Number.isNaN(target.getTime())||target<=start)return;
+
+      const total=target.getTime()-start.getTime();
+      const elapsed=Math.min(total,Math.max(0,now.getTime()-start.getTime()));
+      const progress=Math.min(1,Math.max(0,elapsed/total));
+      const pct=progress*100;
+
+      // В начале звёзды на 7% и 93%, в день встречи обе сходятся к 50%.
+      const leftPos=7+(43*progress);
+      const rightPos=93-(43*progress);
+      const left=document.getElementById('meeting-progress-dias');
+      const right=document.getElementById('meeting-progress-liza');
+      if(left)left.style.left=`${leftPos}%`;
+      if(right)right.style.left=`${rightPos}%`;
+
+      const fillLeft=document.getElementById('meeting-progress-fill-left');
+      const fillRight=document.getElementById('meeting-progress-fill-right');
+      const halfFill=43*progress;
+      if(fillLeft)fillLeft.style.width=`${halfFill}%`;
+      if(fillRight)fillRight.style.width=`${halfFill}%`;
+
+      const percent=document.getElementById('meeting-progress-percent');
+      if(percent)percent.textContent=`${pct.toFixed(pct<10?1:0)}%`;
+
+      const targetLabel=document.getElementById('meeting-progress-target-date');
+      if(targetLabel)targetLabel.textContent=new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',day:'numeric',month:'long',year:'numeric'}).format(target);
+
+      const caption=document.getElementById('meeting-progress-caption');
+      if(caption){
+        const totalDays=Math.max(1,Math.ceil(total/86400000));
+        const passedDays=Math.min(totalDays,Math.max(0,Math.floor(elapsed/86400000)));
+        const leftDays=Math.max(0,totalDays-passedDays);
+        if(progress>=1){
+          caption.innerHTML='<b>Мы дошли друг до друга ♥</b>';
+        }else if(progress<=0){
+          caption.textContent='Путь только начинается ✦';
+        }else{
+          caption.innerHTML=`Пройдено <b>${passedDays}</b> из ${totalDays} дней · впереди <b>${leftDays}</b>`;
+        }
+      }
+      card.classList.toggle('arrived',progress>=1);
+    }
+
     function updateMeetingCountdown(){
       const target=new Date(meetingConfig.target);if(Number.isNaN(target.getTime()))return;
       const now=new Date(),future=target.getTime()>=now.getTime(),d=splitDuration(Math.abs(target-now));
@@ -5263,6 +5363,7 @@
       const label=document.getElementById('countdown-label');if(label)label.textContent=future?'До нашей встречи осталось':'Мы дождались ✦ Уже вместе';
       const line=document.getElementById('meeting-target-line');if(line)line.innerHTML=`<b>${escapeHtml(formatMeetingTarget(target))}</b> · Москва · ${escapeHtml(meetingConfig.title||'Наша встреча')}`;
       const hub=document.getElementById('hub-countdown-meta');if(hub)hub.textContent=future?`${d.days} дн · ${pad2(d.hours)}:${pad2(d.minutes)}:${pad2(d.seconds)}`:`встреча случилась ✦`;
+      updateMeetingProgressPath();
     }
     function formatMeetingTarget(date){return new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date);}
 
